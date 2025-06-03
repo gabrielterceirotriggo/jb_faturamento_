@@ -1,0 +1,6 @@
+profiles.yml
+.venv/
+.vscode/
+target/
+logs/
+.env

@@ -1,0 +1,19 @@
+SELECT
+    MANDT,
+	LOGIKZW,
+	BIS,
+	ZUART,
+	LOGIKNR2,
+	AB,
+	MESSDRCK,
+	ABRFAKT,
+	PROGT,
+	ATTRIBUT,
+	ERDAT,
+	ERNAM,
+	AEDAT,
+	AENAM
+FROM
+    {{ mc_source(var('source_param'),'EZUZ')}}
+-- WHERE
+-- 	ERDAT = '20250214'

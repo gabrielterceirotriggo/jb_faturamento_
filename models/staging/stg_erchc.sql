@@ -1,0 +1,20 @@
+SELECT
+    mandt,
+	belnr,
+	lfdnr,
+	opbel,
+	cpudt,
+	budat,
+	intopbel,
+	intcpudt,
+	intbudat,
+	tobreleasd,
+	simulated,
+	invoiced,
+	spcanc,
+	statupd,
+	statupd_canc,
+	data_dados
+    --erchc_erchc_pk
+FROM 
+    {{ mc_source(var('source_param'), 'ERCHC') }}

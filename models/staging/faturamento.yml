@@ -1,0 +1,37 @@
+version: 2
+
+sources:
+  - name: "{{ var('source_orig') }}"
+    database: eqtlinfo_raw
+    schema: "{{ var('source_orig') }}"    
+    tables:
+      - name: ERDK
+      - name: ERCHC
+      - name: ERCH
+      - name: DBERCHZ1
+      - name: DBERCHZ3
+      - name: DBERDLB
+      - name: DBERDL
+      - name: ZFATT057_OPHIST
+      - name: DBERCHZ5
+      - name: DBERCHZ7
+      - name: ETTIFN
+      - name: EVER
+      - name: ZCFAT_IRREG_INF
+      - name: ZCFAT_IRREG_CAB
+      - name: ETRG
+      - name: DBERCHZ2
+      - name: ETDZ
+      - name: EZUZ
+      - name: EGERH
+      - name: TE835T
+      
+  - name: "{{ var('source_param') }}"
+    database: eqtlinfo_prd
+    schema: "{{ var('source_param') }}" 
+    tables:
+      - name: TAB_CONTROLE_CARGAS
+      - name: FATURAMENTO_OPERACOES
+      - name: FATURAMENTO
+      - name: INT_ULTIMA_EXECUCAO
+  

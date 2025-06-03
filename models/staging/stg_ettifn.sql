@@ -1,0 +1,28 @@
+SELECT
+    mandt,
+    anlage,
+    operand,
+    saison,
+    ab,
+    ablfdnr,
+    bis,
+    belnr,
+    mbelnr,
+    mauszug,
+    altbis,
+    inaktiv,
+    manaend,
+    tarifart,
+    kondigr,
+    wert1,
+    wert2,
+    string1,
+    string2,
+    string3,
+    string4,
+    ersatzwert,
+    betrag,
+    waers,
+    data_dados
+FROM
+    {{ mc_source(var('source_param'),'ETTIFN')}}
