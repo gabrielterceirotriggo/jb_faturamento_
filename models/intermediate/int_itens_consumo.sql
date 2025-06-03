@@ -153,7 +153,6 @@ q_itens_consumo as (
         dberdlb.nettobtr as receita,
         dberdlb.sttax as base_imposto,
         0 as aliquota,
-        -- Não tinha na tabela
         dberdlb.hvorg as operacao,
         dberchz1.tvorg as sub_operacao,
         dberdlb.txjcd as domicilio_fiscal,
@@ -223,7 +222,6 @@ q_itens_consumo2 as (
         dberdlb.nettobtr as receita,
         dberdlb.sttax as base_imposto,
         0 as aliquota,
-        -- Não tinha na tabela
         dberdlb.hvorg as operacao,
         dberchz5.tvorg as sub_operacao,
         dberdlb.txjcd as domicilio_fiscal,
@@ -287,14 +285,12 @@ final1 as (
         q_itens_consumo.subclasse,
         q_itens_consumo.belzart,
         q_itens_consumo.linesort,
-        -- Não tinha na tabela
         q_itens_consumo.escalao,
         q_itens_consumo.inicio_calculo,
         q_itens_consumo.fim_calculo,
         q_itens_consumo.tipo_imposto,
         q_itens_consumo.preco,
         q_itens_consumo.base_imposto,
-        -- Não tinha na tabela
         q_itens_consumo.aliquota,
         q_itens_consumo.operacao,
         q_itens_consumo.domicilio_fiscal,
@@ -315,6 +311,8 @@ final1 as (
         end as sub_operacao
     from
         q_itens_consumo
+    where
+        q_itens_consumo.belzart is not null
 ),
 
 final2 as (
@@ -330,14 +328,12 @@ final2 as (
         q_itens_consumo2.subclasse,
         q_itens_consumo2.belzart,
         q_itens_consumo2.linesort,
-        -- Não tinha na tabela
         q_itens_consumo2.escalao,
         q_itens_consumo2.inicio_calculo,
         q_itens_consumo2.fim_calculo,
         q_itens_consumo2.tipo_imposto,
         q_itens_consumo2.preco,
         q_itens_consumo2.base_imposto,
-        -- Não tinha na tabela
         q_itens_consumo2.aliquota,
         q_itens_consumo2.operacao,
         q_itens_consumo2.domicilio_fiscal,
@@ -358,6 +354,8 @@ final2 as (
         end as sub_operacao
     from
         q_itens_consumo2
+    where
+        q_itens_consumo2.belzart is not null
 )
 
 select

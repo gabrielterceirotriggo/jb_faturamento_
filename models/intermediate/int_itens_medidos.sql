@@ -2,8 +2,8 @@ select
     int_documentos_faturamento.mes_competencia,
     int_documentos_faturamento.doc_calculo as documento_calculo,
     int_documentos_faturamento.doc_impressao as documento_impressao,
-    int_documentos_faturamento.tipo_calculo,
-    int_documentos_faturamento.tipo_documento,
+    {# int_documentos_faturamento.tipo_calculo,
+    int_documentos_faturamento.tipo_documento, #}
     dberchz1.belzeile,
     dberchz1.branche as setor_industrial,
     dberchz1.tariftyp as categoria_tarifa,

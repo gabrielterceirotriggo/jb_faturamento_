@@ -7,8 +7,8 @@ with q_itens_receita as (
         null as categoria_tarifa,
         null as setor_industrial,
         null as subclasse,
-        int_documentos_faturamento.tipo_calculo,
-        int_documentos_faturamento.tipo_documento,
+        {# int_documentos_faturamento.tipo_calculo,
+        int_documentos_faturamento.tipo_documento, #}
         dberdl.belzart,
         '000' as escalao,
         dberdl.sbasw as base_imposto,
