@@ -306,33 +306,33 @@ ON
 ),
 
 Q1_3 AS (
-SELECT
-	q1_2.mandt,
-	q1_2.mes_competencia,
-	q1_2.documento_calculo,
-	q1_2.documento_impressao,
-	q1_2.belzart,
-	q1_2.constante_medidor,
-	q1_2.v_abrmenge,
-	q1_2.n_abrmenge,
-	q1_2.v_zwstdiff,
-	q1_2.n_zwstdiff,
-	q1_2.id_leitura,
-	q1_2.fator_calculo,
-	q1_2.estorno_ajuste,
-	egerh.equnr,
-	q1_2.estorno_pleno,
-	q1_2.cnr
-FROM
-	q1_2
-LEFT OUTER JOIN
-	egerh
-ON
-	q1_2.mandt = egerh.mandt
-	AND q1_2.logiknr2 = egerh.logiknr
-	AND q1_2.bis >= egerh.ab
-	AND q1_2.bis <= egerh.bis
-	AND egerh.kombinat = 'W'
+	SELECT
+		q1_2.mandt,
+		q1_2.mes_competencia,
+		q1_2.documento_calculo,
+		q1_2.documento_impressao,
+		q1_2.belzart,
+		q1_2.constante_medidor,
+		q1_2.v_abrmenge,
+		q1_2.n_abrmenge,
+		q1_2.v_zwstdiff,
+		q1_2.n_zwstdiff,
+		q1_2.id_leitura,
+		q1_2.fator_calculo,
+		q1_2.estorno_ajuste,
+		egerh.equnr,
+		q1_2.estorno_pleno,
+		q1_2.cnr
+	FROM
+		q1_2
+	LEFT OUTER JOIN
+		egerh
+	ON
+		q1_2.mandt = egerh.mandt
+		AND q1_2.logiknr2 = egerh.logiknr
+		AND q1_2.bis >= egerh.ab
+		AND q1_2.bis <= egerh.bis
+		AND egerh.kombinat = 'W'
 ),
 
 Q1_4 AS (
@@ -351,16 +351,18 @@ SELECT
 	q1_3.equnr,
 	q1_3.estorno_pleno,
 	q1_3.belzart
-FROM 
-	q1_3
+FROM
+    q1_3
 LEFT OUTER JOIN
-	te835t
+    te835t
 ON
-	te835t.spras = 'P'
-	AND te835t.mandt IN (401, 402, 403, 404)
-	AND (te835t.text30 NOT LIKE '% RV' OR te835t.belzart = 'ZRCARY')
-	AND te835t.text30 NOT LIKE '%Gerado'
-	AND te835t.text30 NOT LIKE '%Reativo Exced'
+    te835t.belzart = q1_3.belzart
+WHERE 
+    te835t.spras = 'P'
+    AND te835t.mandt IN (401, 402, 403, 404)
+    AND (te835t.text30 NOT LIKE '% RV' OR te835t.belzart = 'ZRCARY')
+    AND te835t.text30 NOT LIKE '%Gerado'
+    AND te835t.text30 NOT LIKE '%Reativo Exced'
 ),
 
 "CASE" AS (
@@ -414,9 +416,9 @@ SELECT
 		WHEN 
 			q2.estorno_pleno = 'X'
 			THEN 
-				q2.consumo_registrado_dberchz2 * -1
+				SUM(q2.consumo_registrado_dberchz2) * -1
 			ELSE
-				q2.consumo_registrado_dberchz2
+				SUM(q2.consumo_registrado_dberchz2)
 	END consumo_registrado
 FROM 
 	q2
@@ -424,5 +426,4 @@ GROUP BY
 	q2.mes_competencia,
 	q2.documento_calculo,
 	q2.documento_impressao,
-	q2.consumo_registrado_dberchz2,
 	q2.estorno_pleno

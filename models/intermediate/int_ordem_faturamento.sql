@@ -8,7 +8,7 @@ SELECT
     ROW_NUMBER() OVER (
     PARTITION BY B.CONTA_CONTRATO, B.TIPO_CALCULO, B.MES_REFERENCIA
     ORDER BY b.data_criacao_impressao ASC
-) RNK
+) as RNK
 FROM
 (
     select 
@@ -32,5 +32,3 @@ SELECT
     RNK
 FROM
     BASE
-WHERE 
-    RNK = 1

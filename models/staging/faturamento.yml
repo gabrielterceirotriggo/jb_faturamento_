@@ -1,9 +1,9 @@
 version: 2
 
 sources:
-  - name: "{{ var('source_orig') }}"
+  - name: "{{ var('source_orig', 'CCS_MA') }}"
     database: eqtlinfo_raw
-    schema: "{{ var('source_orig') }}"    
+    schema: "{{ var('source_orig', 'CCS_MA') }}"
     tables:
       - name: ERDK
       - name: ERCHC
@@ -25,13 +25,13 @@ sources:
       - name: EZUZ
       - name: EGERH
       - name: TE835T
-      
-  - name: "{{ var('source_param') }}"
+
+  - name: "{{ var('source_param', 'EQTL_MA') }}"
     database: eqtlinfo_prd
-    schema: "{{ var('source_param') }}" 
+    schema: "{{ var('source_param', 'EQTL_MA') }}"
     tables:
       - name: TAB_CONTROLE_CARGAS
       - name: FATURAMENTO_OPERACOES
       - name: FATURAMENTO
       - name: INT_ULTIMA_EXECUCAO
-  
+      - name: ITENS_FATURAMENTO

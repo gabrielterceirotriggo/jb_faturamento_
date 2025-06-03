@@ -2,28 +2,28 @@
 
     {% set update_query %}
         UPDATE
-            {{ this }} AS a
+            {{ ref('faturamento') }} AS a
         SET
             VALOR_CONTABIL = x.VALOR_AJUSTADO
         FROM (
             SELECT *
             FROM (
-                SELECT DISTINCT 
-                    X.DOCUMENTO_CALCULO, 
+                SELECT DISTINCT
+                    X.DOCUMENTO_CALCULO,
                     X.DOCUMENTO_IMPRESSAO,
                     RANK() OVER (
                         PARTITION BY X.CONTA_CONTRATO, X.DOCUMENTO_CALCULO, X.DOCUMENTO_IMPRESSAO, X.ESTORNO_PLENO 
                         ORDER BY Y.DATA_CRIACAO_IMPRESSAO DESC
                     ) AS ORDEM,
-                    X.VALOR_FATURA, 
-                    X.VALOR_CONTABIL, 
+                    X.VALOR_FATURA,
+                    X.VALOR_CONTABIL,
                     Y.VALOR_FATURA AS VALOR_ORIGINAL,
                     (
                         (CASE WHEN Y.ESTORNO_PLENO IS NOT NULL THEN X.VALOR_FATURA * -1 ELSE X.VALOR_FATURA END)
                     - (CASE WHEN X.ESTORNO_PLENO IS NOT NULL THEN Y.VALOR_FATURA * -1 ELSE Y.VALOR_FATURA END)
                     ) AS VALOR_AJUSTADO
-                FROM {{ this }} X
-                INNER JOIN {{ this }} Y 
+                FROM {{ ref('faturamento') }} X
+                INNER JOIN {{ ref('faturamento') }} Y
                     ON X.DOCUMENTO_ESTORNO_AJUSTE = Y.DOCUMENTO_CALCULO
                 WHERE 
                     X.ESTORNO_AJUSTE = 'X'

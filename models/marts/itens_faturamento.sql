@@ -1,16 +1,11 @@
-
 {{
-    config(
-        materialized='incremental'
-    )
+  config(
+    materialized = 'incremental',
+    incremental_strategy = 'merge_insert_only',
+    unique_key = ['mes_competencia', 'documento_calculo', 'documento_impressao']
+  )
 }}
 
-
--- WITH 
--- int_max_mes_competencia AS (
---     SELECT max_mes
---     FROM {{ ref('int_max_mes_competencia') }}
--- )
 SELECT
     t.mes_competencia,
     t.documento_calculo,
@@ -33,6 +28,7 @@ SELECT
     t.operacao,
     t.sub_operacao,
     t.domicilio_fiscal,
-    t.flag
+    t.flag,
+    CURRENT_TIMESTAMP() as data_dados
 FROM {{ ref('itens_faturamento_delta') }} AS t
 

@@ -25,6 +25,5 @@
     {% endset %}
     {% do run_query(update_query) %}
 
-    
 {% endmacro %}
 
