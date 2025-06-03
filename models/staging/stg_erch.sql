@@ -1,4 +1,4 @@
-SELECT
+select
     mandt,
     belnr,
     bukrs,
@@ -98,6 +98,5 @@ SELECT
     asbach_rel
     --data_dados
     --erch_erch_pk
-FROM
+from
     {{ mc_source(var('source_param'), 'ERCH') }}
-

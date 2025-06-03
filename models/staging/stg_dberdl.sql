@@ -1,20 +1,20 @@
-SELECT
-	mandt,
-	printdoc,
-	printdocline,
-	belzart,
-	ktosl,
-	xtotal_amnt,
-	nettobtr,
-	sbasw,
-	txjcd,
-	hvorg,
-	tvorg,
-	sktpz,
-	linesort,
-	ab,
-	bis,
-	stprz,
-	data_dados
-FROM
-    {{ mc_source(var('source_param'),'DBERDL')}}
+select
+    mandt,
+    printdoc,
+    printdocline,
+    belzart,
+    ktosl,
+    xtotal_amnt,
+    nettobtr,
+    sbasw,
+    txjcd,
+    hvorg,
+    tvorg,
+    sktpz,
+    linesort,
+    ab,
+    bis,
+    stprz,
+    data_dados
+from
+    {{ mc_source(var('source_param'),'DBERDL') }}

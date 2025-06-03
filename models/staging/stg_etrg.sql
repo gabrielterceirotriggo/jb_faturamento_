@@ -1,4 +1,4 @@
-SELECT
+select
     mandt,
     anlage,
     abrdats,
@@ -8,7 +8,5 @@ SELECT
     erdat,
     ernam,
     data_dados
-FROM
-    {{ mc_source(var('source_param'),'ETRG')}}
-
-    
+from
+    {{ mc_source(var('source_param'),'ETRG') }}

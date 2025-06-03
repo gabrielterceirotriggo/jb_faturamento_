@@ -1,718 +1,727 @@
-WITH estornos_plenos_delta AS (
-SELECT
-    mes_competencia,
-    documento_impressao,
-    tipo_impressao,
-    data_criacao_impressao,
-    usuario_criacao,
-    data_modificacao_impressao,
-    usuario_modificacao,
-    data_competencia,
-    data_vencimento_original,
-    data_apresentacao,
-    chave_reconciliacao,
-    motivo_estorno_impressao,
-    contrapartida,
-    valor_total,
-    estorno_pleno,
-    fatura_virtual
-FROM
-    {{ ref ('estornos_plenos_delta')}}
+with estornos_plenos_delta as (
+    select
+        mes_competencia,
+        documento_impressao,
+        tipo_impressao,
+        data_criacao_impressao,
+        usuario_criacao,
+        data_modificacao_impressao,
+        usuario_modificacao,
+        data_competencia,
+        data_vencimento_original,
+        data_apresentacao,
+        chave_reconciliacao,
+        motivo_estorno_impressao,
+        contrapartida,
+        valor_total,
+        estorno_pleno,
+        fatura_virtual
+    from
+        {{ ref ('estornos_plenos_delta') }}
 ),
 
-faturamento_delta AS (
-SELECT
-    mes_competencia,
-	mes_referencia,
-	documento_calculo,
-	documento_impressao,
-	fatura,
-	instalacao,
-	conta_contrato,
-	parceiro_negocio,
-	contrato,
-	unidade_leitura,
-	etapa,
-	setor_industrial,
-	grupo,
-	categoria_tarifa,
-	cliente_livre,
-	subclasse,
-	motivo_criacao_impressao,
-	tipo_impressao,
-	tipo_calculo,
-	origem_documento,
-	cnr,
-	estornado,
-	estorno_pleno,
-	estorno_ajuste,
-	reversao,
-	cancelamento,
-	fatura_virtual,
-	minimo,
-	documento_estorno_pleno,
-	data_estorno_pleno,
-	motivo_estorno_pleno,
-	documento_estorno_ajuste,
-	data_estorno_ajuste,
-	motivo_estorno_ajuste,
-	valor_fatura,
-	valor_contabil,
-	consumo_faturado,
-	consumo_medido,
-	eusd,
-	eusdb,
-	icms,
-	icms_subvencao,
-	pis,
-	cofins,
-	cip,
-	retencao,
-	receita_bandeiras,
-	receita_consumo_faturado,
-	tarifa,
-	preco,
-	correcao_monetaria,
-	creditos,
-	estornos,
-	juros,
-	multas,
-	parcelamentos,
-	outros_lancamentos,
-	chave_reconciliacao,
-	formulario_pagamento,
-	domicilio_fiscal,
-	inicio_calculo,
-	fim_calculo,
-	quantidade_dias,
-	data_competencia,
-	data_atribuicao_calculo,
-	data_apresentacao,
-	data_vencimento_original,
-	data_previsao_leitura,
-	data_criacao_impressao,
-	usuario_criacao_impressao,
-	data_modificacao_impressao,
-	usuario_modificacao_impressao,
-	data_criacao_calculo,
-	usuario_criacao_calculo,
-	data_modificacao_calculo,
-	usuario_modificacao_calculo,
-	documento_calculo_anterior,
-	estrutura_regional_politica,
-	ordem_faturamento,
-	consumo_registrado
-FROM
-    {{ ref('faturamento_delta')}}
+faturamento_delta as (
+    select
+        mes_competencia,
+        mes_referencia,
+        documento_calculo,
+        documento_impressao,
+        fatura,
+        instalacao,
+        conta_contrato,
+        parceiro_negocio,
+        contrato,
+        unidade_leitura,
+        etapa,
+        setor_industrial,
+        grupo,
+        categoria_tarifa,
+        cliente_livre,
+        subclasse,
+        motivo_criacao_impressao,
+        tipo_impressao,
+        tipo_calculo,
+        origem_documento,
+        cnr,
+        estornado,
+        estorno_pleno,
+        estorno_ajuste,
+        reversao,
+        cancelamento,
+        fatura_virtual,
+        minimo,
+        documento_estorno_pleno,
+        data_estorno_pleno,
+        motivo_estorno_pleno,
+        documento_estorno_ajuste,
+        data_estorno_ajuste,
+        motivo_estorno_ajuste,
+        valor_fatura,
+        valor_contabil,
+        consumo_faturado,
+        consumo_medido,
+        eusd,
+        eusdb,
+        icms,
+        icms_subvencao,
+        pis,
+        cofins,
+        cip,
+        retencao,
+        receita_bandeiras,
+        receita_consumo_faturado,
+        tarifa,
+        preco,
+        correcao_monetaria,
+        creditos,
+        estornos,
+        juros,
+        multas,
+        parcelamentos,
+        outros_lancamentos,
+        chave_reconciliacao,
+        formulario_pagamento,
+        domicilio_fiscal,
+        inicio_calculo,
+        fim_calculo,
+        quantidade_dias,
+        data_competencia,
+        data_atribuicao_calculo,
+        data_apresentacao,
+        data_vencimento_original,
+        data_previsao_leitura,
+        data_criacao_impressao,
+        usuario_criacao_impressao,
+        data_modificacao_impressao,
+        usuario_modificacao_impressao,
+        data_criacao_calculo,
+        usuario_criacao_calculo,
+        data_modificacao_calculo,
+        usuario_modificacao_calculo,
+        documento_calculo_anterior,
+        estrutura_regional_politica,
+        ordem_faturamento,
+        consumo_registrado
+    from
+        {{ ref('faturamento_delta') }}
 ),
 
-
-Q_ESTORNADOS_PLENOS AS (
-SELECT
-    faturamento_delta.mes_competencia,
-    faturamento_delta.mes_referencia,
-    faturamento_delta.documento_calculo,
-    faturamento_delta.documento_impressao,
-    faturamento_delta.fatura,
-    faturamento_delta.instalacao,
-    faturamento_delta.conta_contrato,
-    faturamento_delta.parceiro_negocio,
-    faturamento_delta.contrato,
-    faturamento_delta.unidade_leitura,
-    faturamento_delta.etapa,
-    faturamento_delta.setor_industrial,
-    faturamento_delta.grupo,
-    faturamento_delta.categoria_tarifa,
-    faturamento_delta.cliente_livre,
-    faturamento_delta.subclasse,
-    faturamento_delta.motivo_criacao_impressao,
-    faturamento_delta.tipo_impressao,
-    faturamento_delta.tipo_calculo,
-    faturamento_delta.origem_documento,
-    faturamento_delta.cnr,
-    'X' AS estornado,
-    faturamento_delta.estorno_pleno,
-    faturamento_delta.estorno_ajuste,
-    faturamento_delta.reversao,
-    faturamento_delta.cancelamento,
-    faturamento_delta.fatura_virtual,
-    faturamento_delta.minimo,
-    estornos_plenos_delta.documento_impressao AS documento_estorno_pleno,
-    estornos_plenos_delta.data_criacao_impressao AS data_estorno_pleno,
-    estornos_plenos_delta.motivo_estorno_impressao AS motivo_estorno_pleno,
-    faturamento_delta.documento_estorno_ajuste,
-    faturamento_delta.data_estorno_ajuste,
-    faturamento_delta.motivo_estorno_ajuste,
-    faturamento_delta.valor_fatura,
-    faturamento_delta.valor_contabil,
-    faturamento_delta.consumo_faturado,
-    faturamento_delta.consumo_medido,
-	faturamento_delta.eusd,
-	faturamento_delta.eusdb,
-	faturamento_delta.icms,
-	faturamento_delta.icms_subvencao,
-	faturamento_delta.pis,
-	faturamento_delta.cofins,
-	faturamento_delta.cip,
-	faturamento_delta.retencao,
-	faturamento_delta.receita_bandeiras,
-	faturamento_delta.receita_consumo_faturado,
-	faturamento_delta.tarifa,
-	faturamento_delta.preco,
-	faturamento_delta.correcao_monetaria,
-	faturamento_delta.creditos,
-	faturamento_delta.estornos,
-	faturamento_delta.juros,
-	faturamento_delta.multas,
-	faturamento_delta.parcelamentos,
-	faturamento_delta.outros_lancamentos,
-	faturamento_delta.chave_reconciliacao,
-    CASE
-        WHEN 
-            faturamento_delta.formulario_pagamento =' '
-            THEN
-                NULL
-            ELSE
+q_estornados_plenos as (
+    select
+        faturamento_delta.mes_competencia,
+        faturamento_delta.mes_referencia,
+        faturamento_delta.documento_calculo,
+        faturamento_delta.documento_impressao,
+        faturamento_delta.fatura,
+        faturamento_delta.instalacao,
+        faturamento_delta.conta_contrato,
+        faturamento_delta.parceiro_negocio,
+        faturamento_delta.contrato,
+        faturamento_delta.unidade_leitura,
+        faturamento_delta.etapa,
+        faturamento_delta.setor_industrial,
+        faturamento_delta.grupo,
+        faturamento_delta.categoria_tarifa,
+        faturamento_delta.cliente_livre,
+        faturamento_delta.subclasse,
+        faturamento_delta.motivo_criacao_impressao,
+        faturamento_delta.tipo_impressao,
+        faturamento_delta.tipo_calculo,
+        faturamento_delta.origem_documento,
+        faturamento_delta.cnr,
+        'X' as estornado,
+        faturamento_delta.estorno_pleno,
+        faturamento_delta.estorno_ajuste,
+        faturamento_delta.reversao,
+        faturamento_delta.cancelamento,
+        faturamento_delta.fatura_virtual,
+        faturamento_delta.minimo,
+        estornos_plenos_delta.documento_impressao as documento_estorno_pleno,
+        estornos_plenos_delta.data_criacao_impressao as data_estorno_pleno,
+        estornos_plenos_delta.motivo_estorno_impressao as motivo_estorno_pleno,
+        faturamento_delta.documento_estorno_ajuste,
+        faturamento_delta.data_estorno_ajuste,
+        faturamento_delta.motivo_estorno_ajuste,
+        faturamento_delta.valor_fatura,
+        faturamento_delta.valor_contabil,
+        faturamento_delta.consumo_faturado,
+        faturamento_delta.consumo_medido,
+        faturamento_delta.eusd,
+        faturamento_delta.eusdb,
+        faturamento_delta.icms,
+        faturamento_delta.icms_subvencao,
+        faturamento_delta.pis,
+        faturamento_delta.cofins,
+        faturamento_delta.cip,
+        faturamento_delta.retencao,
+        faturamento_delta.receita_bandeiras,
+        faturamento_delta.receita_consumo_faturado,
+        faturamento_delta.tarifa,
+        faturamento_delta.preco,
+        faturamento_delta.correcao_monetaria,
+        faturamento_delta.creditos,
+        faturamento_delta.estornos,
+        faturamento_delta.juros,
+        faturamento_delta.multas,
+        faturamento_delta.parcelamentos,
+        faturamento_delta.outros_lancamentos,
+        faturamento_delta.chave_reconciliacao,
+        faturamento_delta.domicilio_fiscal,
+        faturamento_delta.inicio_calculo,
+        faturamento_delta.fim_calculo,
+        faturamento_delta.quantidade_dias,
+        faturamento_delta.data_competencia,
+        faturamento_delta.data_atribuicao_calculo,
+        faturamento_delta.data_apresentacao,
+        faturamento_delta.data_vencimento_original,
+        faturamento_delta.data_previsao_leitura,
+        faturamento_delta.data_criacao_impressao,
+        faturamento_delta.usuario_criacao_impressao,
+        estornos_plenos_delta.data_modificacao_impressao,
+        estornos_plenos_delta.usuario_criacao as usuario_modificacao_impressao,
+        faturamento_delta.data_criacao_calculo,
+        faturamento_delta.usuario_criacao_calculo,
+        faturamento_delta.data_modificacao_calculo,
+        faturamento_delta.usuario_modificacao_calculo,
+        faturamento_delta.documento_calculo_anterior,
+        faturamento_delta.estrutura_regional_politica,
+        null as ordem_faturamento,
+        faturamento_delta.consumo_registrado,
+        2 as flag,
+        case
+            when
+                faturamento_delta.formulario_pagamento = ' '
+                then
+                    null
+            else
                 faturamento_delta.formulario_pagamento
-    END formulario_pagamento,
-	faturamento_delta.domicilio_fiscal,
-	faturamento_delta.inicio_calculo,
-	faturamento_delta.fim_calculo,
-	faturamento_delta.quantidade_dias,
-	faturamento_delta.data_competencia,
-	faturamento_delta.data_atribuicao_calculo,
-	faturamento_delta.data_apresentacao,
-	faturamento_delta.data_vencimento_original,
-	faturamento_delta.data_previsao_leitura,
-	faturamento_delta.data_criacao_impressao,
-	faturamento_delta.usuario_criacao_impressao,
-	estornos_plenos_delta.data_modificacao_impressao,
-	estornos_plenos_delta.usuario_criacao AS usuario_modificacao_impressao,
-	faturamento_delta.data_criacao_calculo,
-	faturamento_delta.usuario_criacao_calculo,
-	faturamento_delta.data_modificacao_calculo,
-	faturamento_delta.usuario_modificacao_calculo,
-	faturamento_delta.documento_calculo_anterior,
-	faturamento_delta.estrutura_regional_politica,
-	NULL AS ordem_faturamento,
-    faturamento_delta.consumo_registrado,
-    2 AS FLAG
-FROM
-    faturamento_delta
-INNER JOIN
-    estornos_plenos_delta
-ON
-    estornos_plenos_delta.contrapartida = faturamento_delta.documento_impressao
+        end as formulario_pagamento
+    from
+        faturamento_delta
+    inner join
+        estornos_plenos_delta
+        on
+            faturamento_delta.documento_impressao
+            = estornos_plenos_delta.contrapartida
 ),
 
-Q_ESTORNOS_PLENOS AS (
-SELECT
-    faturamento_delta.mes_competencia,
-    faturamento_delta.mes_referencia,
-    faturamento_delta.documento_calculo,
-    faturamento_delta.documento_impressao,
-    faturamento_delta.fatura,
-    faturamento_delta.instalacao,
-    faturamento_delta.conta_contrato,
-    faturamento_delta.parceiro_negocio,
-    faturamento_delta.contrato,
-    faturamento_delta.unidade_leitura,
-    faturamento_delta.etapa,
-    faturamento_delta.setor_industrial,
-    faturamento_delta.grupo,
-    faturamento_delta.categoria_tarifa,
-    faturamento_delta.cliente_livre,
-    faturamento_delta.subclasse,
-    faturamento_delta.motivo_criacao_impressao,
-    faturamento_delta.tipo_impressao,
-    faturamento_delta.tipo_calculo,
-    faturamento_delta.origem_documento,
-    faturamento_delta.cnr,
-    'X' AS estornado,
-    faturamento_delta.estorno_pleno,
-    faturamento_delta.estorno_ajuste,
-    faturamento_delta.reversao,
-    faturamento_delta.cancelamento,
-    faturamento_delta.fatura_virtual,
-    faturamento_delta.minimo,
-    estornos_plenos_delta.documento_impressao AS documento_estorno_pleno,
-    estornos_plenos_delta.data_criacao_impressao AS data_estorno_pleno,
-    estornos_plenos_delta.motivo_estorno_impressao AS motivo_estorno_pleno,
-    faturamento_delta.documento_estorno_ajuste,
-    faturamento_delta.data_estorno_ajuste,
-    faturamento_delta.motivo_estorno_ajuste,
-    faturamento_delta.valor_fatura * -1 AS valor_fatura,
-    faturamento_delta.valor_contabil * -1 AS valor_contabil,
-    faturamento_delta.consumo_faturado * -1 AS consumo_faturado,
-    faturamento_delta.consumo_medido * -1 AS consumo_medido,
-    faturamento_delta.eusd * -1 AS eusd,
-    faturamento_delta.eusdb * -1 AS eusdb,
-    faturamento_delta.icms * -1 AS icms,
-    faturamento_delta.icms_subvencao * -1 AS icms_subvencao,
-    faturamento_delta.pis * -1 AS pis,
-    faturamento_delta.cofins * -1 AS cofins,
-    faturamento_delta.cip * -1 AS cip,
-    faturamento_delta.retencao * -1 AS retencao,
-    faturamento_delta.receita_bandeiras * -1 AS receita_bandeiras,
-    faturamento_delta.receita_consumo_faturado * -1 AS receita_consumo_faturado,
-    faturamento_delta.tarifa * -1 AS tarifa,
-    faturamento_delta.preco * -1 AS preco,
-    faturamento_delta.correcao_monetaria * -1 AS correcao_monetaria,
-    faturamento_delta.creditos * -1 AS creditos,
-    faturamento_delta.estornos * -1 AS estornos,
-    faturamento_delta.juros * -1 AS juros,
-    faturamento_delta.multas * -1 AS multas,
-    faturamento_delta.parcelamentos * -1 AS parcelamentos,
-    faturamento_delta.outros_lancamentos * -1 AS outros_lancamentos,
-	faturamento_delta.chave_reconciliacao,
-    CASE
-        WHEN 
-            faturamento_delta.formulario_pagamento =' '
-            THEN
-                NULL
-            ELSE
+q_estornos_plenos as (
+    select
+        faturamento_delta.mes_competencia,
+        faturamento_delta.mes_referencia,
+        faturamento_delta.documento_calculo,
+        faturamento_delta.documento_impressao,
+        faturamento_delta.fatura,
+        faturamento_delta.instalacao,
+        faturamento_delta.conta_contrato,
+        faturamento_delta.parceiro_negocio,
+        faturamento_delta.contrato,
+        faturamento_delta.unidade_leitura,
+        faturamento_delta.etapa,
+        faturamento_delta.setor_industrial,
+        faturamento_delta.grupo,
+        faturamento_delta.categoria_tarifa,
+        faturamento_delta.cliente_livre,
+        faturamento_delta.subclasse,
+        faturamento_delta.motivo_criacao_impressao,
+        faturamento_delta.tipo_impressao,
+        faturamento_delta.tipo_calculo,
+        faturamento_delta.origem_documento,
+        faturamento_delta.cnr,
+        'X' as estornado,
+        faturamento_delta.estorno_pleno,
+        faturamento_delta.estorno_ajuste,
+        faturamento_delta.reversao,
+        faturamento_delta.cancelamento,
+        faturamento_delta.fatura_virtual,
+        faturamento_delta.minimo,
+        estornos_plenos_delta.documento_impressao as documento_estorno_pleno,
+        estornos_plenos_delta.data_criacao_impressao as data_estorno_pleno,
+        estornos_plenos_delta.motivo_estorno_impressao as motivo_estorno_pleno,
+        faturamento_delta.documento_estorno_ajuste,
+        faturamento_delta.data_estorno_ajuste,
+        faturamento_delta.motivo_estorno_ajuste,
+        faturamento_delta.chave_reconciliacao,
+        faturamento_delta.domicilio_fiscal,
+        faturamento_delta.inicio_calculo,
+        faturamento_delta.fim_calculo,
+        faturamento_delta.data_competencia,
+        faturamento_delta.data_atribuicao_calculo,
+        faturamento_delta.data_apresentacao,
+        faturamento_delta.data_vencimento_original,
+        faturamento_delta.data_previsao_leitura,
+        faturamento_delta.data_criacao_impressao,
+        faturamento_delta.usuario_criacao_impressao,
+        estornos_plenos_delta.data_modificacao_impressao,
+        estornos_plenos_delta.usuario_criacao as usuario_modificacao_impressao,
+        faturamento_delta.data_criacao_calculo,
+        faturamento_delta.usuario_criacao_calculo,
+        faturamento_delta.data_modificacao_calculo,
+        faturamento_delta.usuario_modificacao_calculo,
+        faturamento_delta.documento_calculo_anterior,
+        faturamento_delta.estrutura_regional_politica,
+        null as ordem_faturamento,
+        faturamento_delta.consumo_registrado,
+        2 as flag,
+        faturamento_delta.valor_fatura * -1 as valor_fatura,
+        faturamento_delta.valor_contabil * -1 as valor_contabil,
+        faturamento_delta.consumo_faturado * -1 as consumo_faturado,
+        faturamento_delta.consumo_medido * -1 as consumo_medido,
+        faturamento_delta.eusd * -1 as eusd,
+        faturamento_delta.eusdb * -1 as eusdb,
+        faturamento_delta.icms * -1 as icms,
+        faturamento_delta.icms_subvencao * -1 as icms_subvencao,
+        faturamento_delta.pis * -1 as pis,
+        faturamento_delta.cofins * -1 as cofins,
+        faturamento_delta.cip * -1 as cip,
+        faturamento_delta.retencao * -1 as retencao,
+        faturamento_delta.receita_bandeiras * -1 as receita_bandeiras,
+        faturamento_delta.receita_consumo_faturado
+        * -1 as receita_consumo_faturado,
+        faturamento_delta.tarifa * -1 as tarifa,
+        faturamento_delta.preco * -1 as preco,
+        faturamento_delta.correcao_monetaria * -1 as correcao_monetaria,
+        faturamento_delta.creditos * -1 as creditos,
+        faturamento_delta.estornos * -1 as estornos,
+        faturamento_delta.juros * -1 as juros,
+        faturamento_delta.multas * -1 as multas,
+        faturamento_delta.parcelamentos * -1 as parcelamentos,
+        faturamento_delta.outros_lancamentos * -1 as outros_lancamentos,
+        case
+            when
+                faturamento_delta.formulario_pagamento = ' '
+                then
+                    null
+            else
                 faturamento_delta.formulario_pagamento
-    END formulario_pagamento,
-	faturamento_delta.domicilio_fiscal,
-	faturamento_delta.inicio_calculo,
-	faturamento_delta.fim_calculo,
-	faturamento_delta.quantidade_dias * -1 AS quantidade_dias,
-	faturamento_delta.data_competencia,
-	faturamento_delta.data_atribuicao_calculo,
-	faturamento_delta.data_apresentacao,
-	faturamento_delta.data_vencimento_original,
-	faturamento_delta.data_previsao_leitura,
-	faturamento_delta.data_criacao_impressao,
-	faturamento_delta.usuario_criacao_impressao,
-	estornos_plenos_delta.data_modificacao_impressao,
-	estornos_plenos_delta.usuario_criacao AS usuario_modificacao_impressao,
-	faturamento_delta.data_criacao_calculo,
-	faturamento_delta.usuario_criacao_calculo,
-	faturamento_delta.data_modificacao_calculo,
-	faturamento_delta.usuario_modificacao_calculo,
-	faturamento_delta.documento_calculo_anterior,
-	faturamento_delta.estrutura_regional_politica,
-	NULL AS ordem_faturamento,
-    faturamento_delta.consumo_registrado,
-    2 AS FLAG
-FROM
-    faturamento_delta
-INNER JOIN
-    estornos_plenos_delta
-ON
-    estornos_plenos_delta.contrapartida = faturamento_delta.documento_impressao
+        end as formulario_pagamento,
+        faturamento_delta.quantidade_dias * -1 as quantidade_dias
+    from
+        faturamento_delta
+    inner join
+        estornos_plenos_delta
+        on
+            faturamento_delta.documento_impressao
+            = estornos_plenos_delta.contrapartida
 ),
 
-Q_ESTORNADOS_PLENOS_2 AS (
-SELECT
-    faturamento_delta.mes_competencia,
-    faturamento_delta.mes_referencia,
-    faturamento_delta.documento_calculo,
-    faturamento_delta.documento_impressao,
-    faturamento_delta.fatura,
-    faturamento_delta.instalacao,
-    faturamento_delta.conta_contrato,
-    faturamento_delta.parceiro_negocio,
-    faturamento_delta.contrato,
-    faturamento_delta.unidade_leitura,
-    faturamento_delta.etapa,
-    faturamento_delta.setor_industrial,
-    faturamento_delta.grupo,
-    faturamento_delta.categoria_tarifa,
-    faturamento_delta.cliente_livre,
-    faturamento_delta.subclasse,
-    faturamento_delta.motivo_criacao_impressao,
-    faturamento_delta.tipo_impressao,
-    faturamento_delta.tipo_calculo,
-    faturamento_delta.origem_documento,
-    faturamento_delta.cnr,
-    'X' AS estornado,
-    faturamento_delta.estorno_pleno,
-    faturamento_delta.estorno_ajuste,
-    faturamento_delta.reversao,
-    faturamento_delta.cancelamento,
-    faturamento_delta.fatura_virtual,
-    faturamento_delta.minimo,
-    estornos_plenos_delta.documento_impressao AS documento_estorno_pleno,
-    estornos_plenos_delta.data_criacao_impressao AS data_estorno_pleno,
-    estornos_plenos_delta.motivo_estorno_impressao AS motivo_estorno_pleno,
-    faturamento_delta.documento_estorno_ajuste,
-    faturamento_delta.data_estorno_ajuste,
-    faturamento_delta.motivo_estorno_ajuste,
-    faturamento_delta.valor_fatura,
-    faturamento_delta.valor_contabil,
-    faturamento_delta.consumo_faturado,
-    faturamento_delta.consumo_medido,
-	faturamento_delta.eusd,
-	faturamento_delta.eusdb,
-	faturamento_delta.icms,
-	faturamento_delta.icms_subvencao,
-	faturamento_delta.pis,
-	faturamento_delta.cofins,
-	faturamento_delta.cip,
-	faturamento_delta.retencao,
-	faturamento_delta.receita_bandeiras,
-	faturamento_delta.receita_consumo_faturado,
-	faturamento_delta.tarifa,
-	faturamento_delta.preco,
-	faturamento_delta.correcao_monetaria,
-	faturamento_delta.creditos,
-	faturamento_delta.estornos,
-	faturamento_delta.juros,
-	faturamento_delta.multas,
-	faturamento_delta.parcelamentos,
-	faturamento_delta.outros_lancamentos,
-	faturamento_delta.chave_reconciliacao,
-    CASE
-        WHEN 
-            faturamento_delta.formulario_pagamento =' '
-            THEN
-                NULL
-            ELSE
+q_estornados_plenos_2 as (
+    select
+        faturamento_delta.mes_competencia,
+        faturamento_delta.mes_referencia,
+        faturamento_delta.documento_calculo,
+        faturamento_delta.documento_impressao,
+        faturamento_delta.fatura,
+        faturamento_delta.instalacao,
+        faturamento_delta.conta_contrato,
+        faturamento_delta.parceiro_negocio,
+        faturamento_delta.contrato,
+        faturamento_delta.unidade_leitura,
+        faturamento_delta.etapa,
+        faturamento_delta.setor_industrial,
+        faturamento_delta.grupo,
+        faturamento_delta.categoria_tarifa,
+        faturamento_delta.cliente_livre,
+        faturamento_delta.subclasse,
+        faturamento_delta.motivo_criacao_impressao,
+        faturamento_delta.tipo_impressao,
+        faturamento_delta.tipo_calculo,
+        faturamento_delta.origem_documento,
+        faturamento_delta.cnr,
+        'X' as estornado,
+        faturamento_delta.estorno_pleno,
+        faturamento_delta.estorno_ajuste,
+        faturamento_delta.reversao,
+        faturamento_delta.cancelamento,
+        faturamento_delta.fatura_virtual,
+        faturamento_delta.minimo,
+        estornos_plenos_delta.documento_impressao as documento_estorno_pleno,
+        estornos_plenos_delta.data_criacao_impressao as data_estorno_pleno,
+        estornos_plenos_delta.motivo_estorno_impressao as motivo_estorno_pleno,
+        faturamento_delta.documento_estorno_ajuste,
+        faturamento_delta.data_estorno_ajuste,
+        faturamento_delta.motivo_estorno_ajuste,
+        faturamento_delta.valor_fatura,
+        faturamento_delta.valor_contabil,
+        faturamento_delta.consumo_faturado,
+        faturamento_delta.consumo_medido,
+        faturamento_delta.eusd,
+        faturamento_delta.eusdb,
+        faturamento_delta.icms,
+        faturamento_delta.icms_subvencao,
+        faturamento_delta.pis,
+        faturamento_delta.cofins,
+        faturamento_delta.cip,
+        faturamento_delta.retencao,
+        faturamento_delta.receita_bandeiras,
+        faturamento_delta.receita_consumo_faturado,
+        faturamento_delta.tarifa,
+        faturamento_delta.preco,
+        faturamento_delta.correcao_monetaria,
+        faturamento_delta.creditos,
+        faturamento_delta.estornos,
+        faturamento_delta.juros,
+        faturamento_delta.multas,
+        faturamento_delta.parcelamentos,
+        faturamento_delta.outros_lancamentos,
+        faturamento_delta.chave_reconciliacao,
+        faturamento_delta.domicilio_fiscal,
+        faturamento_delta.inicio_calculo,
+        faturamento_delta.fim_calculo,
+        faturamento_delta.quantidade_dias,
+        faturamento_delta.data_competencia,
+        faturamento_delta.data_atribuicao_calculo,
+        faturamento_delta.data_apresentacao,
+        faturamento_delta.data_vencimento_original,
+        faturamento_delta.data_previsao_leitura,
+        faturamento_delta.data_criacao_impressao,
+        faturamento_delta.usuario_criacao_impressao,
+        estornos_plenos_delta.data_modificacao_impressao,
+        estornos_plenos_delta.usuario_criacao as usuario_modificacao_impressao,
+        faturamento_delta.data_criacao_calculo,
+        faturamento_delta.usuario_criacao_calculo,
+        faturamento_delta.data_modificacao_calculo,
+        faturamento_delta.usuario_modificacao_calculo,
+        faturamento_delta.documento_calculo_anterior,
+        faturamento_delta.estrutura_regional_politica,
+        faturamento_delta.ordem_faturamento,
+        faturamento_delta.consumo_registrado,
+        1 as flag,
+        case
+            when
+                faturamento_delta.formulario_pagamento = ' '
+                then
+                    null
+            else
                 faturamento_delta.formulario_pagamento
-    END formulario_pagamento,
-	faturamento_delta.domicilio_fiscal,
-	faturamento_delta.inicio_calculo,
-	faturamento_delta.fim_calculo,
-	faturamento_delta.quantidade_dias,
-	faturamento_delta.data_competencia,
-	faturamento_delta.data_atribuicao_calculo,
-	faturamento_delta.data_apresentacao,
-	faturamento_delta.data_vencimento_original,
-	faturamento_delta.data_previsao_leitura,
-	faturamento_delta.data_criacao_impressao,
-	faturamento_delta.usuario_criacao_impressao,
-	estornos_plenos_delta.data_modificacao_impressao,
-	estornos_plenos_delta.usuario_criacao AS usuario_modificacao_impressao,
-	faturamento_delta.data_criacao_calculo,
-	faturamento_delta.usuario_criacao_calculo,
-	faturamento_delta.data_modificacao_calculo,
-	faturamento_delta.usuario_modificacao_calculo,
-	faturamento_delta.documento_calculo_anterior,
-	faturamento_delta.estrutura_regional_politica,
-	faturamento_delta.ordem_faturamento,
-    faturamento_delta.consumo_registrado,
-    1 AS FLAG
-FROM
-    faturamento_delta
-INNER JOIN
-    estornos_plenos_delta
-ON
-    estornos_plenos_delta.contrapartida = faturamento_delta.documento_impressao
+        end as formulario_pagamento
+    from
+        faturamento_delta
+    inner join
+        estornos_plenos_delta
+        on
+            faturamento_delta.documento_impressao
+            = estornos_plenos_delta.contrapartida
 ),
 
-Q_ESTORNOS_PLENOS_2 AS (
-SELECT
-    faturamento_delta.mes_competencia,
-    faturamento_delta.mes_referencia,
-    faturamento_delta.documento_calculo,
-    faturamento_delta.documento_impressao,
-    faturamento_delta.fatura,
-    faturamento_delta.instalacao,
-    faturamento_delta.conta_contrato,
-    faturamento_delta.parceiro_negocio,
-    faturamento_delta.contrato,
-    faturamento_delta.unidade_leitura,
-    faturamento_delta.etapa,
-    faturamento_delta.setor_industrial,
-    faturamento_delta.grupo,
-    faturamento_delta.categoria_tarifa,
-    faturamento_delta.cliente_livre,
-    faturamento_delta.subclasse,
-    faturamento_delta.motivo_criacao_impressao,
-    faturamento_delta.tipo_impressao,
-    faturamento_delta.tipo_calculo,
-    faturamento_delta.origem_documento,
-    faturamento_delta.cnr,
-    'X' AS estornado,
-    faturamento_delta.estorno_pleno,
-    faturamento_delta.estorno_ajuste,
-    faturamento_delta.reversao,
-    faturamento_delta.cancelamento,
-    faturamento_delta.fatura_virtual,
-    faturamento_delta.minimo,
-    estornos_plenos_delta.documento_impressao AS documento_estorno_pleno,
-    estornos_plenos_delta.data_criacao_impressao AS data_estorno_pleno,
-    estornos_plenos_delta.motivo_estorno_impressao AS motivo_estorno_pleno,
-    faturamento_delta.documento_estorno_ajuste,
-    faturamento_delta.data_estorno_ajuste,
-    faturamento_delta.motivo_estorno_ajuste,
-    faturamento_delta.valor_fatura * -1 AS valor_fatura,
-    faturamento_delta.valor_contabil * -1 AS valor_contabil,
-    faturamento_delta.consumo_faturado * -1 AS consumo_faturado,
-    faturamento_delta.consumo_medido * -1 AS consumo_medido,
-    faturamento_delta.eusd * -1 AS eusd,
-    faturamento_delta.eusdb * -1 AS eusdb,
-    faturamento_delta.icms * -1 AS icms,
-    faturamento_delta.icms_subvencao * -1 AS icms_subvencao,
-    faturamento_delta.pis * -1 AS pis,
-    faturamento_delta.cofins * -1 AS cofins,
-    faturamento_delta.cip * -1 AS cip,
-    faturamento_delta.retencao * -1 AS retencao,
-    faturamento_delta.receita_bandeiras * -1 AS receita_bandeiras,
-    faturamento_delta.receita_consumo_faturado * -1 AS receita_consumo_faturado,
-    faturamento_delta.tarifa * -1 AS tarifa,
-    faturamento_delta.preco * -1 AS preco,
-    faturamento_delta.correcao_monetaria * -1 AS correcao_monetaria,
-    faturamento_delta.creditos * -1 AS creditos,
-    faturamento_delta.estornos * -1 AS estornos,
-    faturamento_delta.juros * -1 AS juros,
-    faturamento_delta.multas * -1 AS multas,
-    faturamento_delta.parcelamentos * -1 AS parcelamentos,
-    faturamento_delta.outros_lancamentos * -1 AS outros_lancamentos,
-	faturamento_delta.chave_reconciliacao,
-    CASE
-        WHEN 
-            faturamento_delta.formulario_pagamento =' '
-            THEN
-                NULL
-            ELSE
+q_estornos_plenos_2 as (
+    select
+        faturamento_delta.mes_competencia,
+        faturamento_delta.mes_referencia,
+        faturamento_delta.documento_calculo,
+        faturamento_delta.documento_impressao,
+        faturamento_delta.fatura,
+        faturamento_delta.instalacao,
+        faturamento_delta.conta_contrato,
+        faturamento_delta.parceiro_negocio,
+        faturamento_delta.contrato,
+        faturamento_delta.unidade_leitura,
+        faturamento_delta.etapa,
+        faturamento_delta.setor_industrial,
+        faturamento_delta.grupo,
+        faturamento_delta.categoria_tarifa,
+        faturamento_delta.cliente_livre,
+        faturamento_delta.subclasse,
+        faturamento_delta.motivo_criacao_impressao,
+        faturamento_delta.tipo_impressao,
+        faturamento_delta.tipo_calculo,
+        faturamento_delta.origem_documento,
+        faturamento_delta.cnr,
+        'X' as estornado,
+        faturamento_delta.estorno_pleno,
+        faturamento_delta.estorno_ajuste,
+        faturamento_delta.reversao,
+        faturamento_delta.cancelamento,
+        faturamento_delta.fatura_virtual,
+        faturamento_delta.minimo,
+        estornos_plenos_delta.documento_impressao as documento_estorno_pleno,
+        estornos_plenos_delta.data_criacao_impressao as data_estorno_pleno,
+        estornos_plenos_delta.motivo_estorno_impressao as motivo_estorno_pleno,
+        faturamento_delta.documento_estorno_ajuste,
+        faturamento_delta.data_estorno_ajuste,
+        faturamento_delta.motivo_estorno_ajuste,
+        faturamento_delta.chave_reconciliacao,
+        faturamento_delta.domicilio_fiscal,
+        faturamento_delta.inicio_calculo,
+        faturamento_delta.fim_calculo,
+        faturamento_delta.data_competencia,
+        faturamento_delta.data_atribuicao_calculo,
+        faturamento_delta.data_apresentacao,
+        faturamento_delta.data_vencimento_original,
+        faturamento_delta.data_previsao_leitura,
+        faturamento_delta.data_criacao_impressao,
+        faturamento_delta.usuario_criacao_impressao,
+        estornos_plenos_delta.data_modificacao_impressao,
+        estornos_plenos_delta.usuario_criacao as usuario_modificacao_impressao,
+        faturamento_delta.data_criacao_calculo,
+        faturamento_delta.usuario_criacao_calculo,
+        faturamento_delta.data_modificacao_calculo,
+        faturamento_delta.usuario_modificacao_calculo,
+        faturamento_delta.documento_calculo_anterior,
+        faturamento_delta.estrutura_regional_politica,
+        null as ordem_faturamento,
+        faturamento_delta.consumo_registrado,
+        2 as flag,
+        faturamento_delta.valor_fatura * -1 as valor_fatura,
+        faturamento_delta.valor_contabil * -1 as valor_contabil,
+        faturamento_delta.consumo_faturado * -1 as consumo_faturado,
+        faturamento_delta.consumo_medido * -1 as consumo_medido,
+        faturamento_delta.eusd * -1 as eusd,
+        faturamento_delta.eusdb * -1 as eusdb,
+        faturamento_delta.icms * -1 as icms,
+        faturamento_delta.icms_subvencao * -1 as icms_subvencao,
+        faturamento_delta.pis * -1 as pis,
+        faturamento_delta.cofins * -1 as cofins,
+        faturamento_delta.cip * -1 as cip,
+        faturamento_delta.retencao * -1 as retencao,
+        faturamento_delta.receita_bandeiras * -1 as receita_bandeiras,
+        faturamento_delta.receita_consumo_faturado
+        * -1 as receita_consumo_faturado,
+        faturamento_delta.tarifa * -1 as tarifa,
+        faturamento_delta.preco * -1 as preco,
+        faturamento_delta.correcao_monetaria * -1 as correcao_monetaria,
+        faturamento_delta.creditos * -1 as creditos,
+        faturamento_delta.estornos * -1 as estornos,
+        faturamento_delta.juros * -1 as juros,
+        faturamento_delta.multas * -1 as multas,
+        faturamento_delta.parcelamentos * -1 as parcelamentos,
+        faturamento_delta.outros_lancamentos * -1 as outros_lancamentos,
+        case
+            when
+                faturamento_delta.formulario_pagamento = ' '
+                then
+                    null
+            else
                 faturamento_delta.formulario_pagamento
-    END formulario_pagamento,
-	faturamento_delta.domicilio_fiscal,
-	faturamento_delta.inicio_calculo,
-	faturamento_delta.fim_calculo,
-	faturamento_delta.quantidade_dias * -1 AS quantidade_dias,
-	faturamento_delta.data_competencia,
-	faturamento_delta.data_atribuicao_calculo,
-	faturamento_delta.data_apresentacao,
-	faturamento_delta.data_vencimento_original,
-	faturamento_delta.data_previsao_leitura,
-	faturamento_delta.data_criacao_impressao,
-	faturamento_delta.usuario_criacao_impressao,
-	estornos_plenos_delta.data_modificacao_impressao,
-	estornos_plenos_delta.usuario_criacao AS usuario_modificacao_impressao,
-	faturamento_delta.data_criacao_calculo,
-	faturamento_delta.usuario_criacao_calculo,
-	faturamento_delta.data_modificacao_calculo,
-	faturamento_delta.usuario_modificacao_calculo,
-	faturamento_delta.documento_calculo_anterior,
-	faturamento_delta.estrutura_regional_politica,
-	NULL AS ordem_faturamento,
-    faturamento_delta.consumo_registrado,
-    2 AS FLAG
-FROM
-    faturamento_delta
-INNER JOIN
-    estornos_plenos_delta
-ON
-    estornos_plenos_delta.contrapartida = faturamento_delta.documento_impressao
+        end as formulario_pagamento,
+        faturamento_delta.quantidade_dias * -1 as quantidade_dias
+    from
+        faturamento_delta
+    inner join
+        estornos_plenos_delta
+        on
+            faturamento_delta.documento_impressao
+            = estornos_plenos_delta.contrapartida
 ),
 
-estorno_ajustes_delta AS (
-SELECT
-	documento_calculo,
-	data_criacao_calculo,
-	usuario_criacao_calculo,
-	motivo_Estorno_calculo,
-	documento_estorno_ajuste,
-	valor_fatura
-FROM
-	{{ ref ('estornos_ajustes_delta')}}
+estorno_ajustes_delta as (
+    select
+        documento_calculo,
+        data_criacao_calculo,
+        usuario_criacao_calculo,
+        motivo_estorno_calculo,
+        documento_estorno_ajuste,
+        valor_fatura
+    from
+        {{ ref ('estornos_ajustes_delta') }}
 ),
 
-ESTORNOS_AJUSTES_DELTA AS (
-SELECT
-    faturamento_delta.mes_competencia,
-    faturamento_delta.mes_referencia,
-    faturamento_delta.documento_calculo,
-    faturamento_delta.documento_impressao,
-    faturamento_delta.fatura,
-    faturamento_delta.instalacao,
-    faturamento_delta.conta_contrato,
-    faturamento_delta.parceiro_negocio,
-    faturamento_delta.contrato,
-    faturamento_delta.unidade_leitura,
-    faturamento_delta.etapa,
-    faturamento_delta.setor_industrial,
-    faturamento_delta.grupo,
-    faturamento_delta.categoria_tarifa,
-    faturamento_delta.cliente_livre,
-    faturamento_delta.subclasse,
-    faturamento_delta.motivo_criacao_impressao,
-    faturamento_delta.tipo_impressao,
-    faturamento_delta.tipo_calculo,
-    faturamento_delta.origem_documento,
-    faturamento_delta.cnr,
-    'X' AS estornado,
-    faturamento_delta.estorno_pleno,
-    faturamento_delta.estorno_ajuste,
-    faturamento_delta.reversao,
-    faturamento_delta.cancelamento,
-    faturamento_delta.fatura_virtual,
-    faturamento_delta.minimo,
-    faturamento_delta.documento_estorno_pleno,
-    faturamento_delta.data_estorno_pleno,
-    faturamento_delta.motivo_estorno_pleno,
-    estorno_ajustes_delta.documento_calculo AS documento_estorno_ajuste,
-    estorno_ajustes_delta.data_criacao_calculo AS data_estorno_ajuste,
-    estorno_ajustes_delta.motivo_estorno_calculo AS motivo_estorno_ajuste,
-    faturamento_delta.valor_fatura,
-    faturamento_delta.valor_contabil,
-    faturamento_delta.consumo_faturado,
-    faturamento_delta.consumo_medido,
-	faturamento_delta.eusd,
-	faturamento_delta.eusdb,
-	faturamento_delta.icms,
-	faturamento_delta.icms_subvencao,
-	faturamento_delta.pis,
-	faturamento_delta.cofins,
-	faturamento_delta.cip,
-	faturamento_delta.retencao,
-	faturamento_delta.receita_bandeiras,
-	faturamento_delta.receita_consumo_faturado,
-	faturamento_delta.tarifa,
-	faturamento_delta.preco,
-	faturamento_delta.correcao_monetaria,
-	faturamento_delta.creditos,
-	faturamento_delta.estornos,
-	faturamento_delta.juros,
-	faturamento_delta.multas,
-	faturamento_delta.parcelamentos,
-	faturamento_delta.outros_lancamentos,
-	faturamento_delta.chave_reconciliacao,
-    CASE
-        WHEN 
-            faturamento_delta.formulario_pagamento =' '
-            THEN
-                NULL
-            ELSE
+estornos_ajustes_delta as (
+    select
+        faturamento_delta.mes_competencia,
+        faturamento_delta.mes_referencia,
+        faturamento_delta.documento_calculo,
+        faturamento_delta.documento_impressao,
+        faturamento_delta.fatura,
+        faturamento_delta.instalacao,
+        faturamento_delta.conta_contrato,
+        faturamento_delta.parceiro_negocio,
+        faturamento_delta.contrato,
+        faturamento_delta.unidade_leitura,
+        faturamento_delta.etapa,
+        faturamento_delta.setor_industrial,
+        faturamento_delta.grupo,
+        faturamento_delta.categoria_tarifa,
+        faturamento_delta.cliente_livre,
+        faturamento_delta.subclasse,
+        faturamento_delta.motivo_criacao_impressao,
+        faturamento_delta.tipo_impressao,
+        faturamento_delta.tipo_calculo,
+        faturamento_delta.origem_documento,
+        faturamento_delta.cnr,
+        'X' as estornado,
+        faturamento_delta.estorno_pleno,
+        faturamento_delta.estorno_ajuste,
+        faturamento_delta.reversao,
+        faturamento_delta.cancelamento,
+        faturamento_delta.fatura_virtual,
+        faturamento_delta.minimo,
+        faturamento_delta.documento_estorno_pleno,
+        faturamento_delta.data_estorno_pleno,
+        faturamento_delta.motivo_estorno_pleno,
+        estorno_ajustes_delta.documento_calculo as documento_estorno_ajuste,
+        estorno_ajustes_delta.data_criacao_calculo as data_estorno_ajuste,
+        estorno_ajustes_delta.motivo_estorno_calculo as motivo_estorno_ajuste,
+        faturamento_delta.valor_fatura,
+        faturamento_delta.valor_contabil,
+        faturamento_delta.consumo_faturado,
+        faturamento_delta.consumo_medido,
+        faturamento_delta.eusd,
+        faturamento_delta.eusdb,
+        faturamento_delta.icms,
+        faturamento_delta.icms_subvencao,
+        faturamento_delta.pis,
+        faturamento_delta.cofins,
+        faturamento_delta.cip,
+        faturamento_delta.retencao,
+        faturamento_delta.receita_bandeiras,
+        faturamento_delta.receita_consumo_faturado,
+        faturamento_delta.tarifa,
+        faturamento_delta.preco,
+        faturamento_delta.correcao_monetaria,
+        faturamento_delta.creditos,
+        faturamento_delta.estornos,
+        faturamento_delta.juros,
+        faturamento_delta.multas,
+        faturamento_delta.parcelamentos,
+        faturamento_delta.outros_lancamentos,
+        faturamento_delta.chave_reconciliacao,
+        faturamento_delta.domicilio_fiscal,
+        faturamento_delta.inicio_calculo,
+        faturamento_delta.fim_calculo,
+        faturamento_delta.quantidade_dias,
+        faturamento_delta.data_competencia,
+        faturamento_delta.data_atribuicao_calculo,
+        faturamento_delta.data_apresentacao,
+        faturamento_delta.data_vencimento_original,
+        faturamento_delta.data_previsao_leitura,
+        faturamento_delta.data_criacao_impressao,
+        faturamento_delta.usuario_criacao_impressao,
+        faturamento_delta.data_modificacao_impressao,
+        faturamento_delta.usuario_modificacao_impressao,
+        faturamento_delta.data_criacao_calculo,
+        faturamento_delta.usuario_criacao_calculo,
+        estorno_ajustes_delta.data_criacao_calculo as data_modificacao_calculo,
+        estorno_ajustes_delta.usuario_criacao_calculo
+            as usuario_modificacao_calculo,
+        faturamento_delta.documento_calculo_anterior,
+        faturamento_delta.estrutura_regional_politica,
+        null as ordem_faturamento,
+        faturamento_delta.consumo_registrado,
+        2 as flag,
+        case
+            when
+                faturamento_delta.formulario_pagamento = ' '
+                then
+                    null
+            else
                 faturamento_delta.formulario_pagamento
-    END formulario_pagamento,
-	faturamento_delta.domicilio_fiscal,
-	faturamento_delta.inicio_calculo,
-	faturamento_delta.fim_calculo,
-	faturamento_delta.quantidade_dias,
-	faturamento_delta.data_competencia,
-	faturamento_delta.data_atribuicao_calculo,
-	faturamento_delta.data_apresentacao,
-	faturamento_delta.data_vencimento_original,
-	faturamento_delta.data_previsao_leitura,
-	faturamento_delta.data_criacao_impressao,
-	faturamento_delta.usuario_criacao_impressao,
-	faturamento_delta.data_modificacao_impressao,
-	faturamento_delta.usuario_modificacao_impressao,
-	faturamento_delta.data_criacao_calculo,
-	faturamento_delta.usuario_criacao_calculo,
-	estorno_ajustes_delta.data_criacao_calculo AS data_modificacao_calculo,
-	estorno_ajustes_delta.usuario_criacao_calculo AS usuario_modificacao_calculo,
-	faturamento_delta.documento_calculo_anterior,
-	faturamento_delta.estrutura_regional_politica,
-	NULL AS ordem_faturamento,
-    faturamento_delta.consumo_registrado,
-    2 AS FLAG
-FROM
-    faturamento_delta
-INNER JOIN
-    estorno_ajustes_delta
-ON
-    estorno_ajustes_delta.documento_calculo = faturamento_delta.documento_calculo
-WHERE 
-	faturamento_delta.estorno_pleno IS NULL
+        end as formulario_pagamento
+    from
+        faturamento_delta
+    inner join
+        estorno_ajustes_delta
+        on
+            faturamento_delta.documento_calculo
+            = estorno_ajustes_delta.documento_calculo
+    where
+        faturamento_delta.estorno_pleno is null
 ),
 
-ESTORNOS_AJUSTES_DELTA_2 AS (
-SELECT
-    faturamento_delta.mes_competencia,
-    faturamento_delta.mes_referencia,
-    faturamento_delta.documento_calculo,
-    faturamento_delta.documento_impressao,
-    faturamento_delta.fatura,
-    faturamento_delta.instalacao,
-    faturamento_delta.conta_contrato,
-    faturamento_delta.parceiro_negocio,
-    faturamento_delta.contrato,
-    faturamento_delta.unidade_leitura,
-    faturamento_delta.etapa,
-    faturamento_delta.setor_industrial,
-    faturamento_delta.grupo,
-    faturamento_delta.categoria_tarifa,
-    faturamento_delta.cliente_livre,
-    faturamento_delta.subclasse,
-    faturamento_delta.motivo_criacao_impressao,
-    faturamento_delta.tipo_impressao,
-    faturamento_delta.tipo_calculo,
-    faturamento_delta.origem_documento,
-    faturamento_delta.cnr,
-    'x' AS estornado,
-    faturamento_delta.estorno_pleno,
-    faturamento_delta.estorno_ajuste,
-    faturamento_delta.reversao,
-    faturamento_delta.cancelamento,
-    faturamento_delta.fatura_virtual,
-    faturamento_delta.minimo,
-    faturamento_delta.documento_estorno_pleno,
-    faturamento_delta.data_estorno_pleno,
-    faturamento_delta.motivo_estorno_pleno,
-    estorno_ajustes_delta.documento_calculo AS documento_estorno_ajuste,
-    estorno_ajustes_delta.data_criacao_calculo AS data_estorno_ajuste,
-    estorno_ajustes_delta.motivo_estorno_calculo AS motivo_estorno_ajuste,
-    faturamento_delta.valor_fatura,
-    faturamento_delta.valor_contabil,
-    faturamento_delta.consumo_faturado,
-    faturamento_delta.consumo_medido,
-	faturamento_delta.eusd,
-	faturamento_delta.eusdb,
-	faturamento_delta.icms,
-	faturamento_delta.icms_subvencao,
-	faturamento_delta.pis,
-	faturamento_delta.cofins,
-	faturamento_delta.cip,
-	faturamento_delta.retencao,
-	faturamento_delta.receita_bandeiras,
-	faturamento_delta.receita_consumo_faturado,
-	faturamento_delta.tarifa,
-	faturamento_delta.preco,
-	faturamento_delta.correcao_monetaria,
-	faturamento_delta.creditos,
-	faturamento_delta.estornos,
-	faturamento_delta.juros,
-	faturamento_delta.multas,
-	faturamento_delta.parcelamentos,
-	faturamento_delta.outros_lancamentos,
-	faturamento_delta.chave_reconciliacao,
-    CASE
-        WHEN 
-            faturamento_delta.formulario_pagamento =' '
-            THEN
-                NULL
-            ELSE
+estornos_ajustes_delta_2 as (
+    select
+        faturamento_delta.mes_competencia,
+        faturamento_delta.mes_referencia,
+        faturamento_delta.documento_calculo,
+        faturamento_delta.documento_impressao,
+        faturamento_delta.fatura,
+        faturamento_delta.instalacao,
+        faturamento_delta.conta_contrato,
+        faturamento_delta.parceiro_negocio,
+        faturamento_delta.contrato,
+        faturamento_delta.unidade_leitura,
+        faturamento_delta.etapa,
+        faturamento_delta.setor_industrial,
+        faturamento_delta.grupo,
+        faturamento_delta.categoria_tarifa,
+        faturamento_delta.cliente_livre,
+        faturamento_delta.subclasse,
+        faturamento_delta.motivo_criacao_impressao,
+        faturamento_delta.tipo_impressao,
+        faturamento_delta.tipo_calculo,
+        faturamento_delta.origem_documento,
+        faturamento_delta.cnr,
+        'x' as estornado,
+        faturamento_delta.estorno_pleno,
+        faturamento_delta.estorno_ajuste,
+        faturamento_delta.reversao,
+        faturamento_delta.cancelamento,
+        faturamento_delta.fatura_virtual,
+        faturamento_delta.minimo,
+        faturamento_delta.documento_estorno_pleno,
+        faturamento_delta.data_estorno_pleno,
+        faturamento_delta.motivo_estorno_pleno,
+        estorno_ajustes_delta.documento_calculo as documento_estorno_ajuste,
+        estorno_ajustes_delta.data_criacao_calculo as data_estorno_ajuste,
+        estorno_ajustes_delta.motivo_estorno_calculo as motivo_estorno_ajuste,
+        faturamento_delta.valor_fatura,
+        faturamento_delta.valor_contabil,
+        faturamento_delta.consumo_faturado,
+        faturamento_delta.consumo_medido,
+        faturamento_delta.eusd,
+        faturamento_delta.eusdb,
+        faturamento_delta.icms,
+        faturamento_delta.icms_subvencao,
+        faturamento_delta.pis,
+        faturamento_delta.cofins,
+        faturamento_delta.cip,
+        faturamento_delta.retencao,
+        faturamento_delta.receita_bandeiras,
+        faturamento_delta.receita_consumo_faturado,
+        faturamento_delta.tarifa,
+        faturamento_delta.preco,
+        faturamento_delta.correcao_monetaria,
+        faturamento_delta.creditos,
+        faturamento_delta.estornos,
+        faturamento_delta.juros,
+        faturamento_delta.multas,
+        faturamento_delta.parcelamentos,
+        faturamento_delta.outros_lancamentos,
+        faturamento_delta.chave_reconciliacao,
+        faturamento_delta.domicilio_fiscal,
+        faturamento_delta.inicio_calculo,
+        faturamento_delta.fim_calculo,
+        faturamento_delta.quantidade_dias,
+        faturamento_delta.data_competencia,
+        faturamento_delta.data_atribuicao_calculo,
+        faturamento_delta.data_apresentacao,
+        faturamento_delta.data_vencimento_original,
+        faturamento_delta.data_previsao_leitura,
+        faturamento_delta.data_criacao_impressao,
+        faturamento_delta.usuario_criacao_impressao,
+        faturamento_delta.data_modificacao_impressao,
+        faturamento_delta.usuario_modificacao_impressao,
+        faturamento_delta.data_criacao_calculo,
+        faturamento_delta.usuario_criacao_calculo,
+        estorno_ajustes_delta.data_criacao_calculo as data_modificacao_calculo,
+        estorno_ajustes_delta.usuario_criacao_calculo
+            as usuario_modificacao_calculo,
+        faturamento_delta.documento_calculo_anterior,
+        faturamento_delta.estrutura_regional_politica,
+        null as ordem_faturamento,
+        faturamento_delta.consumo_registrado,
+        1 as flag,
+        case
+            when
+                faturamento_delta.formulario_pagamento = ' '
+                then
+                    null
+            else
                 faturamento_delta.formulario_pagamento
-    END formulario_pagamento,
-	faturamento_delta.domicilio_fiscal,
-	faturamento_delta.inicio_calculo,
-	faturamento_delta.fim_calculo,
-	faturamento_delta.quantidade_dias,
-	faturamento_delta.data_competencia,
-	faturamento_delta.data_atribuicao_calculo,
-	faturamento_delta.data_apresentacao,
-	faturamento_delta.data_vencimento_original,
-	faturamento_delta.data_previsao_leitura,
-	faturamento_delta.data_criacao_impressao,
-	faturamento_delta.usuario_criacao_impressao,
-	faturamento_delta.data_modificacao_impressao,
-	faturamento_delta.usuario_modificacao_impressao,
-	faturamento_delta.data_criacao_calculo,
-	faturamento_delta.usuario_criacao_calculo,
-	estorno_ajustes_delta.data_criacao_calculo AS data_modificacao_calculo,
-	estorno_ajustes_delta.usuario_criacao_calculo AS usuario_modificacao_calculo,
-	faturamento_delta.documento_calculo_anterior,
-	faturamento_delta.estrutura_regional_politica,
-	NULL AS ordem_faturamento,
-    faturamento_delta.consumo_registrado,
-    1 AS FLAG
-FROM
-    faturamento_delta
-INNER JOIN
-    estorno_ajustes_delta
-ON
-    estorno_ajustes_delta.documento_calculo = faturamento_delta.documento_calculo
-WHERE 
-	faturamento_delta.estorno_pleno IS NULL
+        end as formulario_pagamento
+    from
+        faturamento_delta
+    inner join
+        estorno_ajustes_delta
+        on
+            faturamento_delta.documento_calculo
+            = estorno_ajustes_delta.documento_calculo
+    where
+        faturamento_delta.estorno_pleno is null
 ),
 
 q_union as (
-    SELECT
+    select
         mes_competencia,
         mes_referencia,
         documento_calculo,
@@ -794,10 +803,10 @@ q_union as (
         ordem_faturamento,
         consumo_registrado,
         flag
-    FROM
-        ESTORNOS_AJUSTES_DELTA_2
-    UNION all
-    SELECT
+    from
+        estornos_ajustes_delta_2
+    union all
+    select
         mes_competencia,
         mes_referencia,
         documento_calculo,
@@ -879,10 +888,10 @@ q_union as (
         ordem_faturamento,
         consumo_registrado,
         flag
-    FROM
-        ESTORNOS_AJUSTES_DELTA
-    UNION all
-    SELECT
+    from
+        estornos_ajustes_delta
+    union all
+    select
         mes_competencia,
         mes_referencia,
         documento_calculo,
@@ -964,10 +973,10 @@ q_union as (
         ordem_faturamento,
         consumo_registrado,
         flag
-    FROM
-        Q_ESTORNOS_PLENOS_2
-    UNION all
-    SELECT
+    from
+        q_estornos_plenos_2
+    union all
+    select
         mes_competencia,
         mes_referencia,
         documento_calculo,
@@ -1049,10 +1058,10 @@ q_union as (
         ordem_faturamento,
         consumo_registrado,
         flag
-    FROM
-        Q_ESTORNADOS_PLENOS_2
-    UNION all
-    SELECT
+    from
+        q_estornados_plenos_2
+    union all
+    select
         mes_competencia,
         mes_referencia,
         documento_calculo,
@@ -1134,10 +1143,10 @@ q_union as (
         ordem_faturamento,
         consumo_registrado,
         flag
-    FROM
-        Q_ESTORNOS_PLENOS
-    UNION all
-    SELECT
+    from
+        q_estornos_plenos
+    union all
+    select
         mes_competencia,
         mes_referencia,
         documento_calculo,
@@ -1219,12 +1228,12 @@ q_union as (
         ordem_faturamento,
         consumo_registrado,
         flag
-    FROM
-        Q_ESTORNADOS_PLENOS
+    from
+        q_estornados_plenos
 ),
 
 q_group as (
-    SELECT
+    select
         mes_competencia,
         mes_referencia,
         documento_calculo,
@@ -1246,65 +1255,65 @@ q_group as (
         tipo_calculo,
         origem_documento,
         cnr,
-        MAX(estornado) as estornado,
         estorno_pleno,
         estorno_ajuste,
         reversao,
         cancelamento,
         fatura_virtual,
         minimo,
+        valor_fatura,
+        consumo_faturado,
+        consumo_medido,
+        eusd,
+        eusdb,
+        icms,
+        icms_subvencao,
+        pis,
+        cofins,
+        cip,
+        retencao,
+        receita_bandeiras,
+        receita_consumo_faturado,
+        tarifa,
+        preco,
+        correcao_monetaria,
+        creditos,
+        estornos,
+        juros,
+        multas,
+        parcelamentos,
+        outros_lancamentos,
+        chave_reconciliacao,
+        formulario_pagamento,
+        domicilio_fiscal,
+        inicio_calculo,
+        fim_calculo,
+        quantidade_dias,
+        data_competencia,
+        data_atribuicao_calculo,
+        data_apresentacao,
+        data_vencimento_original,
+        data_previsao_leitura,
+        data_criacao_impressao,
+        usuario_criacao_impressao,
+        data_criacao_calculo,
+        usuario_criacao_calculo,
+        documento_calculo_anterior,
+        estrutura_regional_politica,
+        ordem_faturamento,
+        consumo_registrado,
+        MAX(estornado) as estornado,
         MAX(documento_estorno_pleno) as documento_estorno_pleno,
         MAX(data_estorno_pleno) as data_estorno_pleno,
         MAX(motivo_estorno_pleno) as motivo_estorno_pleno,
         MAX(documento_estorno_ajuste) as documento_estorno_ajuste,
         MAX(data_estorno_ajuste) as data_estorno_ajuste,
         MAX(motivo_estorno_ajuste) as motivo_estorno_ajuste,
-        valor_fatura,
         MAX(valor_contabil) as valor_contabil,
-        consumo_faturado,
-        consumo_medido,
-        eusd,
-        eusdb,
-        icms,
-        icms_subvencao,
-        pis,
-        cofins,
-        cip,
-        retencao,
-        receita_bandeiras,
-        receita_consumo_faturado,
-        tarifa,
-        preco,
-        correcao_monetaria,
-        creditos,
-        estornos,
-        juros,
-        multas,
-        parcelamentos,
-        outros_lancamentos,
-        chave_reconciliacao,
-        formulario_pagamento,
-        domicilio_fiscal,
-        inicio_calculo,
-        fim_calculo,
-        quantidade_dias,
-        data_competencia,
-        data_atribuicao_calculo,
-        data_apresentacao,
-        data_vencimento_original,
-        data_previsao_leitura,
-        data_criacao_impressao,
-        usuario_criacao_impressao,
         MAX(data_modificacao_impressao) as data_modificacao_impressao,
         MAX(usuario_modificacao_impressao) as usuario_modificacao_impressao,
-        data_criacao_calculo,
-        usuario_criacao_calculo,
         MAX(data_modificacao_calculo) as data_modificacao_calculo,
         MAX(usuario_modificacao_calculo) as usuario_modificacao_calculo,
-        documento_calculo_anterior,
-        estrutura_regional_politica,
-        ordem_faturamento,
-        consumo_registrado,
         CURRENT_TIMESTAMP() as data_dados,
         MIN(flag) as flag
     from q_union
@@ -1397,17 +1406,17 @@ q_rank as (
         data_dados
     from q_group
     qualify ROW_NUMBER() over (
-        partition by 
+        partition by
             mes_competencia,
             documento_calculo,
             documento_impressao
-        order by 
+        order by
             mes_competencia,
             documento_calculo,
             documento_impressao,
             flag
     ) = 1
-    
+
 ),
 
 q_motivos as (
@@ -1445,10 +1454,6 @@ q_motivos as (
         q_rank.motivo_estorno_pleno,
         q_rank.documento_estorno_ajuste,
         q_rank.data_estorno_ajuste,
-        case
-            when erch.bcreason = ' ' then null
-            else erch.bcreason
-        end as motivo_estorno_ajuste,
         q_rank.valor_fatura,
         q_rank.valor_contabil,
         q_rank.consumo_faturado,
@@ -1496,7 +1501,11 @@ q_motivos as (
         q_rank.ordem_faturamento,
         q_rank.consumo_registrado,
         q_rank.flag,
-        q_rank.data_dados
+        q_rank.data_dados,
+        case
+            when erch.bcreason = ' ' then null
+            else erch.bcreason
+        end as motivo_estorno_ajuste
     from q_rank
     left outer join {{ ref('stg_erch') }} as erch
         on q_rank.documento_calculo = erch.belnr

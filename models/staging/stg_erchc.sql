@@ -1,20 +1,20 @@
-SELECT
+select
     mandt,
-	belnr,
-	lfdnr,
-	opbel,
-	cpudt,
-	budat,
-	intopbel,
-	intcpudt,
-	intbudat,
-	tobreleasd,
-	simulated,
-	invoiced,
-	spcanc,
-	statupd,
-	statupd_canc,
-	data_dados
+    belnr,
+    lfdnr,
+    opbel,
+    cpudt,
+    budat,
+    intopbel,
+    intcpudt,
+    intbudat,
+    tobreleasd,
+    simulated,
+    invoiced,
+    spcanc,
+    statupd,
+    statupd_canc,
+    data_dados
     --erchc_erchc_pk
-FROM 
+from
     {{ mc_source(var('source_param'), 'ERCHC') }}

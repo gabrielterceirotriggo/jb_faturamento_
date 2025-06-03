@@ -1,8 +1,8 @@
-SELECT
+select
     mandt,
     printdoc,
     printdocline,
-    billdoc,    
+    billdoc,
     billdocline,
     hvorg,
     bukrs,
@@ -18,5 +18,5 @@ SELECT
     zordem,
     data_dados
     --constraint dberdlb_dberdlb_pk primary key (mandt, printdoc, printdocline)
-FROM 
+from
     {{ mc_source(var('source_param'),'DBERDLB') }}

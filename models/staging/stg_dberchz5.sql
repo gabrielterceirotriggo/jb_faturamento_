@@ -1,4 +1,4 @@
-SELECT
+select
     mandt,
     belnr,
     belzeile,
@@ -13,6 +13,5 @@ SELECT
     v_abrmenge,
     n_abrmenge,
     data_dados
-FROM 
-    {{ mc_source(var('source_param'),'DBERCHZ5')}}
-    
+from
+    {{ mc_source(var('source_param'),'DBERCHZ5') }}

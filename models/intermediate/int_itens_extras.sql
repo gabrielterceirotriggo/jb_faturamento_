@@ -1,76 +1,86 @@
-WITH q_itens_extras AS (
-    SELECT    
+with q_itens_extras as (
+    select
         int_documentos_faturamento.mes_competencia,
-        int_documentos_faturamento.doc_calculo AS documento_calculo,
-        int_documentos_faturamento.doc_impressao AS documento_impressao,
-        int_documentos_faturamento.tipo_calculo AS tipo_calculo,
-        int_documentos_faturamento.tipo_documento AS tipo_documento,
+        int_documentos_faturamento.doc_calculo as documento_calculo,
+        int_documentos_faturamento.doc_impressao as documento_impressao,
+        int_documentos_faturamento.tipo_calculo,
+        int_documentos_faturamento.tipo_documento,
         dberchz1.belzeile,
-        dberchz1.branche AS setor_industrial,
-        dberchz1.tariftyp AS categoria_tarifa,
-        dberchz1.temp_area AS subclasse,
+        dberchz1.branche as setor_industrial,
+        dberchz1.tariftyp as categoria_tarifa,
+        dberchz1.temp_area as subclasse,
         dberchz1.belzart,
         dberchz1.linesort,
-        dberchz3.zonennr AS escalao,
-        CASE 
-            WHEN dberchz1.ab <> '00000000' THEN TO_DATE(dberchz1.ab, 'YYYYMMDD') 
-            ELSE NULL 
-        END AS inicio_calculo,
+        dberchz3.zonennr as escalao,
+        null as tipo_imposto,
 
-        CASE 
-            WHEN dberchz1.bis <> '00000000' THEN TO_DATE(dberchz1.bis, 'YYYYMMDD') 
-            ELSE NULL 
-        END AS fim_calculo,
+        dberchz3.preisbtr as preco,
 
-        NULL AS tipo_imposto,
+        dberdlb.nettobtr as receita,
 
-        CASE 
-            WHEN int_documentos_faturamento.tipo_calculo = 'CM' AND (
-                ((dberchz1.v_abrmenge + dberchz1.n_abrmenge) > 0 AND dberchz3.n_nettobtr_l < 0) OR 
-                ((dberchz1.v_abrmenge + dberchz1.n_abrmenge) < 0 AND dberchz3.n_nettobtr_l > 0)
-            ) 
-            THEN (dberchz1.v_abrmenge + dberchz1.n_abrmenge) * -1
-            ELSE dberchz1.v_abrmenge + dberchz1.n_abrmenge
-        END AS consumo,
+        dberdlb.sttax as base_imposto,
 
-        dberchz3.preisbtr AS preco,
-        dberdlb.nettobtr AS receita,
-        dberdlb.sttax AS base_imposto,
-        0 AS aliquota,
-        dberdlb.hvorg AS operacao,
+        0 as aliquota,
+        dberdlb.hvorg as operacao,
+        dberdlb.txjcd as domicilio_fiscal,
+        int_documentos_faturamento.estorno,
+        case
+            when dberchz1.ab <> '00000000' then TO_DATE(dberchz1.ab, 'YYYYMMDD')
+        end as inicio_calculo,
 
-        CASE 
-            WHEN dberchz1.tvorg = ' ' THEN NULL 
-            ELSE dberchz1.tvorg 
-        END AS sub_operacao,
+        case
+            when
+                dberchz1.bis <> '00000000'
+                then TO_DATE(dberchz1.bis, 'YYYYMMDD')
+        end as fim_calculo,
 
-        dberdlb.txjcd AS domicilio_fiscal,
-        int_documentos_faturamento.estorno 
-    FROM
-        {{ ref('int_documentos_faturamento')}} int_documentos_faturamento
-    LEFT OUTER JOIN
-        {{ ref('stg_dberdlb')}} AS dberdlb
-        ON int_documentos_faturamento.doc_impressao = dberdlb.printdoc
-        AND int_documentos_faturamento.doc_calculo = dberdlb.billdoc
-    LEFT OUTER JOIN
-        {{ ref('stg_dberchz1')}} dberchz1
-        ON dberchz1.belnr = dberdlb.billdoc
-        AND dberchz1.belzeile = dberdlb.billdocline
-    LEFT OUTER JOIN
-        {{ ref('stg_dberchz3')}} dberchz3
-        ON dberchz1.belnr = dberchz3.belnr
-        AND dberchz1.belzeile = dberchz3.belzeile
-    WHERE
-        DBERCHZ1.BELZART IN (
-            'ZGSAT','ZGSNP','ZGSFP','ZGSRV','ZGSIT','ZPCAFP','ZPCANP',
-            'ZPGFP','ZPGNP','ZPCAT','ZPGAT','ZDR1','ZDR2','ZDR3','ZDR4',
-            'ZDR5','ZDR6','ZUR1','ZUR2','ZUR3','ZEUSD','ZRAMAL','ZEUSDB',
-            'ZDCFP','ZDCFPL','ZDCGER','ZDCMFP','ZDCMNP','ZDCNP','ZDCNPL',
-            'ZDCOMP','ZDCONL','ZDCONT','ZDCT'
+        case
+            when
+                int_documentos_faturamento.tipo_calculo = 'CM' and (
+                    (
+                        (dberchz1.v_abrmenge + dberchz1.n_abrmenge) > 0
+                        and dberchz3.n_nettobtr_l < 0
+                    )
+                    or (
+                        (dberchz1.v_abrmenge + dberchz1.n_abrmenge) < 0
+                        and dberchz3.n_nettobtr_l > 0
+                    )
+                )
+                then (dberchz1.v_abrmenge + dberchz1.n_abrmenge) * -1
+            else dberchz1.v_abrmenge + dberchz1.n_abrmenge
+        end as consumo,
+        case
+            when dberchz1.tvorg = ' ' then null
+            else dberchz1.tvorg
+        end as sub_operacao
+    from
+        {{ ref('int_documentos_faturamento') }} as int_documentos_faturamento
+    left outer join
+        {{ ref('stg_dberdlb') }} as dberdlb
+        on
+            int_documentos_faturamento.doc_impressao = dberdlb.printdoc
+            and int_documentos_faturamento.doc_calculo = dberdlb.billdoc
+    left outer join
+        {{ ref('stg_dberchz1') }} as dberchz1
+        on
+            dberdlb.billdoc = dberchz1.belnr
+            and dberdlb.billdocline = dberchz1.belzeile
+    left outer join
+        {{ ref('stg_dberchz3') }} as dberchz3
+        on
+            dberchz1.belnr = dberchz3.belnr
+            and dberchz1.belzeile = dberchz3.belzeile
+    where
+        dberchz1.belzart in (
+            'ZGSAT', 'ZGSNP', 'ZGSFP', 'ZGSRV', 'ZGSIT', 'ZPCAFP', 'ZPCANP',
+            'ZPGFP', 'ZPGNP', 'ZPCAT', 'ZPGAT', 'ZDR1', 'ZDR2', 'ZDR3', 'ZDR4',
+            'ZDR5', 'ZDR6', 'ZUR1', 'ZUR2', 'ZUR3', 'ZEUSD', 'ZRAMAL', 'ZEUSDB',
+            'ZDCFP', 'ZDCFPL', 'ZDCGER', 'ZDCMFP', 'ZDCMNP', 'ZDCNP', 'ZDCNPL',
+            'ZDCOMP', 'ZDCONL', 'ZDCONT', 'ZDCT'
         )
 )
 
-SELECT
+select
     mes_competencia,
     documento_calculo,
     documento_impressao,
@@ -87,34 +97,34 @@ SELECT
     fim_calculo,
     tipo_imposto,
 
-    CASE 
-        WHEN estorno = 'X' THEN consumo * -1 
-        ELSE consumo 
-    END AS consumo,
-
     preco,
 
-    CASE 
-        WHEN estorno = 'X' THEN receita * -1 
-        ELSE receita 
-    END AS receita,
-
     base_imposto,
+
     aliquota,
-    CASE 
-        WHEN operacao = ' ' THEN NULL 
-        ELSE operacao 
-    END AS operacao,
 
-    CASE 
-        WHEN sub_operacao = ' ' THEN NULL 
-        ELSE sub_operacao 
-    END AS sub_operacao,
+    estorno,
+    case
+        when estorno = 'X' then consumo * -1
+        else consumo
+    end as consumo,
+    case
+        when estorno = 'X' then receita * -1
+        else receita
+    end as receita,
 
-    CASE 
-        WHEN domicilio_fiscal = ' ' THEN NULL 
-        ELSE domicilio_fiscal 
-    END AS domicilio_fiscal,
-    estorno 
-FROM
+    case
+        when operacao = ' ' then null
+        else operacao
+    end as operacao,
+
+    case
+        when sub_operacao = ' ' then null
+        else sub_operacao
+    end as sub_operacao,
+    case
+        when domicilio_fiscal = ' ' then null
+        else domicilio_fiscal
+    end as domicilio_fiscal
+from
     q_itens_extras

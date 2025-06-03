@@ -1,4 +1,4 @@
-SELECT
+select
     mandt,
     anlage,
     operand,
@@ -24,5 +24,5 @@ SELECT
     betrag,
     waers,
     data_dados
-FROM
-    {{ mc_source(var('source_param'),'ETTIFN')}}
+from
+    {{ mc_source(var('source_param'),'ETTIFN') }}

@@ -1,4 +1,4 @@
-SELECT 
+select
     mandt,
     vertrag,
     bukrs,
@@ -95,7 +95,7 @@ SELECT
     xvera,
     zzlpt_univ,
     zzclandestino
-FROM
+from
     {{ mc_source(var('source_param'),'EVER') }}
 -- WHERE
 -- 	ERDAT = '20250214'

@@ -1,5 +1,4 @@
-SELECT
-    TO_VARCHAR(DATA_COMPETENCIA, 'YYYYMM') AS mes_competencia,
+select
     documento_impressao,
     tipo_impressao,
     data_criacao_impressao,
@@ -14,8 +13,9 @@ SELECT
     contrapartida,
     valor_total,
     estorno_pleno,
-    fatura_virtual
-FROM
-    {{ ref ('int_impressao_delta')}}
-WHERE
+    fatura_virtual,
+    TO_VARCHAR(data_competencia, 'YYYYMM') as mes_competencia
+from
+    {{ ref ('int_impressao_delta') }}
+where
     estorno_pleno = 'X'

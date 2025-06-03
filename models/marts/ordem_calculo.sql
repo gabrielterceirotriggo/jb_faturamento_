@@ -1,14 +1,13 @@
-SELECT
-    A.ANLAGE AS INSTALACAO, 
-    TO_DATE(TO_DATE(A.ABRDATS, 'YYYYMMDD')) AS DATA_CALC_PREVISTO, 
-    A.ABRVORG AS TIPO_CALCULO,
-    CASE 
-        WHEN A.TRIGSTAT = '1' THEN 'NAO_CALCULAVEL'
-        WHEN A.TRIGSTAT = '2' THEN 'CALCULAVEL'
-    END AS "STATUS",
-    A.ABLEINH UL,
-    TO_DATE(TO_DATE(A.ERDAT, 'YYYYMMDD')) AS DATA_CRIACAO,
-    A.ERNAM AS CRIADO_POR
-FROM 
-    {{ref ('stg_etrg')}} A
-
+select
+    a.anlage as instalacao,
+    a.abrvorg as tipo_calculo,
+    a.ableinh as ul,
+    a.ernam as criado_por,
+    TO_DATE(TO_DATE(a.abrdats, 'YYYYMMDD')) as data_calc_previsto,
+    case
+        when a.trigstat = '1' then 'NAO_CALCULAVEL'
+        when a.trigstat = '2' then 'CALCULAVEL'
+    end as status,
+    TO_DATE(TO_DATE(a.erdat, 'YYYYMMDD')) as data_criacao
+from
+    {{ ref ('stg_etrg') }} as a

@@ -6,7 +6,7 @@
   )
 }}
 
-SELECT
+select
     t.mes_competencia,
     t.documento_calculo,
     t.documento_impressao,
@@ -30,5 +30,4 @@ SELECT
     t.domicilio_fiscal,
     t.flag,
     CURRENT_TIMESTAMP() as data_dados
-FROM {{ ref('itens_faturamento_delta') }} AS t
-
+from {{ ref('itens_faturamento_delta') }} as t

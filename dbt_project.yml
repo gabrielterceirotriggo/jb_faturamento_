@@ -40,5 +40,7 @@ models:
 
 vars:
   dia_fim: "{{ modules.datetime.date.today().strftime('%Y%m%d') }}"
+  source_param: "EQTL_MA"
+  source_orig: "CCS_MA"
 
 on-run-end: ["{{ atualiza_ordem() }}", "{{ vlr_cont_delta() }}"]

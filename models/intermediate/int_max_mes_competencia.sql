@@ -1,4 +1,3 @@
-SELECT 
-    MAX(mes_competencia) AS max_mes
-FROM 
+select MAX(mes_competencia) as max_mes
+from
     {{ ref('itens_faturamento_delta') }}

@@ -7,7 +7,7 @@
     )
 }}
 
-SELECT
+select
     mes_competencia,
     mes_referencia,
     documento_calculo,
@@ -37,10 +37,8 @@ SELECT
     fatura_virtual,
     minimo,
     documento_estorno_pleno,
-    CAST(DATA_ESTORNO_PLENO AS TIMESTAMP_NTZ(0)) AS DATA_ESTORNO_PLENO,
     motivo_estorno_pleno,
     documento_estorno_ajuste,
-    CAST(DATA_ESTORNO_AJUSTE AS TIMESTAMP_NTZ(0)) AS DATA_ESTORNO_AJUSTE,
     motivo_estorno_ajuste,
     valor_fatura,
     valor_contabil,
@@ -64,29 +62,37 @@ SELECT
     multas,
     parcelamentos,
     outros_lancamentos,
-    CAST(CHAVE_RECONCILIACAO AS VARCHAR(12)) AS CHAVE_RECONCILIACAO,
     formulario_pagamento,
     domicilio_fiscal,
-    CAST(INICIO_CALCULO AS TIMESTAMP_NTZ(0)) AS INICIO_CALCULO,
-    CAST(FIM_CALCULO AS TIMESTAMP_NTZ(0)) AS FIM_CALCULO,
-    CAST(QUANTIDADE_DIAS AS NUMBER(38,0)) AS QUANTIDADE_DIAS,
-    CAST(DATA_COMPETENCIA AS TIMESTAMP_NTZ(0)) AS DATA_COMPETENCIA,
-    CAST(DATA_ATRIBUICAO_CALCULO AS TIMESTAMP_NTZ(0)) AS DATA_ATRIBUICAO_CALCULO,
-    CAST(DATA_APRESENTACAO AS TIMESTAMP_NTZ(0)) AS DATA_APRESENTACAO,
-    CAST(DATA_VENCIMENTO_ORIGINAL AS TIMESTAMP_NTZ(0)) AS DATA_VENCIMENTO_ORIGINAL,
-    CAST(DATA_PREVISAO_LEITURA AS TIMESTAMP_NTZ(0)) AS DATA_PREVISAO_LEITURA,
-    CAST(DATA_CRIACAO_IMPRESSAO AS TIMESTAMP_NTZ(0)) AS DATA_CRIACAO_IMPRESSAO,
-    CAST(USUARIO_CRIACAO_IMPRESSAO AS VARCHAR(12)) AS USUARIO_CRIACAO_IMPRESSAO,
-    CAST(DATA_MODIFICACAO_IMPRESSAO AS TIMESTAMP_NTZ(0)) AS DATA_MODIFICACAO_IMPRESSAO,
-    CAST(USUARIO_MODIFICACAO_IMPRESSAO AS VARCHAR(12)) AS USUARIO_MODIFICACAO_IMPRESSAO,
-    CAST(DATA_CRIACAO_CALCULO AS TIMESTAMP_NTZ(0)) AS DATA_CRIACAO_CALCULO,
-    CAST(USUARIO_CRIACAO_CALCULO AS VARCHAR(12)) AS USUARIO_CRIACAO_CALCULO,
-    CAST(DATA_MODIFICACAO_CALCULO AS TIMESTAMP_NTZ(0)) AS DATA_MODIFICACAO_CALCULO,
-    CAST(USUARIO_MODIFICACAO_CALCULO AS VARCHAR(12)) AS USUARIO_MODIFICACAO_CALCULO,
     documento_calculo_anterior,
     estrutura_regional_politica,
-    CAST(DATA_DADOS AS TIMESTAMP_NTZ(0)) AS DATA_DADOS,
-    CAST(ORDEM_FATURAMENTO AS NUMBER(38,0)) AS ORDEM_FATURAMENTO,
-    CAST(CONSUMO_REGISTRADO AS NUMBER(28,14)) AS CONSUMO_REGISTRADO,
-    eusdb
-FROM {{ ref ('faturamento_delta') }}
+    eusdb,
+    CAST(data_estorno_pleno as TIMESTAMP_NTZ(0)) as data_estorno_pleno,
+    CAST(data_estorno_ajuste as TIMESTAMP_NTZ(0)) as data_estorno_ajuste,
+    CAST(chave_reconciliacao as VARCHAR(12)) as chave_reconciliacao,
+    CAST(inicio_calculo as TIMESTAMP_NTZ(0)) as inicio_calculo,
+    CAST(fim_calculo as TIMESTAMP_NTZ(0)) as fim_calculo,
+    CAST(quantidade_dias as NUMBER(38, 0)) as quantidade_dias,
+    CAST(data_competencia as TIMESTAMP_NTZ(0)) as data_competencia,
+    CAST(data_atribuicao_calculo as TIMESTAMP_NTZ(0))
+        as data_atribuicao_calculo,
+    CAST(data_apresentacao as TIMESTAMP_NTZ(0)) as data_apresentacao,
+    CAST(data_vencimento_original as TIMESTAMP_NTZ(0))
+        as data_vencimento_original,
+    CAST(data_previsao_leitura as TIMESTAMP_NTZ(0)) as data_previsao_leitura,
+    CAST(data_criacao_impressao as TIMESTAMP_NTZ(0)) as data_criacao_impressao,
+    CAST(usuario_criacao_impressao as VARCHAR(12)) as usuario_criacao_impressao,
+    CAST(data_modificacao_impressao as TIMESTAMP_NTZ(0))
+        as data_modificacao_impressao,
+    CAST(usuario_modificacao_impressao as VARCHAR(12))
+        as usuario_modificacao_impressao,
+    CAST(data_criacao_calculo as TIMESTAMP_NTZ(0)) as data_criacao_calculo,
+    CAST(usuario_criacao_calculo as VARCHAR(12)) as usuario_criacao_calculo,
+    CAST(data_modificacao_calculo as TIMESTAMP_NTZ(0))
+        as data_modificacao_calculo,
+    CAST(usuario_modificacao_calculo as VARCHAR(12))
+        as usuario_modificacao_calculo,
+    CAST(data_dados as TIMESTAMP_NTZ(0)) as data_dados,
+    CAST(ordem_faturamento as NUMBER(38, 0)) as ordem_faturamento,
+    CAST(consumo_registrado as NUMBER(28, 14)) as consumo_registrado
+from {{ ref ('faturamento_delta') }}

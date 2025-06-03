@@ -1,4 +1,4 @@
-WITH 
+with
 -- dia_inicial AS (
 --     SELECT 
 --         REPLACE(ULTIMA_CARGA, '-', ' ') AS dia_ini
@@ -8,106 +8,106 @@ WITH
 --         tabela = 'FATURAMENTO'
 -- ),
 
-calculos AS (
-    SELECT
-        A.MANDT,
-        B.BELNR AS DOC_CALCULO,
-        A.OPBEL AS DOC_IMPRESSAO,
-        C.BELEGART AS TIPO_CALCULO,
-        CASE 
-            WHEN C.ZZORIGDOC <> ' ' THEN C.ZZORIGDOC 
-            ELSE NULL 
-        END AS TIPO_DOCUMENTO,
-        CASE 
-            WHEN A.ERGRD = '04' THEN 'X' 
-            ELSE NULL 
-        END AS ESTORNO,
-        CASE 
-            WHEN A.BUDAT <> '00000000' THEN A.BUDAT 
-            ELSE NULL 
-        END AS MES_COMPETENCIA
-    FROM 
-        {{ ref('stg_erdk') }} A 
-    INNER JOIN 
-        {{ ref('stg_erchc') }} B 
-        ON (A.MANDT = B.MANDT) AND (A.OPBEL = B.OPBEL)
-    INNER JOIN 
-        {{ ref('stg_erch') }} C 
-        ON (B.MANDT = C.MANDT) AND (B.BELNR = C.BELNR)
-    WHERE 
+calculos as (
+    select
+        a.mandt,
+        b.belnr as doc_calculo,
+        a.opbel as doc_impressao,
+        c.belegart as tipo_calculo,
+        case
+            when c.zzorigdoc <> ' ' then c.zzorigdoc
+        end as tipo_documento,
+        case
+            when a.ergrd = '04' then 'X'
+        end as estorno,
+        case
+            when a.budat <> '00000000' then a.budat
+        end as mes_competencia
+    from
+        {{ ref('stg_erdk') }} as a
+    inner join
+        {{ ref('stg_erchc') }} as b
+        on (a.mandt = b.mandt) and (a.opbel = b.opbel)
+    inner join
+        {{ ref('stg_erch') }} as c
+        on (b.mandt = c.mandt) and (b.belnr = c.belnr)
+    where
         -- A.MANDT IN (401, 402, 403, 404)
         -- AND 
-        A.INVOICED = 'X'
-        AND A.ERGRD <> '04'
-        AND A.ERDAT >= (SELECT ultima_execucao FROM {{ ref('stg_int_ultima_exec') }})
-        AND A.ERDAT <= TO_CHAR(CURRENT_DATE(), 'YYYYMMDD')
+        a.invoiced = 'X'
+        and a.ergrd <> '04'
+        and a.erdat
+        >= (select ultima_execucao from {{ ref('stg_int_ultima_exec') }})
+        and a.erdat <= TO_CHAR(CURRENT_DATE(), 'YYYYMMDD')
         --alterado para homologacao
         -- AND A.ERDAT >= (SELECT dia_ini FROM dia_inicial)
         -- AND A.ERDAT <= '{{ var("dia_fim") }}'
 ),
 
-ESTORNOS_PLENOS AS (
-SELECT
+estornos_plenos as (
+    select
     /*+ PARALLEL (A, 6)*/
-    A.MANDT,
-    B.BELNR AS DOC_CALCULO,
-    A.OPBEL AS DOC_IMPRESSAO,
-    C.BELEGART AS TIPO_CALCULO,
-    CASE
-        WHEN C.ZZORIGDOC <> ' ' THEN C.ZZORIGDOC
-        ELSE NULL
-    END TIPO_DOCUMENTO,
-    CASE
-        WHEN A.ERGRD = '04' THEN 'X'
-        ELSE NULL
-    END ESTORNO,
-    CASE
-        WHEN A.BUDAT <> '00000000' THEN SUBSTR(A.BUDAT, 0, 6)
-        ELSE NULL
-    END MES_COMPETENCIA
-FROM
-    {{ ref ('stg_erdk') }} A
-    INNER JOIN {{ ref ('stg_erchc')}} B ON (A.MANDT = B.MANDT)
-    AND (B.OPBEL = A.INTOPBEL)
-    INNER JOIN {{ ref ('stg_erch')}} C ON (B.MANDT = C.MANDT)
-    AND B.BELNR = C.BELNR
-WHERE
-    A.INVOICED = 'X'
-    AND A.ERGRD = '04'
-    AND A.ERDAT >= (SELECT ultima_execucao FROM {{ ref('stg_int_ultima_exec') }})
-    AND A.ERDAT <= TO_CHAR(CURRENT_DATE(), 'YYYYMMDD')
-    --alterado para homologacao
-    -- AND A.ERDAT >= (SELECT dia_ini FROM dia_inicial)
-    -- AND A.ERDAT <= '{{ var("dia_fim") }}'
-    --
-    --AND A.OPBEL in ('300082143436')
+        a.mandt,
+        b.belnr as doc_calculo,
+        a.opbel as doc_impressao,
+        c.belegart as tipo_calculo,
+        case
+            when c.zzorigdoc <> ' ' then c.zzorigdoc
+        end as tipo_documento,
+        case
+            when a.ergrd = '04' then 'X'
+        end as estorno,
+        case
+            when a.budat <> '00000000' then SUBSTR(a.budat, 0, 6)
+        end as mes_competencia
+    from
+        {{ ref ('stg_erdk') }} as a
+    inner join {{ ref ('stg_erchc') }} as b
+        on
+            (a.mandt = b.mandt)
+            and (a.intopbel = b.opbel)
+    inner join {{ ref ('stg_erch') }} as c
+        on
+            (b.mandt = c.mandt)
+            and b.belnr = c.belnr
+    where
+        a.invoiced = 'X'
+        and a.ergrd = '04'
+        and a.erdat
+        >= (select ultima_execucao from {{ ref('stg_int_ultima_exec') }})
+        and a.erdat <= TO_CHAR(CURRENT_DATE(), 'YYYYMMDD')
+--alterado para homologacao
+-- AND A.ERDAT >= (SELECT dia_ini FROM dia_inicial)
+-- AND A.ERDAT <= '{{ var("dia_fim") }}'
+--
+--AND A.OPBEL in ('300082143436')
 ),
 
-UNIAO AS (
-SELECT 
-    mandt,
-    doc_calculo,
-    doc_impressao,
-    tipo_calculo,
-    tipo_documento,
-    TO_VARCHAR(estorno) as estorno,
-    mes_competencia
-FROM
-    calculos
-UNION ALL
-SELECT 
-    mandt,
-    doc_calculo,
-    doc_impressao,
-    tipo_calculo,
-    tipo_documento,
-    TO_VARCHAR(estorno) as estorno,
-    mes_competencia
-FROM
-    ESTORNOS_PLENOS
+uniao as (
+    select
+        mandt,
+        doc_calculo,
+        doc_impressao,
+        tipo_calculo,
+        tipo_documento,
+        TO_VARCHAR(estorno) as estorno,
+        mes_competencia
+    from
+        calculos
+    union all
+    select
+        mandt,
+        doc_calculo,
+        doc_impressao,
+        tipo_calculo,
+        tipo_documento,
+        TO_VARCHAR(estorno) as estorno,
+        mes_competencia
+    from
+        estornos_plenos
 )
 
-SELECT
+select
     mandt,
     doc_calculo,
     doc_impressao,
@@ -115,5 +115,5 @@ SELECT
     tipo_documento,
     estorno,
     mes_competencia
-FROM 
-    UNIAO
+from
+    uniao

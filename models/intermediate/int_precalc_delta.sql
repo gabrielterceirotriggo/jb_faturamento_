@@ -7,284 +7,266 @@
 --         tabela = 'FATURAMENTO'
 -- ),
 
-WITH base AS (
-    SELECT
+with base as (
+    select
         /*+ PARALLEL (A,6) ORDERED USE_NL (B) USE_NL(C) USE_NL(D) USE_NL(E) INDEX(ETTIFN-~Z01) */
-        A.MANDT,
-        A.OPBEL DOCUMENTO_IMPRESSAO,
-        B.BELNR DOCUMENTO_CALCULO,
-        A.BUDAT DATA_COMPETENCIA,
-        C.BILLING_PERIOD AS "PERIOD",
-        A.EXBEL FATURA,
-        D.ANLAGE,
-        C.VKONT,
-        C.GPARTNER,
-        C.VERTRAG,
-        C.ABLEINH,
-        A.ERGRD MOTIVO_CRIACAO_IMPRESSAO,
-        A.ZTIPO TIPO_IMPRESSAO,
-        C.BELEGART,
-        C.ZZORIGDOC,
-        CASE
-            WHEN A.ERGRD = '04' THEN
-                'X'
-            ELSE 
-                NULL
-        END ESTORNO_PLENO,
-        C.SC_BELNR_H,
-        CASE
-            WHEN A.ZTIPO = 'FV' THEN 
-                'X'
-            ELSE 
-                NULL
-        END FATURA_VIRTUAL,
-        CASE
-            WHEN E.BELNR IS NOT NULL THEN 
-                'X'
-            ELSE 
-                NULL
-        END MINIMO,
-        C.BEGABRPE,
-        C.ENDABRPE,
-        CASE
-            WHEN A.INTOPBEL <> ' ' THEN 
-                A.INTOPBEL
-            ELSE 
-                NULL
-        END CONTRAPARTIDA,
-        CASE
-            WHEN A.ERGRD = '04' THEN 
-                A.BUDAT
-            ELSE 
-                NULL
-        END DATA_ESTORNO_PLENO,
-        A.ICREASON MOTIVO_ESTORNO_IMPRESSAO,
-        C.SC_BELNR_N,
-        C.STORNODAT,
-        C.BCREASON,
-        A.TOTAL_AMNT VALOR_TOTAL,
-        A.FIKEY CHAVE_RECONCILIACAO,
-        A.NRZAS FORMULARIO_PAGAMENTO,
-        C.TXJCD,
-        C.ZUORDDAA,
-        A.ZZDATAAPR DATA_APRESENTACAO,
-        A.FAEDN DATA_VENCIMENTO_ORIGINAL,
-        C.ADATSOLL,
-        A.ERDAT DATA_CRIACAO_IMPRESSAO,
-        A.CREATION_TIME HORA_CRIACAO,
-        A.ERNAM USUARIO_CRIACAO,
-        A.AEDAT DATA_MODIFICACAO_IMPRESSAO,
-        A.AENAM USUARIO_MODIFICACAO,
-        C.EROETIM,
-        C.ERDAT,
-        C.ERNAM,
-        C.AEDAT,
-        C.AENAM,
-        C.BELNRALT,
-        A.REGPOLIT ESTRUTURA_REGIONAL_POLITICA
-    FROM
-        {{ ref('stg_erdk')}} A
-        INNER JOIN {{ ref('stg_erchc')}} B
-            ON A.MANDT = B.MANDT
-            AND A.OPBEL = B.OPBEL
-        INNER JOIN {{ ref('stg_erch')}} C
-            ON B.MANDT = C.MANDT 
-            AND B.BELNR = C.BELNR
-        LEFT JOIN {{ ref('stg_ever')}} D
-            ON C.MANDT = D.MANDT
-            AND C.VERTRAG = D.VERTRAG
-        LEFT JOIN {{ ref('stg_ettifn')}} E
-            ON D.ANLAGE = E.ANLAGE
-            AND E.OPERAND = 'FL_MINIMO'
-            AND E.BIS = C.ENDABRPE
-            AND C.BELNR = E.BELNR
-        WHERE
-            A.MANDT IN (401, 402, 403, 404)
-            AND a.erdat  >=  (SELECT ultima_execucao FROM {{ ref('stg_int_ultima_exec') }})
-            AND a.erdat  <=  TO_CHAR(CURRENT_DATE(), 'YYYYMMDD')
-            AND a.invoiced = 'X'
-            --'{{ var("dia_fim") }}'
+        a.mandt,
+        a.opbel as documento_impressao,
+        b.belnr as documento_calculo,
+        a.budat as data_competencia,
+        c.billing_period as period,
+        a.exbel as fatura,
+        d.anlage,
+        c.vkont,
+        c.gpartner,
+        c.vertrag,
+        c.ableinh,
+        a.ergrd as motivo_criacao_impressao,
+        a.ztipo as tipo_impressao,
+        c.belegart,
+        c.zzorigdoc,
+        c.sc_belnr_h,
+        c.begabrpe,
+        c.endabrpe,
+        a.icreason as motivo_estorno_impressao,
+        c.sc_belnr_n,
+        c.stornodat,
+        c.bcreason,
+        a.total_amnt as valor_total,
+        a.fikey as chave_reconciliacao,
+        a.nrzas as formulario_pagamento,
+        c.txjcd,
+        c.zuorddaa,
+        a.zzdataapr as data_apresentacao,
+        a.faedn as data_vencimento_original,
+        c.adatsoll,
+        a.erdat as data_criacao_impressao,
+        a.creation_time as hora_criacao,
+        a.ernam as usuario_criacao,
+        a.aedat as data_modificacao_impressao,
+        a.aenam as usuario_modificacao,
+        c.eroetim,
+        c.erdat,
+        c.ernam,
+        c.aedat,
+        c.aenam,
+        c.belnralt,
+        a.regpolit as estrutura_regional_politica,
+        case
+            when a.ergrd = '04'
+                then
+                    'X'
+        end as estorno_pleno,
+        case
+            when a.ztipo = 'FV'
+                then
+                    'X'
+        end as fatura_virtual,
+        case
+            when e.belnr is not null
+                then
+                    'X'
+        end as minimo,
+        case
+            when a.intopbel <> ' '
+                then
+                    a.intopbel
+        end as contrapartida,
+        case
+            when a.ergrd = '04'
+                then
+                    a.budat
+        end as data_estorno_pleno
+    from
+        {{ ref('stg_erdk') }} as a
+    inner join {{ ref('stg_erchc') }} as b
+        on
+            a.mandt = b.mandt
+            and a.opbel = b.opbel
+    inner join {{ ref('stg_erch') }} as c
+        on
+            b.mandt = c.mandt
+            and b.belnr = c.belnr
+    left join {{ ref('stg_ever') }} as d
+        on
+            c.mandt = d.mandt
+            and c.vertrag = d.vertrag
+    left join {{ ref('stg_ettifn') }} as e
+        on
+            d.anlage = e.anlage
+            and e.operand = 'FL_MINIMO'
+            and c.endabrpe = e.bis
+            and c.belnr = e.belnr
+    where
+        a.mandt in (401, 402, 403, 404)
+        and a.erdat
+        >= (select ultima_execucao from {{ ref('stg_int_ultima_exec') }})
+        and a.erdat <= TO_CHAR(CURRENT_DATE(), 'YYYYMMDD')
+        and a.invoiced = 'X'
+--'{{ var("dia_fim") }}'
 )
 
-SELECT
-    SUBSTR(DATA_COMPETENCIA, 1, 6) AS mes_competencia,
-    LEFT("PERIOD", 4) || RIGHT("PERIOD", 2) AS "period",
-    DOCUMENTO_CALCULO,
-    DOCUMENTO_IMPRESSAO,
-    CASE
-        WHEN FATURA != ' ' THEN 
-            FATURA
-        ELSE 
-            NULL
-    END AS FATURA,
-    CASE
-        WHEN ANLAGE != ' ' THEN 
-            ANLAGE
-        ELSE 
-            NULL
-    END AS INSTALACAO,
-    VKONT AS CONTA_CONTRATO,
-    GPARTNER AS PARCEIRO_NEGOCIO,
-    VERTRAG AS CONTRATO,
-    ABLEINH AS UNIDADE_LEITURA,
-    SUBSTR(ABLEINH, 3, 2) AS ETAPA,
-    MOTIVO_CRIACAO_IMPRESSAO,
-    TIPO_IMPRESSAO,
-    BELEGART AS TIPO_CALCULO,
-    CASE 
-        WHEN ZZORIGDOC <> ' ' THEN 
-            ZZORIGDOC 
-        ELSE 
-            NULL 
-    END AS ORIGEM_DOCUMENTO,
-    CASE 
-        WHEN ZZORIGDOC IN ('ip', 'rs', 'fr', 'ds', 'cl') THEN 
-            'X' 
-        ELSE 
-            NULL 
-    END AS CNR,
-    ESTORNO_PLENO,
-    CASE 
-        WHEN SC_BELNR_H = ' ' THEN 
-            NULL 
-        ELSE 
-            'X' 
-    END AS estorno_ajuste,
-    FATURA_VIRTUAL,
-    MINIMO,
-    CASE
-        WHEN BEGABRPE <> '00000000' THEN 
-            TO_DATE(BEGABRPE, 'YYYYMMDD')
-        ELSE 
-            NULL 
-    END AS inicio_calculo,
-    CASE
-        WHEN ENDABRPE <> '00000000' THEN 
-            TO_DATE(ENDABRPE, 'YYYYMMDD')
-        ELSE 
-            NULL 
-    END AS fim_calculo,
-    CONTRAPARTIDA AS DOCUMENTO_ESTORNO_PLENO,
-    CASE
-        WHEN DATA_ESTORNO_PLENO <> '00000000' THEN 
-            TO_DATE(DATA_ESTORNO_PLENO, 'YYYYMMDD')
-        ELSE 
-            NULL 
-    END AS DATA_ESTORNO_PLENO,
-    motivo_estorno_impressao AS MOTIVO_ESTORNO_PLENO,
-    CASE 
-        WHEN SC_BELNR_N <> ' ' THEN 
-            SC_BELNR_N 
-        ELSE 
-            SC_BELNR_H 
-    END AS DOCUMENTO_ESTORNO_AJUSTE,
-    CASE
-        WHEN STORNODAT <> '00000000' THEN 
-            TO_DATE(STORNODAT, 'YYYYMMDD')
-        ELSE 
-            NULL 
-    END AS DATA_ESTORNO_AJUSTE,
-    CASE
-        WHEN BCREASON <> ' ' THEN 
-            BCREASON
-        ELSE 
-            NULL 
-    END AS MOTIVO_ESTORNO_AJUSTE,
-    VALOR_TOTAL AS VALOR_FATURA,
-    CHAVE_RECONCILIACAO,
-    FORMULARIO_PAGAMENTO,
-    TXJCD AS domicilio_fiscal,
-    CASE
-        WHEN DATA_COMPETENCIA <> '00000000' THEN 
-            TO_DATE(DATA_COMPETENCIA, 'YYYYMMDD')
-        ELSE 
-            NULL 
-    END AS DATA_COMPETENCIA,
-    CASE
-        WHEN ZUORDDAA <> '00000000' THEN 
-            TO_DATE(ZUORDDAA, 'YYYYMMDD')
-        ELSE 
-            NULL 
-    END AS DATA_ATRIBUICAO_CALCULO,
-    CASE
-        WHEN DATA_APRESENTACAO <> '00000000' THEN 
-            TO_DATE(DATA_APRESENTACAO, 'YYYYMMDD')
-        ELSE 
-            NULL 
-    END AS DATA_APRESENTACAO,
-    CASE
-        WHEN DATA_VENCIMENTO_ORIGINAL <> '00000000' THEN 
-            TO_DATE(DATA_VENCIMENTO_ORIGINAL, 'YYYYMMDD')
-        ELSE 
-            NULL 
-    END AS DATA_VENCIMENTO_ORIGINAL,
-    CASE
-        WHEN ADATSOLL <> '00000000' THEN 
-            TO_DATE(ADATSOLL, 'YYYYMMDD')
-        ELSE 
-            NULL 
-    END AS DATA_PREVISAO_LEITURA,
-    CASE
-        WHEN DATA_CRIACAO_IMPRESSAO <> '00000000' THEN 
-            TO_DATE(DATA_CRIACAO_IMPRESSAO || ' ' || HORA_CRIACAO, 'YYYYMMDD HH24MISS')
-        ELSE 
-            NULL 
-    END AS DATA_CRIACAO_IMPRESSAO,
-    CASE
-        WHEN USUARIO_CRIACAO <> ' ' THEN 
-            USUARIO_CRIACAO
-        ELSE 
-            NULL 
-    END AS USUARIO_CRIACAO_IMPRESSAO,
-    CASE
-        WHEN DATA_MODIFICACAO_IMPRESSAO <> '00000000' THEN 
-            TO_DATE(DATA_MODIFICACAO_IMPRESSAO, 'YYYYMMDD')
-        ELSE 
-            NULL 
-    END AS DATA_MODIFICACAO_IMPRESSAO,
-    CASE
-        WHEN USUARIO_MODIFICACAO <> ' ' THEN 
-            USUARIO_MODIFICACAO
-        ELSE 
-            NULL 
-    END AS usuario_modificacao_impressao,
-    CASE 
-        WHEN ERDAT <> '00000000' AND EROETIM <> ' ' THEN 
-            TO_DATE(ERDAT || ' ' || EROETIM, 'YYYYMMDD HH24MI')
-        WHEN ERDAT <> '00000000' THEN 
-            TO_DATE(ERDAT, 'YYYYMMDD')
-        ELSE 
-            NULL
-    END DATA_CRIACAO_CALCULO,
-    CASE
-        WHEN ERNAM <> ' ' THEN 
-            ERNAM
-        ELSE 
-            NULL 
-    END AS USUARIO_CRIACAO_CALCULO,
-    CASE
-        WHEN AEDAT <> '00000000' THEN 
-            TO_DATE(AEDAT, 'YYYYMMDD')
-        ELSE 
-            NULL 
-    END AS DATA_MODIFICACAO_CALCULO,
-    CASE
-        WHEN AENAM <> ' ' THEN 
-            AENAM
-        ELSE 
-            NULL 
-    END AS USUARIO_MODIFICACAO_CALCULO,
-    CASE
-        WHEN BELNRALT <> ' ' THEN 
-            BELNRALT
-        ELSE 
-            NULL 
-    END AS DOCUMENTO_CALCULO_ANTERIOR,
-    CASE
-        WHEN ESTRUTURA_REGIONAL_POLITICA <> ' ' THEN 
-            ESTRUTURA_REGIONAL_POLITICA
-        ELSE 
-            NULL 
-    END AS ESTRUTURA_REGIONAL_POLITICA
-FROM
+select
+    documento_calculo,
+    documento_impressao,
+    vkont as conta_contrato,
+    gpartner as parceiro_negocio,
+    vertrag as contrato,
+    ableinh as unidade_leitura,
+    motivo_criacao_impressao,
+    tipo_impressao,
+    belegart as tipo_calculo,
+    estorno_pleno,
+    fatura_virtual,
+    minimo,
+    contrapartida as documento_estorno_pleno,
+    motivo_estorno_impressao as motivo_estorno_pleno,
+    valor_total as valor_fatura,
+    chave_reconciliacao,
+    formulario_pagamento,
+    txjcd as domicilio_fiscal,
+    SUBSTR(data_competencia, 1, 6) as mes_competencia,
+    LEFT(period, 4) || RIGHT(period, 2) as "period",
+    case
+        when fatura <> ' '
+            then
+                fatura
+    end as fatura,
+    case
+        when anlage <> ' '
+            then
+                anlage
+    end as instalacao,
+    SUBSTR(ableinh, 3, 2) as etapa,
+    case
+        when zzorigdoc <> ' '
+            then
+                zzorigdoc
+    end as origem_documento,
+    case
+        when zzorigdoc in ('ip', 'rs', 'fr', 'ds', 'cl')
+            then
+                'X'
+    end as cnr,
+    case
+        when sc_belnr_h = ' '
+            then
+                null
+        else
+            'X'
+    end as estorno_ajuste,
+    case
+        when begabrpe <> '00000000'
+            then
+                TO_DATE(begabrpe, 'YYYYMMDD')
+    end as inicio_calculo,
+    case
+        when endabrpe <> '00000000'
+            then
+                TO_DATE(endabrpe, 'YYYYMMDD')
+    end as fim_calculo,
+    case
+        when data_estorno_pleno <> '00000000'
+            then
+                TO_DATE(data_estorno_pleno, 'YYYYMMDD')
+    end as data_estorno_pleno,
+    case
+        when sc_belnr_n <> ' '
+            then
+                sc_belnr_n
+        else
+            sc_belnr_h
+    end as documento_estorno_ajuste,
+    case
+        when stornodat <> '00000000'
+            then
+                TO_DATE(stornodat, 'YYYYMMDD')
+    end as data_estorno_ajuste,
+    case
+        when bcreason <> ' '
+            then
+                bcreason
+    end as motivo_estorno_ajuste,
+    case
+        when data_competencia <> '00000000'
+            then
+                TO_DATE(data_competencia, 'YYYYMMDD')
+    end as data_competencia,
+    case
+        when zuorddaa <> '00000000'
+            then
+                TO_DATE(zuorddaa, 'YYYYMMDD')
+    end as data_atribuicao_calculo,
+    case
+        when data_apresentacao <> '00000000'
+            then
+                TO_DATE(data_apresentacao, 'YYYYMMDD')
+    end as data_apresentacao,
+    case
+        when data_vencimento_original <> '00000000'
+            then
+                TO_DATE(data_vencimento_original, 'YYYYMMDD')
+    end as data_vencimento_original,
+    case
+        when adatsoll <> '00000000'
+            then
+                TO_DATE(adatsoll, 'YYYYMMDD')
+    end as data_previsao_leitura,
+    case
+        when data_criacao_impressao <> '00000000'
+            then
+                TO_DATE(
+                    data_criacao_impressao || ' ' || hora_criacao,
+                    'YYYYMMDD HH24MISS'
+                )
+    end as data_criacao_impressao,
+    case
+        when usuario_criacao <> ' '
+            then
+                usuario_criacao
+    end as usuario_criacao_impressao,
+    case
+        when data_modificacao_impressao <> '00000000'
+            then
+                TO_DATE(data_modificacao_impressao, 'YYYYMMDD')
+    end as data_modificacao_impressao,
+    case
+        when usuario_modificacao <> ' '
+            then
+                usuario_modificacao
+    end as usuario_modificacao_impressao,
+    case
+        when erdat <> '00000000' and eroetim <> ' '
+            then
+                TO_DATE(erdat || ' ' || eroetim, 'YYYYMMDD HH24MI')
+        when erdat <> '00000000'
+            then
+                TO_DATE(erdat, 'YYYYMMDD')
+    end as data_criacao_calculo,
+    case
+        when ernam <> ' '
+            then
+                ernam
+    end as usuario_criacao_calculo,
+    case
+        when aedat <> '00000000'
+            then
+                TO_DATE(aedat, 'YYYYMMDD')
+    end as data_modificacao_calculo,
+    case
+        when aenam <> ' '
+            then
+                aenam
+    end as usuario_modificacao_calculo,
+    case
+        when belnralt <> ' '
+            then
+                belnralt
+    end as documento_calculo_anterior,
+    case
+        when estrutura_regional_politica <> ' '
+            then
+                estrutura_regional_politica
+    end as estrutura_regional_politica
+from
     base
