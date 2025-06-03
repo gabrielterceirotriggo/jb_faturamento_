@@ -14,7 +14,7 @@ with base as (
         a.opbel as documento_impressao,
         b.belnr as documento_calculo,
         a.budat as data_competencia,
-        c.billing_period as period,
+        c.billing_period,
         a.exbel as fatura,
         d.anlage,
         c.vkont,
@@ -98,15 +98,16 @@ with base as (
             and c.endabrpe = e.bis
             and c.belnr = e.belnr
     where
-        a.mandt in (401, 402, 403, 404)
-        and a.erdat
+        --a.mandt in (401, 402, 403, 404)
+        --and 
+        a.erdat
         >= (select ultima_execucao from {{ ref('stg_int_ultima_exec') }})
         and a.erdat <= TO_CHAR(CURRENT_DATE(), 'YYYYMMDD')
         and a.invoiced = 'X'
 --'{{ var("dia_fim") }}'
 )
 
-select
+select distinct
     documento_calculo,
     documento_impressao,
     vkont as conta_contrato,
@@ -126,7 +127,7 @@ select
     formulario_pagamento,
     txjcd as domicilio_fiscal,
     SUBSTR(data_competencia, 1, 6) as mes_competencia,
-    LEFT(period, 4) || RIGHT(period, 2) as "period",
+    LEFT(billing_period, 4) || SUBSTR(billing_period, 6, 2) as mes_referencia,
     case
         when fatura <> ' '
             then

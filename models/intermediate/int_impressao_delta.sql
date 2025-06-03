@@ -37,8 +37,9 @@ ccs_std_equatorial as (
         a.ztipo as tipo_impressao
     from {{ ref ('stg_erdk') }} as a
     where
-        a.mandt in (401, 402, 403, 404)
-        and a.erdat
+        --a.mandt in (401, 402, 403, 404)
+        --and 
+        a.erdat
         >= (select ultima_execucao from {{ ref('stg_int_ultima_exec') }})
         and a.erdat <= TO_CHAR(CURRENT_DATE(), 'YYYYMMDD')
         and a.invoiced = 'X'
