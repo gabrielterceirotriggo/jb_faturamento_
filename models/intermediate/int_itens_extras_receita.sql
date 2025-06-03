@@ -6,8 +6,8 @@ select
     null as setor_industrial,
     null as categoria_tarifa,
     null as subclasse,
-    int_documentos_faturamento.tipo_calculo,
-    int_documentos_faturamento.tipo_documento,
+    {# int_documentos_faturamento.tipo_calculo,
+    int_documentos_faturamento.tipo_documento, #}
     dberdl.belzart as item_documento,
     '000' as escalao,
     dberdl.sbasw as base_imposto,
@@ -49,7 +49,6 @@ select
         when dberdl.txjcd = ' ' then null
         else dberdl.txjcd
     end as domicilio_fiscal
-
 from
     {{ ref('int_documentos_faturamento') }} as int_documentos_faturamento
 left outer join

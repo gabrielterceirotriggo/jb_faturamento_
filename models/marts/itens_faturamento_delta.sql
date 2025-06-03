@@ -17,7 +17,6 @@ with int_itens_consumo as (
         tic.tipo_imposto,
         tic.consumo,
         tic.preco,
-        -- Não tinha na tabela
         tic.receita,
         tic.base_imposto,
         tic.aliquota,
