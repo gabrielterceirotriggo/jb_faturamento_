@@ -11,3 +11,5 @@ select
     TO_DATE(TO_DATE(a.erdat, 'YYYYMMDD')) as data_criacao
 from
     {{ ref ('stg_etrg') }} as a
+where
+    a.mandt = {{ mc_mandante(var('source_param')) }}

@@ -11,38 +11,57 @@ with dt as (
         itens_faturamento.flag,
         case
             when int_calculo_delta.mes_referencia >= '202311'
-                then
+                then 
                     case
-                        when
-                            itens_faturamento.flag = 'C'
-                            and itens_faturamento.item_documento in (
-                                'ZEAT',
-                                'ZBXE',
-                                'ZEANP',
-                                'ZEAIT',
-                                'ZEAFP',
-                                'ZCMFNP',
-                                'ZIPFTE',
-                                'ZEARV',
-                                'ZEMFUP',
-                                'ZTUSNP',
-                                'ZTUSFP',
-                                'ZEAFPC',
-                                'ZEANPC',
-                                'ZEARVC',
-                                'ZEATC',
-                                'ZBXEC'
-                            )
-                            then itens_faturamento.consumo
-                        when
-                            itens_faturamento.flag = 'C'
-                            and itens_faturamento.item_documento in (
-                                'ZEGAT', 'ZEGFP', 'ZEGIT', 'ZEGNP', 'ZEGRV'
-                            )
-                            then itens_faturamento.consumo
-                        else 0
+                        when itens_faturamento.flag = 'C'
+                        and itens_faturamento.item_documento in (
+                            'ZEAT',
+                            'ZBXE',
+                            'ZEANP',
+	                        'ZEAIT',
+                            'ZEAFP',
+                            'ZCMFNP',
+	                        'ZIPFTE',
+                            'ZEARV',
+                            'ZEMFUP',
+	                        'ZTUSNP',
+                            'ZTUSFP',
+                            'ZEAFPC',
+	                        'ZEAITC',
+                            'ZEANPC',
+                            'ZEARVC',
+	                        'ZEATC',
+                            'ZBXEC'
+                        ) then itens_faturamento.consumo else 0
                     end
-            else 0
+                    -
+                    case
+                        when itens_faturamento.flag = 'C'
+                        and itens_faturamento.item_documento in (
+                            'ZEGAT',
+                            'ZEGFP',
+                            'ZEGIT',
+                            'ZEGNP',
+                            'ZEGRV'
+                        ) then itens_faturamento.consumo else 0
+                    end
+            else
+                case
+                    when itens_faturamento.flag = 'C'
+                    and itens_faturamento.item_documento in (
+                        'ZEAT',
+                        'ZBXE',
+                        'ZEANP',
+	                    'ZEAIT',
+                        'ZEAFP',
+                        'ZCMFNP',
+	                    'ZIPFTE',
+                        'ZEARV',
+                        'ZEMFUP',
+	                    'ZTUSNP',
+                        'ZTUSFP'
+                    ) then itens_faturamento.consumo else 0
+                end
         end as consumo_faturado,
         case
             when
@@ -124,7 +143,13 @@ with dt as (
                     'ZMUE',
                     'ZMUT',
                     'ZEIP',
-                    'ZTIP', 'ZTAT', 'ZTRV', 'ZERV', 'ZEIT', 'ZTIT', 'ZCRI'
+                    'ZTIP',
+                    'ZTAT',
+                    'ZTRV',
+                    'ZERV',
+                    'ZEIT',
+                    'ZTIT',
+                    'ZCRI'
                 )
                 then itens_faturamento.preco
             else 0
@@ -273,8 +298,18 @@ with dt as (
 
 ),
 
+{# q_tarifa as (
+    select distinct --avaliar necessidade
+        dt.mes_competencia,
+        dt.documento_calculo,
+        dt.documento_impressao,
+        dt.tarifa
+    from
+        dt
+), #}
+
 q_soma_tarifa as (
-    select
+    select distinct
         dt.mes_competencia,
         dt.documento_calculo,
         dt.documento_impressao,
@@ -351,7 +386,11 @@ q_trata as (
         dt.setor_industrial,
         dt.categoria_tarifa,
         dt.subclasse,
-        coalesce(cast(dt.linha as INT), 0) as linha
+        {# coalesce(cast(dt.linha as INT), 0) as linha #}
+        case
+            when dt.linha is null then 0
+            else cast(dt.linha as INT)
+        end as linha
     from
         dt
     group by
@@ -364,7 +403,7 @@ q_trata as (
         dt.subclasse
 ),
 
-q_order as (
+{# q_order as (
     select
         mes_competencia,
         documento_calculo,
@@ -397,7 +436,7 @@ q_rank as (
         ) as posicao
     from
         q_order
-),
+), #}
 
 q_filtro as (
     select
@@ -408,9 +447,18 @@ q_filtro as (
         categoria_tarifa,
         subclasse
     from
-        q_rank
-    where
-        posicao = 1
+        q_trata
+    qualify ROW_NUMBER() over (
+        partition by
+            mes_competencia,
+            documento_calculo,
+            documento_impressao
+        order by
+            mes_competencia asc,
+            documento_calculo asc,
+            documento_impressao asc,
+            linha desc
+    ) = 1
 )
 
 select
@@ -447,4 +495,7 @@ left outer join q_soma
         and q_filtro.documento_calculo = q_soma.documento_calculo
         and q_filtro.documento_impressao = q_soma.documento_impressao
 left outer join q_soma_tarifa
-    using (mes_competencia, documento_calculo, documento_impressao)
+    on
+        q_filtro.mes_competencia = q_soma_tarifa.mes_competencia
+        and q_filtro.documento_calculo = q_soma_tarifa.documento_calculo
+        and q_filtro.documento_impressao = q_soma_tarifa.documento_impressao

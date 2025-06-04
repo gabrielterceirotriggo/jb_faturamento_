@@ -44,4 +44,4 @@ select
 from
     {{ ref ('stg_zcfat_irreg_inf') }} as zcfat_irreg_inf
 where
-    zcfat_irreg_inf.mandt in (401, 402, 403, 404)
+    zcfat_irreg_inf.mandt = {{ mc_mandante(var('source_param')) }}

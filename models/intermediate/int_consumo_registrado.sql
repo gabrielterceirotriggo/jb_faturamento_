@@ -214,13 +214,11 @@ q1_0 as (
         tcd.mes_competencia,
         tcd.documento_calculo,
         tcd.documento_impressao,
-        --não tinha na tabela
         db2.logikzw,
         db1.bis,
         db1.belzart,
         db1.v_abrmenge,
         db1.n_abrmenge,
-        --não tinha na tabela
         db2.v_zwstdiff,
         db2.n_zwstdiff,
         db2.ablbelnr as id_leitura,
@@ -232,7 +230,7 @@ q1_0 as (
     left outer join
         dberchz2 as db2
         on
-            db2.mandt in (401, 402, 403, 404)
+            db2.mandt = {{ mc_mandante(var('source_param')) }}
             and tcd.documento_calculo = db2.belnr
             and db2.ablbelnr <> ' '
     left outer join
@@ -245,22 +243,22 @@ q1_0 as (
 
 q1_1 as (
     select
-        q1_0.belzart,
-        q1_0.bis,
-        q1_0.cnr,
-        etdz.zwfakt as constante_medidor,
-        q1_0.documento_calculo,
-        q1_0.documento_impressao,
-        q1_0.estorno_ajuste,
-        q1_0.estorno_pleno,
-        q1_0.id_leitura,
-        q1_0.logikzw,
         q1_0.mandt,
         q1_0.mes_competencia,
+        q1_0.documento_calculo,
+        q1_0.documento_impressao,
+        q1_0.belzart,
+        etdz.zwfakt as constante_medidor,
+        q1_0.v_abrmenge,
         q1_0.n_abrmenge,
         q1_0.n_zwstdiff,
-        q1_0.v_abrmenge,
-        q1_0.v_zwstdiff
+        q1_0.v_zwstdiff,
+        q1_0.id_leitura,
+        q1_0.logikzw,
+        q1_0.bis,
+        q1_0.estorno_ajuste,
+        q1_0.estorno_pleno,
+        q1_0.cnr
     from
         q1_0
     left outer join
@@ -272,7 +270,7 @@ q1_1 as (
             and q1_0.bis <= etdz.bis
     where
         etdz.massread = 'KWH'
-        and q1_0.mandt in (401, 402, 403, 404)
+        and q1_0.mandt = {{ mc_mandante(var('source_param')) }}
 ),
 
 q1_2 as (
@@ -303,6 +301,8 @@ q1_2 as (
             and q1_1.logikzw = ezuz.logikzw
             and q1_1.bis >= ezuz.ab
             and q1_1.bis <= ezuz.bis
+    where
+        q1_1.mandt = {{ mc_mandante(var('source_param')) }}
 ),
 
 q1_3 as (
@@ -333,6 +333,8 @@ q1_3 as (
             and q1_2.bis >= egerh.ab
             and q1_2.bis <= egerh.bis
             and egerh.kombinat = 'W'
+    where
+        q1_2.mandt = {{ mc_mandante(var('source_param')) }}
 ),
 
 q1_4 as (
@@ -359,13 +361,14 @@ q1_4 as (
     left outer join
         te835t
         on
-            q1_3.belzart = te835t.belzart
+            q1_3.mandt = te835t.mandt
+            and q1_3.belzart = te835t.belzart
     where
         te835t.spras = 'P'
-        and te835t.mandt in (401, 402, 403, 404)
-        and (te835t.text30 not like '% RV' or te835t.belzart = 'ZRCARY')
-        and te835t.text30 not like '%Gerado'
-        and te835t.text30 not like '%Reativo Exced'
+        and te835t.mandt = {{ mc_mandante(var('source_param')) }}
+        and (te835t.text30 not like '% RV' or te835t.belzart = 'ZRCARV')
+        and te835t.text30 not like '%Gerado%'
+        and te835t.text30 not like '%Reativo Exced%'
 ),
 
 case as (

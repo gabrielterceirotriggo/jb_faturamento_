@@ -1,7 +1,7 @@
 with int_precalc_delta as (
     select
         mes_competencia,
-        "period" as mes_referencia,
+        mes_referencia,
         documento_calculo,
         documento_impressao,
         fatura,
@@ -81,7 +81,7 @@ ettifn as (
         {{ ref ('stg_ettifn') }}
 )
 
-select
+select distinct
     int_precalc_delta.mes_competencia,
     int_precalc_delta.mes_referencia,
     int_precalc_delta.documento_calculo,
@@ -164,7 +164,7 @@ from
 left outer join
     ettifn
     on
-        ettifn.mandt in (401)
+        ettifn.mandt = {{ mc_mandante(var('source_param')) }}
         and int_precalc_delta.instalacao = ettifn.anlage
         and ettifn.operand = 'FL_SEM_NF'
         and ettifn.ab <= TO_CHAR(int_precalc_delta.fim_calculo, 'YYYYMMDD')

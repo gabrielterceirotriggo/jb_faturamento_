@@ -1,5 +1,6 @@
 select
     documento_impressao,
+    motivo_criacao_impressao,
     tipo_impressao,
     data_criacao_impressao,
     usuario_criacao,
@@ -11,7 +12,7 @@ select
     chave_reconciliacao,
     motivo_estorno_impressao,
     contrapartida,
-    valor_total,
+    valor_total*-1 as valor_total,
     estorno_pleno,
     fatura_virtual,
     TO_VARCHAR(data_competencia, 'YYYYMM') as mes_competencia

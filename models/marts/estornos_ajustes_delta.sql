@@ -7,12 +7,6 @@ with ranked_data as (
         CAST(documento_estorno_ajuste as VARCHAR(12))
             as documento_estorno_ajuste,
         CAST(valor_fatura as DECIMAL(13, 2)) as valor_fatura,
-        ROW_NUMBER()
-            over (
-                partition by documento_estorno_ajuste
-                order by data_criacao_calculo desc
-            )
-            as row_num
     from
         {{ ref('int_calculo_delta') }}
     where
@@ -28,7 +22,10 @@ select
     valor_fatura
 from
     ranked_data
-where
-    row_num = 1
-order by
-    documento_estorno_ajuste desc, data_criacao_calculo desc
+qualify ROW_NUMBER() over (
+    partition by
+        documento_estorno_ajuste
+    order by
+        documento_estorno_ajuste desc,
+        data_criacao_calculo desc
+) = 1

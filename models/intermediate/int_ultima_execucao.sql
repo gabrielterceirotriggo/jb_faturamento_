@@ -1,8 +1,3 @@
-with int_ultima_exec as (
-    select TO_CHAR(CURRENT_DATE(), 'YYYYMMDD') as ultima_execucao
-    from
-        {{ ref('faturamento') }}
-    limit 1
-)
+--depends_on: {{ ref('faturamento') }}
 
-select ultima_execucao from int_ultima_exec
+select TO_CHAR(CURRENT_DATE(), 'YYYYMMDD') as ultima_execucao

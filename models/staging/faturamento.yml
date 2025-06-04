@@ -35,3 +35,8 @@ sources:
       - name: FATURAMENTO
       - name: INT_ULTIMA_EXECUCAO
       - name: ITENS_FATURAMENTO
+  - name: "HML"
+    database: sandbox
+    schema: "EQTL_MA"
+    tables:
+      - name: FATURAMENTO

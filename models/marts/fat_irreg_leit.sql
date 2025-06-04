@@ -17,4 +17,4 @@ select
 from
     {{ ref ('stg_zcfat_irreg_cab') }} as zcfat_irreg_cab
 where
-    zcfat_irreg_cab.mandt in (401, 402, 403, 404)
+    zcfat_irreg_cab.mandt = {{ mc_mandante(var('source_param')) }}

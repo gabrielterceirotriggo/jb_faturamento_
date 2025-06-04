@@ -99,6 +99,7 @@ ajustes as (
         base_imposto,
         aliquota,
         operacao,
+        sub_operacao,
         domicilio_fiscal
     from q_itens_medidos
 )
