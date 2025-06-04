@@ -1,14 +1,4 @@
-with
--- dia_inicial AS (
---     SELECT 
---         REPLACE(ULTIMA_CARGA, '-', ' ') AS dia_ini
---     FROM 
---         {{ ('stg_tab_controle_cargas') }}
---     WHERE 
---         tabela = 'FATURAMENTO'
--- ),
-
-calculos as (
+with calculos as (
     select
         a.mandt,
         b.belnr as doc_calculo,
@@ -38,14 +28,10 @@ calculos as (
         and a.erdat
         >= (select ultima_execucao from {{ ref('stg_int_ultima_exec') }})
         and a.erdat <= TO_CHAR(CURRENT_DATE(), 'YYYYMMDD')
-        --alterado para homologacao
-        -- AND A.ERDAT >= (SELECT dia_ini FROM dia_inicial)
-        -- AND A.ERDAT <= '{{ var("dia_fim") }}'
 ),
 
 estornos_plenos as (
     select
-    /*+ PARALLEL (A, 6)*/
         a.mandt,
         b.belnr as doc_calculo,
         a.opbel as doc_impressao,

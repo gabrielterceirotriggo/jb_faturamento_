@@ -37,6 +37,6 @@ sources:
       - name: ITENS_FATURAMENTO
   - name: "HML"
     database: sandbox
-    schema: "EQTL_MA"
+    schema: "EQTL_PA"
     tables:
       - name: FATURAMENTO

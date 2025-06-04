@@ -42,11 +42,6 @@ ccs_std_equatorial as (
         >= (select ultima_execucao from {{ ref('stg_int_ultima_exec') }})
         and a.erdat <= TO_CHAR(CURRENT_DATE(), 'YYYYMMDD')
         and a.invoiced = 'X'
-
-        --Trecho abaixo esta comentado apenas para homologação
-        -- AND A.ERDAT >= (SELECT dia_ini FROM dia_inicial)
-        -- AND A.ERDAT <= '{{ var("dia_fim") }}'
-        -- AND A.INVOICED = 'X'
 )
 
 select

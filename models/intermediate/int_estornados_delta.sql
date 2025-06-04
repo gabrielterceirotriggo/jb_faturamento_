@@ -548,7 +548,7 @@ q_estornos_pleno_fat_delta as (
         faturamento_delta.estrutura_regional_politica,
         null as ordem_faturamento,
         faturamento_delta.consumo_registrado,
-        2 as flag,
+        1 as flag,
         faturamento_delta.valor_fatura * -1 as valor_fatura,
         faturamento_delta.valor_contabil * -1 as valor_contabil,
         faturamento_delta.consumo_faturado * -1 as consumo_faturado,
