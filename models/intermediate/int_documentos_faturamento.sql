@@ -32,9 +32,8 @@ calculos as (
         {{ ref('stg_erch') }} as c
         on (b.mandt = c.mandt) and (b.belnr = c.belnr)
     where
-        -- A.MANDT IN (401, 402, 403, 404)
-        -- AND 
-        a.invoiced = 'X'
+        a.mandt = {{ mc_mandante(var('source_param')) }} 
+        and a.invoiced = 'X'
         and a.ergrd <> '04'
         and a.erdat
         >= (select ultima_execucao from {{ ref('stg_int_ultima_exec') }})
@@ -71,16 +70,12 @@ estornos_plenos as (
             (b.mandt = c.mandt)
             and b.belnr = c.belnr
     where
-        a.invoiced = 'X'
+        a.mandt = {{ mc_mandante(var('source_param')) }}
+        and a.invoiced = 'X'
         and a.ergrd = '04'
         and a.erdat
         >= (select ultima_execucao from {{ ref('stg_int_ultima_exec') }})
         and a.erdat <= TO_CHAR(CURRENT_DATE(), 'YYYYMMDD')
---alterado para homologacao
--- AND A.ERDAT >= (SELECT dia_ini FROM dia_inicial)
--- AND A.ERDAT <= '{{ var("dia_fim") }}'
---
---AND A.OPBEL in ('300082143436')
 ),
 
 uniao as (
