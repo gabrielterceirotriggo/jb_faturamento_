@@ -298,7 +298,7 @@ with dt as (
 
 ),
 
-{# q_tarifa as (
+q_tarifa as (
     select distinct --avaliar necessidade
         dt.mes_competencia,
         dt.documento_calculo,
@@ -306,10 +306,10 @@ with dt as (
         dt.tarifa
     from
         dt
-), #}
+),
 
 q_soma_tarifa as (
-    select distinct
+    select 
         dt.mes_competencia,
         dt.documento_calculo,
         dt.documento_impressao,
@@ -480,7 +480,7 @@ select
     q_soma.retencao,
     q_soma.receita_bandeiras,
     q_soma.receita_consumo_faturado,
-    q_soma.tarifa,
+    q_soma_tarifa.tarifa,
     q_soma.correcao_monetaria,
     q_soma.creditos,
     q_soma.estornos,

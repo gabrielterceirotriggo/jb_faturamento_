@@ -106,26 +106,10 @@ with base as (
 )
 
 select distinct
+    SUBSTR(data_competencia, 0, 6) as mes_competencia,
+    LEFT(billing_period, 4) || SUBSTR(billing_period, 6, 2) as mes_referencia,
     documento_calculo,
     documento_impressao,
-    vkont as conta_contrato,
-    gpartner as parceiro_negocio,
-    vertrag as contrato,
-    ableinh as unidade_leitura,
-    motivo_criacao_impressao,
-    tipo_impressao,
-    belegart as tipo_calculo,
-    estorno_pleno,
-    fatura_virtual,
-    minimo,
-    contrapartida as documento_estorno_pleno,
-    motivo_estorno_impressao as motivo_estorno_pleno,
-    valor_total as valor_fatura,
-    chave_reconciliacao,
-    formulario_pagamento,
-    txjcd as domicilio_fiscal,
-    SUBSTR(data_competencia, 1, 6) as mes_competencia,
-    LEFT(billing_period, 4) || SUBSTR(billing_period, 6, 2) as mes_referencia,
     case
         when fatura <> ' '
             then
@@ -136,17 +120,25 @@ select distinct
             then
                 anlage
     end as instalacao,
+    vkont as conta_contrato,
+    gpartner as parceiro_negocio,
+    vertrag as contrato,
+    ableinh as unidade_leitura,
     SUBSTR(ableinh, 3, 2) as etapa,
+    motivo_criacao_impressao,
+    tipo_impressao,
+    belegart as tipo_calculo,
     case
         when zzorigdoc <> ' '
             then
                 zzorigdoc
     end as origem_documento,
     case
-        when zzorigdoc in ('ip', 'rs', 'fr', 'ds', 'cl')
+        when zzorigdoc in ('IP', 'RS', 'FR', 'DS', 'CL')
             then
                 'X'
     end as cnr,
+    estorno_pleno,
     case
         when sc_belnr_h = ' '
             then
@@ -154,6 +146,8 @@ select distinct
         else
             'X'
     end as estorno_ajuste,
+    fatura_virtual,
+    minimo,
     case
         when begabrpe <> '00000000'
             then
@@ -164,11 +158,13 @@ select distinct
             then
                 TO_DATE(endabrpe, 'YYYYMMDD')
     end as fim_calculo,
+    contrapartida as documento_estorno_pleno,
     case
         when data_estorno_pleno <> '00000000'
             then
                 TO_DATE(data_estorno_pleno, 'YYYYMMDD')
     end as data_estorno_pleno,
+    motivo_estorno_impressao as motivo_estorno_pleno,
     case
         when sc_belnr_n <> ' '
             then
@@ -186,6 +182,10 @@ select distinct
             then
                 bcreason
     end as motivo_estorno_ajuste,
+    valor_total as valor_fatura,
+    chave_reconciliacao,
+    formulario_pagamento,
+    txjcd as domicilio_fiscal,
     case
         when data_competencia <> '00000000'
             then
@@ -214,9 +214,9 @@ select distinct
     case
         when data_criacao_impressao <> '00000000'
             then
-                TO_DATE(
-                    data_criacao_impressao || ' ' || hora_criacao,
-                    'YYYYMMDD HH24MISS'
+                TO_TIMESTAMP_NTZ(
+                    data_criacao_impressao || hora_criacao,
+                    'YYYYMMDDHH24MISS'
                 )
     end as data_criacao_impressao,
     case
@@ -237,7 +237,7 @@ select distinct
     case
         when erdat <> '00000000' and eroetim <> ' '
             then
-                TO_DATE(erdat || ' ' || eroetim, 'YYYYMMDD HH24MI')
+                TO_TIMESTAMP_NTZ(erdat || ' ' || eroetim, 'YYYYMMDD HH24MI')
         when erdat <> '00000000'
             then
                 TO_DATE(erdat, 'YYYYMMDD')
