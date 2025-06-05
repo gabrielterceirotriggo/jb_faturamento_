@@ -310,16 +310,16 @@ q_tarifa as (
 
 q_soma_tarifa as (
     select 
-        dt.mes_competencia,
-        dt.documento_calculo,
-        dt.documento_impressao,
-        sum(dt.tarifa) as tarifa
+        q_tarifa.mes_competencia,
+        q_tarifa.documento_calculo,
+        q_tarifa.documento_impressao,
+        sum(q_tarifa.tarifa) as tarifa
     from
-        dt
+        q_tarifa
     group by
-        dt.mes_competencia,
-        dt.documento_calculo,
-        dt.documento_impressao
+        q_tarifa.mes_competencia,
+        q_tarifa.documento_calculo,
+        q_tarifa.documento_impressao
 ),
 
 q_soma as (

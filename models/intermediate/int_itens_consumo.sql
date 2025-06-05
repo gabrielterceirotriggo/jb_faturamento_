@@ -200,7 +200,7 @@ q_itens_consumo as (
             and dberchz1.belzeile = dberchz3.belzeile
     where
         dberdlb.xtotal_amnt = 'X'
-        --AND int_documentos_faturamento.MANDT IN (401, 402, 403, 404)
+        AND int_documentos_faturamento.MANDT = {{ mc_mandante(var('source_param')) }}
 ),
 
 q_itens_consumo2 as (
@@ -269,7 +269,7 @@ q_itens_consumo2 as (
             and dberchz5.belzeile = dberchz7.belzeile
     where
         dberdlb.xtotal_amnt = 'X'
-        --AND int_documentos_faturamento.MANDT IN (401, 402, 403, 404)
+        AND int_documentos_faturamento.MANDT = {{ mc_mandante(var('source_param')) }}
 ),
 
 final1 as (

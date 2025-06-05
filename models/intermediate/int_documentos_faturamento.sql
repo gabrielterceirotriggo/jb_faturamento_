@@ -11,7 +11,7 @@ with calculos as (
             when a.ergrd = '04' then 'X'
         end as estorno,
         case
-            when a.budat <> '00000000' then a.budat
+            when a.budat <> '00000000' then SUBSTR(a.budat, 0, 6)
         end as mes_competencia
     from
         {{ ref('stg_erdk') }} as a
