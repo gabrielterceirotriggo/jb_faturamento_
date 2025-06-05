@@ -68,7 +68,7 @@ select
     case
         when ccs_std_equatorial.data_criacao <> '00000000'
             then
-                TO_DATE(
+                TRY_TO_TIMESTAMP(
                     ccs_std_equatorial.data_criacao
                     || ' '
                     || ccs_std_equatorial.hora_criacao,
@@ -78,7 +78,7 @@ select
     case
         when ccs_std_equatorial.data_modificacao <> '00000000'
             then
-                TO_DATE(
+                TRY_TO_TIMESTAMP(
                     ccs_std_equatorial.data_modificacao
                     || ' '
                     || ccs_std_equatorial.hora_criacao,
