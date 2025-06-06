@@ -94,5 +94,5 @@ select
         as usuario_modificacao_calculo,
     CAST(data_dados as TIMESTAMP_NTZ(0)) as data_dados,
     CAST(ordem_faturamento as NUMBER(38, 0)) as ordem_faturamento,
-    CAST(consumo_registrado as NUMBER(28, 14)) as consumo_registrado
+    CAST(consumo_registrado as NUMBER(28, 14)) as consumo_registrado{{ colunas_faturamento_pial(var('source_param')) }}
 from {{ ref ('faturamento_delta') }}

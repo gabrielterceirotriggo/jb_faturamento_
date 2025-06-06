@@ -230,7 +230,8 @@ with dt as (
                     'ZTRV',
                     'ZERV',
                     'ZEIT',
-                    'ZTIT', 'ZCRI'
+                    'ZTIT',
+                    'ZCRI'
                 )
                 then itens_faturamento.receita
             else 0
