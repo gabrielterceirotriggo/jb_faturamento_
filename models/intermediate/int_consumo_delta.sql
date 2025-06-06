@@ -295,12 +295,10 @@ with dt as (
             itens_faturamento.operacao = faturamento_operacoes.operacao
             and itens_faturamento.sub_operacao
             = faturamento_operacoes.sub_operacao
-    group by all
-
 ),
 
 q_tarifa as (
-    select distinct --avaliar necessidade
+    select distinct
         dt.mes_competencia,
         dt.documento_calculo,
         dt.documento_impressao,

@@ -1,0 +1,1775 @@
+version: 2
+
+models:
+  - name: stg_dberchz1
+    columns:
+      - name: mandt
+        description: Mandante
+      - name: belnr
+        description: Nº de um documento de cálculo
+      - name: abslkz
+        description: Linha de conta p/determinação de prestação fixa
+      - name: belzeile
+        description: Linha de conta para documentos de impressão
+      - name: belzart
+        description: Tipo item documento
+      - name: csno
+        description: Nº seqüencial das etapas de esquema no cálculo
+      - name: mengestrel
+        description: Quantidade (valor calculado) relevante para estatística
+      - name: betrstrel
+        description: Montante da linha de conta é relevante para a estatística
+      - name: aklasse
+        description: Classe de cálculo
+      - name: tvorg
+        description: Suboperação para o item do documento
+      - name: diffkz
+        description: Código- linha de diferença p/estatística em descontos
+      - name: buchrel
+        description: Linha de conta relevante para lançamento
+      - name: branche
+        description: Setor industrial
+      - name: stgrqnt
+        description: Grupo de estatísticas quantidade
+      - name: stgramt
+        description: Grupo de estatísticas montante
+      - name: printrel
+        description: Linha de conta relevante para impressão
+      - name: tax_tvorg
+        description: Sub-transação p/determinação imposto em lnhs.prestação fixa
+      - name: linesort
+        description: Ordenação prévia das linhas de conta no esquema de cálculo
+      - name: ab
+        description: Data a partir da qual uma faixa de tempo é válida
+      - name: bis
+        description: Data até à qual é válida uma faixa de tempo
+      - name: timtypza
+        description: Categoria de tempo (dias ou meses) da linha de conta
+      - name: timtyp
+        description: Categoria de tempo (dias ou meses)
+      - name: programm
+        description: Programa variantes
+      - name: massbill
+        description: Unidade de medida de cálculo
+      - name: mass1
+        description: Unidade de medida
+      - name: mass2
+        description: Unidade de medida
+      - name: mass3
+        description: Unidade de medida
+      - name: mass4
+        description: Unidade de medida
+      - name: saison
+        description: Sazonalidade
+      - name: gegen_tvorg
+        description: Operação de contrapartida p/a sub-transção da linha de conta
+      - name: schemanr
+        description: Nº esquema de cálculo
+      - name: sno
+        description: Nº seqüencial da etapa de esquema no esquema de cálculo
+      - name: timbasis
+        description: Base de tempo
+      - name: fran_type
+        description: Categoria de taxa de concessão
+      - name: konzigr
+        description: Grupo de taxas de concessão
+      - name: tariftyp
+        description: Categoria de tarifa
+      - name: tarifnr
+        description: Chave de tarifa
+      - name: kondigr
+        description: Grupo de informações de tarifa
+      - name: sttarif
+        description: Tarifa estatística
+      - name: gewkey
+        description: Chave de ponderação
+      - name: temp_area
+        description: Subclasse
+      - name: abggrnd3
+        description: Motivo de determinação de pró-rateio
+      - name: abggrnd1
+        description: Motivo de determinação de pró-rateio
+      - name: abggrnd2
+        description: Motivo de determinação de pró-rateio
+      - name: abggrnd4
+        description: Motivo de determinação de pró-rateio
+      - name: abggrnd5
+        description: Motivo de determinação de pró-rateio
+      - name: abggrnd6
+        description: Motivo de determinação de pró-rateio
+      - name: abggrnd7
+        description: Motivo de determinação de pró-rateio
+      - name: abggrnd8
+        description: Motivo de determinação de pró-rateio
+      - name: abggrnd9
+        description: Motivo de determinação de pró-rateio
+      - name: abggrnd10
+        description: Motivo de determinação de pró-rateio
+      - name: drckstuf
+        description: Nível pressão gás
+      - name: backcanc03
+        description: Código de estorno recálculo
+      - name: backdocno
+        description: Nº de um documento de cálculo
+      - name: backcanc01
+        description: Código de estorno recálculo
+      - name: backcanc02
+        description: Código de estorno recálculo
+      - name: ein03
+        description: Operando de entrada
+      - name: ein01
+        description: Operando de entrada
+      - name: ein02
+        description: Operando de entrada
+      - name: ein04
+        description: Operando de entrada
+      - name: wdhfakt
+        description: Fator de repetição para valores de referência
+      - name: aus01
+        description: Operando de saída
+      - name: aus02
+        description: Operando de saída
+      - name: datum1
+        description: Data
+      - name: datum2
+        description: Data
+      - name: backcanc04
+        description: Código de estorno recálculo
+      - name: backcanc05
+        description: Código de estorno recálculo
+      - name: backcanc
+        description: Código de estorno recálculo
+      - name: backexec
+        description: Código de atribuição de recálculo
+      - name: backdocline
+        description: Linha de conta para documentos de impressão
+      - name: rabzus
+        description: Chave de desconto
+      - name: dyncanc
+        description: Código de estorno recálculo
+      - name: dyncanc05
+        description: Código estorno controle de período dinâmico 5
+      - name: dyncanc04
+        description: Código estorno controle de período dinâmico 4
+      - name: dyncanc01
+        description: Etapas de esquema p/estorno no controle período dinâmico 1
+      - name: dyncanc02
+        description: Código estorno controle período dinâmico 2
+      - name: dyncanc03
+        description: Código estorno controle período dinâmico 3
+      - name: dynexec
+        description: Código de atribuição de recálculo
+      - name: timtypquot
+        description: Ctg.tempo do numer.e denom.da quota tempo de uma faixa tempo
+      - name: konzver
+        description: Contrato de concessão
+      - name: n_zahl2
+        description: Casas decimais de um nº
+      - name: timecontrl
+        description: Controle de período
+      - name: n_zahl1
+        description: Casas decimais de um nº
+      - name: n_zahl3
+        description: Casas decimais de um nº
+      - name: n_zahl4
+        description: Casas decimais de um nº
+      - name: n_zeitant
+        description: Casas decimais de uma quota de tempo
+      - name: lratestep
+        description: Nº lógico da etapa de cálculo de tarifa
+      - name: stafo
+        description: Grupo de atualização para atualização estatística
+      - name: artmenge
+        description: Classificação da quantidade calculada p/estatística
+      - name: stattart
+        description: Tipo de tarifa para análise estatística
+      - name: tcnumtor
+        description: Medidor da quota de tempo de uma faixa de tempo
+      - name: tcdenomtor
+        description: Denominador da quota de tempo de uma faixa de tempo
+      - name: aktiv
+        description: Leitura ativa
+      - name: pertyp
+        description: Tipo de período interno de cálculo
+      - name: erchv_anchor
+        description: Linha âncora para entrada DBERCHV
+      - name: v_abrmenge
+        description: Casas à esquerda da vírgula da quantidade de cálculo
+      - name: v_zahl1
+        description: Casas à esquerda da vírgula de um nº
+      - name: v_zahl2
+        description: Casas à esquerda da vírgula de um nº
+      - name: v_zahl3
+        description: Casas à esquerda da vírgula de um nº
+      - name: v_zahl4
+        description: Casas à esquerda da vírgula de um nº
+      - name: v_zeitant
+        description: Casas à esquerda da vírgula de uma quota de tempo
+      - name: peb
+        description: Código- linha de conta referente a cálculo final
+      - name: oplfdnr
+        description: Nº seqüencial de um operando
+      - name: oucontract
+        description: Contrato básico para contrato individual
+      - name: n_abrmenge
+        description: Casas decimais de quantidade de cálculo
+  - name: stg_dberchz2
+    columns:
+      - name: mandt
+        description: Mandante
+      - name: belnr
+        description: Nº de um documento de cálculo
+      - name: belzeile
+        description: Linha de conta para documentos de impressão
+      - name: n_zwstand
+        description: Casas decimais da posição lida do medidor
+      - name: n_zwstndab
+        description: Casas decimais da posição do medidor calculada
+      - name: n_zwstvor
+        description: Casas decimais de leitura prévia
+      - name: n_zwstdiff
+        description: Casas decimais da diferença da posição do medidor
+      - name: v_zwstand
+        description: Casas antes da vírgula da posição lida do medidor
+      - name: v_zwstndab
+        description: Casas antes da vírgula da posição do medidor calculada
+      - name: v_zwstvor
+        description: Casas à esquerda da vírgula do resultado leitura anterior
+      - name: v_zwstdiff
+        description: Casas à esquerda da vírgula da diferença posição do medidor
+      - name: equnr
+        description: Nº equipamento
+      - name: endeprog
+        description: Fim do período de previsão
+      - name: geraet
+        description: Equipamento
+      - name: matnr
+        description: Nº do material
+      - name: zwnummer
+        description: Registrador
+      - name: ablesgr
+        description: Motivo de leitura
+      - name: ablesgrv
+        description: Motivo de leitura da leitura prévia
+      - name: ablbelnr
+        description: ID interno do documento de leitura
+      - name: ablhinw
+        description: Nota de leitura do leiturista
+      - name: mrconnect
+        description: ID interno do documento de leitura
+      - name: atim
+        description: Duração de leitura relevante para cálculo
+      - name: atimva
+        description: Duração de leitura da leitura anterior
+      - name: atimmax
+        description: Hora do máximo ocorrido
+      - name: adatmax
+        description: Data do máximo ocorrido
+      - name: thgdatum
+        description: Data de atribuição de gás
+      - name: zuorddat
+        description: Data de atribuição da leitura
+      - name: regrelsort
+        description: Ajuda ordenação na impressão contas p/relações registradores
+      - name: logiknr
+        description: Nº equipamento lógico
+      - name: logikzw
+        description: Nº registrador lógico
+      - name: extpkz
+        description: Código de simulação para resultados de leitura
+      - name: begprog
+        description: Início do período de previsão
+      - name: qdproc
+        description: Processo para determinação de quantidade
+      - name: indexnr
+        description: Nº seqüêncial da relação de registrador
+      - name: istablart
+        description: Tipo de leitura
+      - name: istablartva
+        description: Tipo de leitura da leitura anterior
+  - name: stg_dberchz3
+    columns:
+      - name: mandt
+        description: Mandante
+      - name: belnr
+        description: Nº de um documento de cálculo
+      - name: belzeile
+        description: Linha de conta para documentos de impressão
+      - name: biszone
+        description: Até escalão
+      - name: mngbasis
+        description: Quantidade base grande para o montante
+      - name: line_class
+        description: Critérios de classificação p/itens de cálculo
+      - name: v_nettobtr_l
+        description: Casa antes da vírgula do montante líquido descritivo
+      - name: preistuf
+        description: Nível de preço
+      - name: preistyp
+        description: Categoria de preço
+      - name: preigkl
+        description: Cláusula de índice variável de preço
+      - name: preiadd
+        description: Preço a adicionar para ajuste de preços
+      - name: preifakt
+        description: Fator de ajuste de preços
+      - name: opmult
+        description: Primeiro adição
+      - name: zonennr
+        description: Nº de um escalão de preços ou escala de preços
+      - name: mwskz
+        description: Código do IVA
+      - name: ermwskz
+        description: Código de determinação do imposto
+      - name: nettobtr
+        description: Montante líquido linha de conta
+      - name: twaers
+        description: Moeda da transação
+      - name: preiszus
+        description: Código- agrupamento de preços
+      - name: preis
+        description: Preço
+      - name: preisart
+        description: Tipo preço
+      - name: vonzone
+        description: Escalão-de
+      - name: urpreis
+        description: Preço bás.ao qual se refere a cláusula índice variável preço
+      - name: preisbtr
+        description: Montante preço
+      - name: txdat_kk
+        description: Data relevante para o cálculo dos impostos
+      - name: prctr
+        description: Centro de lucro
+      - name: kostl
+        description: Centro de custo
+      - name: ps_psp_pnr
+        description: Elemento do plano da estrutura do projeto (elemento PEP)
+      - name: aufnr
+        description: Nº ordem
+      - name: paobjnr
+        description: Nº para objetos resultado (CO-PA)
+      - name: paobjnr_s
+        description: Nº de objeto resultados p/lançamento CO-PA por mês de cosumo
+      - name: gsber
+        description: Divisão
+      - name: aperiodic
+        description: Lançamento aperiódico
+      - name: grossgroup
+        description: Grupo bruto
+      - name: bruttozeile
+        description: A linha de fatura é uma linha de montante bruto
+      - name: bupla
+        description: Local de negócios
+      - name: segment
+        description: Segmento para o reporting do segmento
+      - name: n_nettobtr_l
+        description: Casas decimais do montante líquido descritivo
+  - name: stg_dberchz5
+    columns:
+      - name: mandt
+        description: Mandante
+      - name: belnr
+        description: Nº de um documento de cálculo
+      - name: belzeile
+        description: Linha de conta para documentos de impressão
+      - name: csno
+        description: Nº seqüencial das etapas de esquema no cálculo
+      - name: belzart
+        description: Tipo item documento
+      - name: abslkz
+        description: Linha de conta p/determinação de prestação fixa
+      - name: diffkz
+        description: Código- linha de diferença p/estatística em descontos
+      - name: stgrqnt
+        description: Grupo de estatísticas quantidade
+      - name: buchrel
+        description: Linha de conta relevante para lançamento
+      - name: mengestrel
+        description: Quantidade (valor calculado) relevante para estatística
+      - name: betrstrel
+        description: Montante da linha de conta é relevante para a estatística
+      - name: stgramt
+        description: Grupo de estatísticas montante
+      - name: printrel
+        description: Linha de conta relevante para impressão
+      - name: aklasse
+        description: Classe de cálculo
+      - name: branche
+        description: Setor industrial
+      - name: tvorg
+        description: Suboperação para o item do documento
+      - name: gegen_tvorg
+        description: Operação de contrapartida p/a sub-transção da linha de conta
+      - name: tax_tvorg
+        description: Sub-transação p/determinação imposto em lnhs.prestação fixa
+      - name: linesort
+        description: Ordenação prévia das linhas de conta no esquema de cálculo
+      - name: ab
+        description: Data a partir da qual uma faixa de tempo é válida
+      - name: bis
+        description: Data até à qual é válida uma faixa de tempo
+      - name: timtypza
+        description: Categoria de tempo (dias ou meses) da linha de conta
+      - name: schemanr
+        description: Nº esquema de cálculo
+      - name: sno
+        description: Nº seqüencial da etapa de esquema no esquema de cálculo
+      - name: programm
+        description: Programa variantes
+      - name: massbill
+        description: Unidade de medida de cálculo
+      - name: saison
+        description: Sazonalidade
+      - name: timbasis
+        description: Base de tempo
+      - name: timtyp
+        description: Categoria de tempo (dias ou meses)
+      - name: fran_type
+        description: Categoria de taxa de concessão
+      - name: konzigr
+        description: Grupo de taxas de concessão
+      - name: tariftyp
+        description: Categoria de tarifa
+      - name: tarifnr
+        description: Chave de tarifa
+      - name: kondigr
+        description: Grupo de informações de tarifa
+      - name: sttarif
+        description: Tarifa estatística
+      - name: gewkey
+        description: Chave de ponderação
+      - name: wdhfakt
+        description: Fator de repetição para valores de referência
+      - name: temp_area
+        description: Subclasse
+      - name: drckstuf
+        description: Nível pressão gás
+      - name: abggrnd1
+        description: Motivo de determinação de pró-rateio
+      - name: abggrnd2
+        description: Motivo de determinação de pró-rateio
+      - name: abggrnd3
+        description: Motivo de determinação de pró-rateio
+      - name: abggrnd4
+        description: Motivo de determinação de pró-rateio
+      - name: abggrnd5
+        description: Motivo de determinação de pró-rateio
+      - name: abggrnd6
+        description: Motivo de determinação de pró-rateio
+      - name: abggrnd7
+        description: Motivo de determinação de pró-rateio
+      - name: abggrnd8
+        description: Motivo de determinação de pró-rateio
+      - name: abggrnd9
+        description: Motivo de determinação de pró-rateio
+      - name: abggrnd10
+        description: Motivo de determinação de pró-rateio
+      - name: ein01
+        description: Operando de entrada
+      - name: ein02
+        description: Operando de entrada
+      - name: ein03
+        description: Operando de entrada
+      - name: ein04
+        description: Operando de entrada
+      - name: aus01
+        description: Operando de saída
+      - name: aus02
+        description: Operando de saída
+      - name: mass1
+        description: Unidade de medida
+      - name: mass2
+        description: Unidade de medida
+      - name: datum2
+        description: Data
+      - name: mass3
+        description: Unidade de medida
+      - name: mass4
+        description: Unidade de medida
+      - name: datum1
+        description: Data
+      - name: rabzus
+        description: Chave de desconto
+      - name: backcanc01
+        description: Código de estorno recálculo
+      - name: backcanc02
+        description: Código de estorno recálculo
+      - name: backcanc03
+        description: Código de estorno recálculo
+      - name: backcanc04
+        description: Código de estorno recálculo
+      - name: backcanc05
+        description: Código de estorno recálculo
+      - name: backcanc
+        description: Código de estorno recálculo
+      - name: backexec
+        description: Código de atribuição de recálculo
+      - name: backdocno
+        description: Nº de um documento de cálculo
+      - name: dyncanc03
+        description: Código estorno controle período dinâmico 3
+      - name: backdocline
+        description: Linha de conta para documentos de impressão
+      - name: dyncanc01
+        description: Etapas de esquema p/estorno no controle período dinâmico 1
+      - name: dyncanc02
+        description: Código estorno controle período dinâmico 2
+      - name: dyncanc04
+        description: Código estorno controle de período dinâmico 4
+      - name: dyncanc05
+        description: Código estorno controle de período dinâmico 5
+      - name: dyncanc
+        description: Código de estorno recálculo
+      - name: dynexec
+        description: Código de atribuição de recálculo
+      - name: timecontrl
+        description: Controle de período
+      - name: timtypquot
+        description: Ctg.tempo do numer.e denom.da quota tempo de uma faixa tempo
+      - name: konzver
+        description: Contrato de concessão
+      - name: n_zahl1
+        description: Casas decimais de um nº
+      - name: n_zahl2
+        description: Casas decimais de um nº
+      - name: n_zahl4
+        description: Casas decimais de um nº
+      - name: n_zahl3
+        description: Casas decimais de um nº
+      - name: n_zeitant
+        description: Casas decimais de uma quota de tempo
+      - name: lratestep
+        description: Nº lógico da etapa de cálculo de tarifa
+      - name: stafo
+        description: Grupo de atualização para atualização estatística
+      - name: artmenge
+        description: Classificação da quantidade calculada p/estatística
+      - name: stattart
+        description: Tipo de tarifa para análise estatística
+      - name: tcnumtor
+        description: Medidor da quota de tempo de uma faixa de tempo
+      - name: tcdenomtor
+        description: Denominador da quota de tempo de uma faixa de tempo
+      - name: aktiv
+        description: Leitura ativa
+      - name: pertyp
+        description: Tipo de período interno de cálculo
+      - name: erchv_anchor
+        description: Linha âncora para entrada DBERCHV
+      - name: v_abrmenge
+        description: Casas à esquerda da vírgula da quantidade de cálculo
+      - name: v_zahl1
+        description: Casas à esquerda da vírgula de um nº
+      - name: v_zahl2
+        description: Casas à esquerda da vírgula de um nº
+      - name: v_zahl3
+        description: Casas à esquerda da vírgula de um nº
+      - name: v_zahl4
+        description: Casas à esquerda da vírgula de um nº
+      - name: v_zeitant
+        description: Casas à esquerda da vírgula de uma quota de tempo
+      - name: peb
+        description: Código- linha de conta referente a cálculo final
+      - name: oplfdnr
+        description: Nº seqüencial de um operando
+      - name: oucontract
+        description: Contrato básico para contrato individual
+      - name: n_abrmenge
+        description: Casas decimais de quantidade de cálculo
+  - name: stg_dberchz7
+    columns:
+      - name: mandt
+        description: Mandante
+      - name: belnr
+        description: Nº de um documento de cálculo
+      - name: belzeile
+        description: Linha de conta para documentos de impressão
+      - name: biszone
+        description: Até escalão
+      - name: mngbasis
+        description: Quantidade base grande para o montante
+      - name: preis
+        description: Preço
+      - name: preiadd
+        description: Preço a adicionar para ajuste de preços
+      - name: preistuf
+        description: Nível de preço
+      - name: preistyp
+        description: Categoria de preço
+      - name: preigkl
+        description: Cláusula de índice variável de preço
+      - name: zonennr
+        description: Nº de um escalão de preços ou escala de preços
+      - name: mwskz
+        description: Código do IVA
+      - name: ermwskz
+        description: Código de determinação do imposto
+      - name: nettobtr
+        description: Montante líquido linha de conta
+      - name: twaers
+        description: Moeda da transação
+      - name: preiszus
+        description: Código- agrupamento de preços
+      - name: preifakt
+        description: Fator de ajuste de preços
+      - name: opmult
+        description: Primeiro adição
+      - name: line_class
+        description: Critérios de classificação p/itens de cálculo
+      - name: preisart
+        description: Tipo preço
+      - name: v_nettobtr_l
+        description: Casa antes da vírgula do montante líquido descritivo
+      - name: vonzone
+        description: Escalão-de
+      - name: urpreis
+        description: Preço bás.ao qual se refere a cláusula índice variável preço
+      - name: preisbtr
+        description: Montante preço
+      - name: txdat_kk
+        description: Data relevante para o cálculo dos impostos
+      - name: prctr
+        description: Centro de lucro
+      - name: kostl
+        description: Centro de custo
+      - name: ps_psp_pnr
+        description: Elemento do plano da estrutura do projeto (elemento PEP)
+      - name: aufnr
+        description: Nº ordem
+      - name: paobjnr
+        description: Nº para objetos resultado (CO-PA)
+      - name: paobjnr_s
+        description: Nº de objeto resultados p/lançamento CO-PA por mês de cosumo
+      - name: gsber
+        description: Divisão
+      - name: aperiodic
+        description: Lançamento aperiódico
+      - name: grossgroup
+        description: Grupo bruto
+      - name: bruttozeile
+        description: A linha de fatura é uma linha de montante bruto
+      - name: bupla
+        description: Local de negócios
+      - name: segment
+        description: Segmento para o reporting do segmento
+      - name: n_nettobtr_l
+        description: Casas decimais do montante líquido descritivo
+  - name: stg_dberdl
+    columns:
+      - name: mandt
+        description: Mandante
+      - name: printdoc
+        description: Nº documento de impressão de um documento de faturamento
+      - name: printdocline
+        description: Linha de conta para documentos de impressão
+      - name: belzart
+        description: Tipo item documento
+      - name: buchrel
+        description: Linha de conta relevante para lançamento
+      - name: bruttozeile
+        description: A linha de fatura é uma linha de montante bruto
+      - name: aperiodic
+        description: Lançamento aperiódico
+      - name: nettobtr
+        description: Montante líquido linha de conta
+      - name: twaers
+        description: Moeda da transação
+      - name: mwskz
+        description: Código do IVA
+      - name: ermwskz
+        description: Código de determinação do imposto
+      - name: txdat_kk
+        description: Data relevante para o cálculo dos impostos
+      - name: tvorg
+        description: Suboperação para o item do documento
+      - name: gsber
+        description: Divisão
+      - name: linesort
+        description: Ordenação prévia das linhas de conta no esquema de cálculo
+      - name: ab
+        description: Data a partir da qual uma faixa de tempo é válida
+      - name: bis
+        description: Data até à qual é válida uma faixa de tempo
+      - name: sttax
+        description: Montante de imposto como info.estatística em moeda de doc.
+      - name: refdocsourcekeyb
+        description: Chave secundária do documento de origem
+      - name: refdocsource
+        description: Origem do documento de origem
+      - name: refdocsourcekeya
+        description: Chave principal do documento de origem
+      - name: betrw
+        description: Montante na moeda de transação com sinal +/-
+      - name: stprz
+        description: Taxa de imposto em formato de saída
+      - name: budat
+        description: Data de lançamento no documento
+      - name: vertrag
+        description: Contrato
+      - name: ca_opbel
+        description: Nº de um documento da conta corrente contratual
+      - name: bukrs
+        description: Empresa
+      - name: sparte
+        description: Setor de atividade
+      - name: ktosl
+        description: Chave de operação
+      - name: shkzg
+        description: Código débito/crédito
+      - name: augbw
+        description: Montante de compensação em moeda de transação (c/sinal +/-)
+      - name: sbasw
+        description: Mont.sujeito a imposto em moeda transaç.(mont.base imposto)
+      - name: sbetw
+        description: Montante de imposto em moeda de transação com sinal +/-
+      - name: sktow
+        description: Montante do desconto em moeda de transação com sinal +/-
+      - name: sktpz
+        description: Porcentagem de desconto
+      - name: txjcd
+        description: Domicílio fiscal
+      - name: hvorg
+        description: Operação principal para item de documento
+      - name: bldat
+        description: Data no documento
+      - name: faedn
+        description: Data de vencimento líquido
+      - name: faeds
+        description: Data de vencimento do desconto
+      - name: abpopbel
+        description: Plano de prestações fixas
+      - name: taxrate_internal
+        description: Taxa de imposto
+      - name: zordem
+        description: Ordenação
+      - name: xtotal_amnt
+        description: Considerar partida no montante final da conta
+      - name: ztipo
+        description: Tipo
+  - name: stg_dberdbl
+    columns:
+      - name: mandt
+        description: Mandante
+      - name: printdoc
+        description: Nº documento de impressão de um documento de faturamento
+      - name: printdocline
+        description: Linha de conta para documentos de impressão
+      - name: billdoc
+        description: Nº de um documento de cálculo
+      - name: billdocline
+        description: Linha de conta para documentos de impressão
+      - name: vertrag
+        description: Contrato
+      - name: mwskz
+        description: Código do IVA
+      - name: nettobtr
+        description: Montante líquido linha de conta
+      - name: sttax
+        description: Montante de imposto como info.estatística em moeda de doc.
+      - name: bukrs
+        description: Empresa
+      - name: sparte
+        description: Setor de atividade
+      - name: txjcd
+        description: Domicílio fiscal
+      - name: hvorg
+        description: Operação principal para item de documento
+      - name: abpopbel
+        description: Plano de prestações fixas
+      - name: zordem
+        description: Ordenação
+      - name: xtotal_amnt
+        description: Considerar partida no montante final da conta
+      - name: ztipo
+        description: Tipo
+  - name: stg_egerh
+    columns:
+      - name: ab
+        description: Data a partir da qual uma faixa de tempo é válida
+      - name: mandt
+        description: Mandante
+      - name: equnr
+        description: Nº equipamento
+      - name: bis
+        description: Data até à qual é válida uma faixa de tempo
+      - name: logiknr
+        description: Nº equipamento lógico
+      - name: zwgruppe
+        description: Grupo de registradores
+      - name: primwnr1
+        description: Nº enrolamento do enrolamento do primário ativo
+      - name: primwnr2
+        description: Nº enrolamento do enrolamento do primário ativo
+      - name: gerwechs
+        description: Motivo da transação
+      - name: rating
+        description: Transformador- potência nominal
+      - name: p_voltage
+        description: Transformador- tensão do primário
+      - name: amcg_cap_grp
+        description: Grupo de funções de medidor avançado (AMCG)
+      - name: lossdtgroup
+        description: Grupo de determinação de perdas
+      - name: s_voltage
+        description: Transformador- tensão secundária
+      - name: ams
+        description: Sistema avançado de medição
+      - name: kombinat
+        description: Combinação de um tipo de equipamento
+      - name: einbdat
+        description: Data de instalação
+      - name: ausbdat
+        description: Data de levantamento
+      - name: devloc
+        description: Local de instalação de equipamento
+      - name: devgrp
+        description: Grupo equipamentos
+      - name: wgruppe
+        description: Grupo de enrolamento
+      - name: ppm_meter
+        description: Medidor com sistema de pré-pagamento
+      - name: sekwnr1
+        description: Nº enrolamento do enrolamento secundário ativo
+      - name: sekwnr2
+        description: Nº enrolamento do enrolamento secundário ativo
+      - name: cap_act_grp
+        description: Grupo de ativação para funções AMI (AMICAG)
+      - name: msg_attr_id
+        description: Atributo de mensagem
+      - name: ausbzeit
+        description: Hora de desinstalação de equipamento
+      - name: einbzeit
+        description: Hora de instalação de equipamento
+      - name: zeitzone
+        description: Fuso horário da hora da instalação e/ou desinstalação
+  - name: stg_erch
+    columns:
+      - name: mandt
+        description: Mandante
+      - name: belnr
+        description: Nº de um documento de cálculo
+      - name: vertrag
+        description: Contrato
+      - name: begabrpe
+        description: Início do período de cálculo
+      - name: adatsoll
+        description: Data de leitura prevista
+      - name: abwvk
+        description: Conta de contrato divergente p/faturas coletivas
+      - name: begnach
+        description: Início do período de recálculo
+      - name: konzver
+        description: Contrato de concessão
+      - name: erchz_v
+        description: ERCHZ existente para ERCH
+      - name: erchu_v
+        description: ERCHU existente para ERCH
+      - name: erchv_v
+        description: ERCHV existe para ERCH
+      - name: ercht_v
+        description: ERCHT existente para ERCH
+      - name: ableinh
+        description: Unidade de leitura
+      - name: erdat
+        description: Data de criação do registro
+      - name: ernam
+        description: Nome do responsável que adicionou o objeto
+      - name: begru
+        description: Grupo de autorizações
+      - name: backbi
+        description: Tipo de recálculo
+      - name: begend
+        description: Início do período de cálculo final
+      - name: zuorddaa
+        description: Data de atribuição do cálculo da fatura
+      - name: zztotal_amnt
+        description: Montante na moeda de transação com sinal +/-
+      - name: bukrs
+        description: Empresa
+      - name: sparte
+        description: Setor de atividade
+      - name: txjcd
+        description: Domicílio fiscal
+      - name: hvorg
+        description: Operação principal para item de documento
+      - name: abpopbel
+        description: Plano de prestações fixas
+      - name: stornodat
+        description: Data de estorno
+      - name: belegart
+        description: Tipo de documento
+      - name: billing_period
+        description: Data fixada cálculo da fatura (por exemplo Janeiro de 2002)
+      - name: eroetim
+        description: Hora de criação do documento de conta
+      - name: ercho_v
+        description: ERCHO existente para ERCH
+      - name: erchr_v
+        description: ERCHR existente para ERCH
+      - name: erchc_v
+        description: ERCHC existente para ERCH
+      - name: erchp_v
+        description: ERCHP existente para ERCH
+      - name: erche_v
+        description: ERCHE existente para ERCH
+      - name: endprio
+        description: Prioridade do cálculo final
+      - name: endofbb
+        description: Código- fim do período de recálculo
+      - name: endofpeb
+        description: Código- fim período de cálculo final
+      - name: loevm
+        description: Código de eliminação
+      - name: n_invsep
+        description: Faturar documento só juntamente com documento automático
+      - name: manbillrel
+        description: Liberar documento manual para faturamento
+      - name: billingrunno
+        description: Nº de execução de cálculo
+      - name: ktoklasse
+        description: Classe de conta
+      - name: abschlpan
+        description: Ajustar plano de prestações fixas
+      - name: mdusrequestid
+        description: ID da solicitação MDUS
+      - name: vkont
+        description: Nº da conta de contrato
+      - name: endabrpe
+        description: Fim do período de cálculo
+      - name: tobreleasd
+        description: Código- documento ainda não liberado
+      - name: kofiz
+        description: Caract.determinação contas p/contratos serviços públicos
+      - name: instgrtype
+        description: Tipo de agrupamento do grupo de instalações
+      - name: instrole
+        description: Função de uma instalação dentro do grupo de instalações
+      - name: gpartner
+        description: Nº parceiro de negócios
+      - name: abrdats
+        description: Data planejada cálculo fatura
+      - name: abrdatsu
+        description: Data de cálculo planejada ordem de cálculo suprimida
+      - name: ptermtdat
+        description: Fim período de cálculo do registro de datas do conj.contrs.
+      - name: belegdat
+        description: Data de criação do documento de impressão
+      - name: belnralt
+        description: Nº documento anterior
+      - name: abrvorg
+        description: Operação de cálculo
+      - name: abrvorg2
+        description: Operação de cálculo que acionou cálculo final
+      - name: abrvorgu
+        description: Operação de cálculo de uma ordem de cálculo suprimida
+      - name: portion
+        description: Conjunto de contratos
+      - name: formular
+        description: Nome do formulário
+      - name: simulation
+        description: Código- simulação do cálculo da fatura
+      - name: simrunid
+        description: Identificação do período de simulação
+      - name: bergrund
+        description: Motivo de crédito/recálculo
+      - name: aedat
+        description: Data da última modificação
+      - name: aenam
+        description: Nome do responsável pela modificação do objeto
+      - name: mem_opbel
+        description: Nº doc.faturamento estornado p/novo cálculo/faturamento
+      - name: mem_budat
+        description: Data de lançamento no documento
+      - name: perendbi
+        description: Tipo de cálculo final
+      - name: numperbb
+        description: Nº de períodos para recálculo
+      - name: numperpeb
+        description: Nº de períodos para o cálculo final
+      - name: sc_belnr_h
+        description: Nº documento de cálculo em estorno de ajuste
+      - name: sc_belnr_n
+        description: Novo nº documento de cálculo em estorno de ajuste
+      - name: origdoc
+        description: Origem documento do cálculo da fatura
+      - name: nocanc
+        description: Código- não executar nenhum estorno de cálculo
+      - name: exbilldocno
+        description: Nº externo de documento
+      - name: bcreason
+        description: Motivo do estorno
+      - name: ninvoice
+        description: Documento de cálculo sem faturamento
+      - name: nbillrel
+        description: Não relevante para o cálculo
+      - name: correction_date
+        description: Data da identificação do erro
+      - name: basdyper
+        description: Tipo base do controle dinâmico de período
+      - name: estinbill
+        description: Resultados de leitura estimados no cálculo da fatura
+      - name: estinbillu
+        description: ESTINBILL de uma ordem de cálculo suprimida
+      - name: estinbill_sav
+        description: Valor original de ESTINBILL
+      - name: estinbill_usav
+        description: ESTINBILL_SAV de uma ordem de cálculo suprimida
+      - name: actperiod
+        description: Categoria de um período a ser calculado atualmente
+      - name: actperorg
+        description: Categoria original de um período a ser calculado atualmente
+      - name: ezawe
+        description: Forma de pagamento para entradas de pagamento
+      - name: daubuch
+        description: Ordem de lançamento periódico
+      - name: fdgrp
+        description: Grupo MRP
+      - name: osb_group
+        description: Grupo de cálculos da fatura in loco
+      - name: bp_bill
+        description: Resulting Billing Period
+      - name: zzorigdoc
+        description: Origem do documento
+      - name: zzdatapre
+        description: Data de apresentação (migrado)
+      - name: zzbx_renda
+        description: Criterio Baixa Renda (migração)
+      - name: maindocno
+        description: Nº do documento do cálculo da fatura da instalação principal
+      - name: asbach_rel
+        description: Modificação da base de cálculo relevante
+  - name: stg_erchc
+    columns:
+      - name: opbel
+        description: Nº documento de impressão de um documento de faturamento
+      - name: mandt
+        description: Mandante
+      - name: belnr
+        description: Nº de um documento de cálculo
+      - name: budat
+        description: Data de lançamento no documento
+      - name: statupd
+        description: Documento entrado na estatística de vendas
+      - name: statupd_canc
+        description: Documento de estorno entrado na estatística de vendas
+      - name: tobreleasd
+        description: Código- documento ainda não liberado
+      - name: intbudat
+        description: Data de lançamento do estorno da fatura
+      - name: simulated
+        description: Código- faturamento gera um documento simulado
+      - name: intcpudt
+        description: Dia de entrada do estorno da fatura
+      - name: spcanc
+        description: Estorno de ajuste
+      - name: lfdnr
+        description: Nº seqüencial (utilização interna apenas)
+      - name: cpudt
+        description: Data da entrada do documento contábil
+      - name: intopbel
+        description: Nº documento de impressão com qual o documento foi estornado
+      - name: invoiced
+        description: Código- documento lançado
+  - name: stg_erdk
+    columns:
+      - name: mandt
+        description: Mandante
+      - name: opbel
+        description: Nº documento de impressão de um documento de faturamento
+      - name: budat
+        description: Data de lançamento no documento
+      - name: erdz_v
+        description: ERDZ/ERDL existentes para ERDK
+      - name: erdr_v
+        description: ERDR existente para ERDK
+      - name: erdo_v
+        description: ERDO existente para ERDK
+      - name: erdb_v
+        description: ERDB existente para ERDK
+      - name: erdu_v
+        description: ERDU existente para ERDK
+      - name: erdts_v
+        description: ERDTS existente para ERDK
+      - name: total_amnt
+        description: Montante na moeda de transação com sinal +/-
+      - name: abwvk
+        description: Conta de contrato divergente p/faturas coletivas
+      - name: erdat
+        description: Data de criação do registro
+      - name: ernam
+        description: Nome do responsável que adicionou o objeto
+      - name: begru
+        description: Grupo de autorizações
+      - name: printlock
+        description: Bloquear documento para impressão
+      - name: ableinh
+        description: Unidade de leitura
+      - name: regpolit
+        description: Elemento da estrutura regional política
+      - name: sktpz
+        description: Porcentagem de desconto
+      - name: bldat
+        description: Data no documento
+      - name: faedn
+        description: Data de vencimento líquido
+      - name: faeds
+        description: Data de vencimento do desconto
+      - name: billing_period
+        description: Data fixada cálculo da fatura (por exemplo Janeiro de 2002)
+      - name: loevm
+        description: Código de eliminação
+      - name: selection_date
+        description: Data de seleção de um item de prestação fixa
+      - name: zsbtr
+        description: Mont.total partidas conta contidas no formulário pagamento
+      - name: sto_budat
+        description: Data estorno do documento original (só em caso de estorno)
+      - name: sto_opbel
+        description: Nº documento do documento original (só em caso de estorno)
+      - name: vkont
+        description: Nº da conta de contrato
+      - name: tobreleasd
+        description: Código- documento ainda não liberado
+      - name: ztipo
+        description: Tipo
+      - name: taxdate
+        description: Data de determinação de imposto
+      - name: partner
+        description: Nº parceiro de negócios
+      - name: abrvorg
+        description: Operação de cálculo
+      - name: portion
+        description: Conjunto de contratos
+      - name: simulated
+        description: Código- faturamento gera um documento simulado
+      - name: aedat
+        description: Data da última modificação
+      - name: aenam
+        description: Nome do responsável pela modificação do objeto
+      - name: abwbl
+        description: Nº do documento substituto da conta corrente contratual
+      - name: string
+        description: String de Ordenação
+      - name: exbel
+        description: Nº de documento oficial
+      - name: icreason
+        description: Motivo do estorno
+      - name: osb_group
+        description: Grupo de cálculos da fatura in loco
+      - name: zzdataapr
+        description: Data de Apresentação
+      - name: intopbel
+        description: Nº documento de impressão com qual o documento foi estornado
+      - name: invoiced
+        description: Código- documento lançado
+      - name: invoicing_party
+        description: Fornecedor de serviços que fatura o contrato
+      - name: druckdat
+        description: Data de impressão
+      - name: stokz
+        description: Documento estornado
+      - name: fica_v
+        description: Documento FI-CA lançado
+      - name: nrzas
+        description: Número do formulário de pagamento
+      - name: total_waer
+        description: Moeda da transação
+      - name: total_amnt_use
+        description: Componente- utilização do valor final da fatura
+      - name: pymet
+        description: Forma de pagamento
+      - name: zlsch
+        description: ID formulário p/suporte de pagamento anexado
+      - name: formkey
+        description: Formulário de aplicação
+      - name: fikey
+        description: Chave de reconciliação para contabilidade geral
+      - name: ergrd
+        description: Motivo de criação do documento de impressão
+      - name: langu
+        description: Idioma em relação com conta de contrato
+      - name: verart
+        description: Tipo de liquidação em lançamentos de compensação
+      - name: mazae
+        description: Numerador adverts.p/várias advertências de um parc.neg.
+      - name: mazae_abs
+        description: Numerador adverts.p/várias advertências de um parc.neg.
+      - name: items_archived
+        description: Itens de documento arquivados
+      - name: exkid
+        description: Identificação de chave
+      - name: edidispatch
+        description: Envio do documento de impressão por EDI
+      - name: edisenddate
+        description: Data de geração de um EDI para documento de impressão
+      - name: creation_time
+        description: Hora da criação do documento de impressão
+      - name: ztip_impres
+        description: Tipo de Impressão
+      - name: revlock
+        description: Flag de bloqueio de estorno para documentos de impressão
+      - name: sepa_prenot
+        description: Documento de faturamento contém aviso de nota de débito SEPA
+      - name: invdocno
+        description: Número do documento de faturamento
+  - name: stg_etdz
+    columns:
+      - name: bis
+        description: Data até à qual é válida uma faixa de tempo
+      - name: mandt
+        description: Mandante
+      - name: equnr
+        description: Nº equipamento
+      - name: zwnummer
+        description: Registrador
+      - name: ab
+        description: Data a partir da qual uma faixa de tempo é válida
+      - name: logikzw
+        description: Nº registrador lógico
+      - name: zwkenn
+        description: Identificação do registrador
+      - name: zwart
+        description: Tipo de registrador
+      - name: zwfakt
+        description: Fator de registrador
+      - name: massread
+        description: Unidade de medida de leitura
+      - name: steuergrp
+        description: Grp.imposto p/criação ordem em registro múlt.ordens leitura
+      - name: temp_area
+        description: Subclasse
+      - name: erdat
+        description: Data de criação do registro
+      - name: ernam
+        description: Nome do responsável que adicionou o objeto
+      - name: massbill
+        description: Unidade de medida de cálculo
+      - name: gewkey
+        description: Chave de ponderação
+      - name: zstromp
+        description: Fator no registrador- corrente primária do transformador
+      - name: zspanns
+        description: Fator no registrador- tensão secundária do transformador
+      - name: zstroms
+        description: Fator no registrador- corrente secundária do transformador
+      - name: zspannp
+        description: Fator no registrador- tensão primária do transformador
+      - name: spartyp
+        description: Tipo de setor
+      - name: zwtyp
+        description: Tipo de registrador
+      - name: aedat
+        description: Data da última modificação
+      - name: aenam
+        description: Nome do responsável pela modificação do objeto
+      - name: kzmessw
+        description: Registrador não operativo
+      - name: thgber
+        description: Considerar fatores relativos ao cálculo térmico consumo gás
+      - name: vee_code
+        description: Código VEE externo
+      - name: intsizeid
+        description: Identificação da duração de intervalo
+      - name: kennziff
+        description: Código para identificação de um registrador
+      - name: stanzvor
+        description: Casas antes da vírgula de um registrador
+      - name: stanznac
+        description: Casas decimais de um registrador
+      - name: bliwirk
+        description: Dif.registrs.energia ativa, reativa, potência parente/total
+      - name: anzerg
+        description: Nº resultados de leitura por leitura
+      - name: ueberver
+        description: Coeficiente de transformação
+      - name: nablesen
+        description: Não ler registrador
+      - name: pruefkl
+        description: Classe de validação das validações independentes
+      - name: pr_area_ai
+        description: Zona de pressão atmosférica
+      - name: calor_area
+        description: Zona de poder calorífico
+      - name: hoekorr
+        description: Pressão de correção de altitude
+      - name: kzahle
+        description: Coeficiente de compressibilidade ( definido )
+      - name: kzahlt
+        description: Coeficiente de compressibilidade real
+      - name: gas_prs_ar
+        description: Zona de pressão gás
+      - name: crgpress
+        description: Pressão de correção do gás
+      - name: touperiod
+        description: Tipo de tempo de consumo
+  - name: stg_etrg
+    columns:
+      - name: mandt
+        description: Mandante
+      - name: ableinh
+        description: Unidade de leitura
+      - name: adatsoll
+        description: Data de leitura prevista
+      - name: begend
+        description: Início do período de cálculo final
+      - name: erdat
+        description: Data de criação do registro
+      - name: ernam
+        description: Nome do responsável que adicionou o objeto
+      - name: zuorddat
+        description: Data de atribuição do cálculo da fatura
+      - name: bukrs
+        description: Empresa
+      - name: sparte
+        description: Setor de atividade
+      - name: endprio
+        description: Prioridade do cálculo final
+      - name: abschlpan
+        description: Ajustar plano de prestações fixas
+      - name: mdusrequestid
+        description: ID da solicitação MDUS
+      - name: adatsollu
+        description: Data de leitura prevista de uma ordem de cálculo suprimida
+      - name: vkonto
+        description: Nº da conta de contrato
+      - name: aenam
+        description: Nome do responsável pela modificação do objeto
+      - name: abrdats
+        description: Data planejada cálculo fatura
+      - name: abrdatsu
+        description: Data de cálculo planejada ordem de cálculo suprimida
+      - name: abrvorg
+        description: Operação de cálculo
+      - name: abrvorg2
+        description: Operação de cálculo
+      - name: abrvorgu
+        description: Operação de cálculo de uma ordem de cálculo suprimida
+      - name: portion
+        description: Conjunto de contratos
+      - name: aedat
+        description: Data da última modificação
+      - name: mem_opbel
+        description: Nº doc.faturamento estornado p/novo cálculo/faturamento
+      - name: mem_budat
+        description: Data de lançamento no documento
+      - name: sc_belnr
+        description: Nº documento de cálculo em estorno de ajuste
+      - name: estinbill
+        description: Resultados de leitura estimados no cálculo da fatura
+      - name: estinbillu
+        description: ESTINBILL de uma ordem de cálculo suprimida
+      - name: estinbill_sav
+        description: Valor original de ESTINBILL
+      - name: estinbill_usav
+        description: ESTINBILL_SAV de uma ordem de cálculo suprimida
+      - name: osb_group
+        description: Grupo de cálculos da fatura in loco
+      - name: maindocno
+        description: Nº do documento do cálculo da fatura da instalação principal
+      - name: mdusrqstat
+        description: Status MDUS da ordem de cálculo
+      - name: anlage
+        description: Instalação
+      - name: trigstat
+        description: Status da ordem do cálculo da fatura
+      - name: wait_bi
+        description: Controle da seqüência de cálculo da fatura
+  - name: stg_ettifn
+    columns:
+      - name: saison
+        description: Sazonalidade
+      - name: mandt
+        description: Mandante
+      - name: ab
+        description: Data a partir da qual uma faixa de tempo é válida
+      - name: ablfdnr
+        description: Nº sequencial para data de
+      - name: bis
+        description: Data até à qual é válida uma faixa de tempo
+      - name: belnr
+        description: Nº de um documento de cálculo
+      - name: mbelnr
+        description: Nº de um documento de cálculo
+      - name: altbis
+        description: Data até à qual é válida uma faixa de tempo
+      - name: kondigr
+        description: Grupo de informações de tarifa
+      - name: betrag
+        description: Montante dependente de moeda
+      - name: manaend
+        description: Código- modificação manual de um valor calculado
+      - name: tarifart
+        description: Tipo de tarifa
+      - name: wert1
+        description: Valor de entrada (valor instalado) de um equipamento
+      - name: wert2
+        description: Valor a calcular
+      - name: waers
+        description: Código da moeda
+      - name: operand
+        description: Operando
+      - name: anlage
+        description: Instalação
+      - name: mauszug
+        description: Informação manipulada por solicitação de desligamento
+      - name: inaktiv
+        description: Entrada inativa
+      - name: string1
+        description: 1º campo-chave de um valor de operando
+      - name: string2
+        description: 2º campo-chave de um valor de operando
+      - name: string3
+        description: 3º campo-chave de um valor de operando
+      - name: string4
+        description: 4º campo-chave de um valor de operando
+      - name: ersatzwert
+        description: Valor alternativo para operandos
+  - name: stg_ever
+    columns:
+      - name: mandt
+        description: Mandante
+      - name: vertrag
+        description: Contrato
+      - name: abslanfo
+        description: Solicitação pagamento prestação fx.p/autor débito
+      - name: kostl
+        description: Centro de custo
+      - name: erdat
+        description: Data de criação do registro
+      - name: ernam
+        description: Nome do responsável que adicionou o objeto
+      - name: begru
+        description: Grupo de autorizações
+      - name: aufnr
+        description: Nº ordem
+      - name: ps_psp_pnr
+        description: Elemento do plano da estrutura do projeto (elemento PEP)
+      - name: prctr
+        description: Centro de lucro
+      - name: outcount
+        description: Núm.detecções de anomalias manuais ainda a serem executadas
+      - name: segment
+        description: Segmento para o reporting do segmento
+      - name: pyplt
+        description: Tipo de plano de pagamento
+      - name: pypls
+        description: Mês de início do plano de pagamento
+      - name: gsber
+        description: Divisão
+      - name: pypla
+        description: Mês de início divergente do plano de pagamento
+      - name: bupla
+        description: Local de negócios
+      - name: oucont
+        description: Contrato básico
+      - name: bukrs
+        description: Empresa
+      - name: sparte
+        description: Setor de atividade
+      - name: txjcd
+        description: Domicílio fiscal
+      - name: bfa_deb_stat
+        description: Não liberar montante diferença pl.pagamento p/a receber
+      - name: bfa_cred_stat
+        description: Não liberar montante dif.plano pagamento p/crédito
+      - name: loevm
+        description: Código de eliminação
+      - name: manabr
+        description: Calcular manualmente contrato
+      - name: billmethod
+        description: Método de cálculo
+      - name: billfinit
+        description: Contrato encerrado relativamente ao cálculo
+      - name: verlaeng
+        description: Núm.unidades de tempo para prorrogação
+      - name: extrapolwaste
+        description: Tipo da extrapolação de prestação fixa de limpeza pública
+      - name: ppm_contract
+        description: Identifica contrato como contrato medidor sist.pré-pagamento
+      - name: stagruver
+        description: Grupo de estatísticas para contrato
+      - name: vkonto
+        description: Nº da conta de contrato
+      - name: eigenverbr
+        description: Consumo próprio ou consumo da empresa
+      - name: ausgrup
+        description: Grupo de verificação de exclusão p/cálculo fatura
+      - name: kofiz
+        description: Caract.determinação contas p/contratos serviços públicos
+      - name: abrsperr
+        description: Motivo de bloqueio do cálculo
+      - name: portion
+        description: Conjunto de contratos divergente
+      - name: aedat
+        description: Data da última modificação
+      - name: aenam
+        description: Nome do responsável pela modificação do objeto
+      - name: abrfreig
+        description: Motivo de liberação do cálculo
+      - name: vabschlevu
+        description: Data em que o fornecedor assinou o contrato
+      - name: vabschlknd
+        description: Data na qual o cliente assinou o contrato
+      - name: vabschlkndti
+        description: Hora a que o cliente assinou contrato
+      - name: vrefer
+        description: Nº contrato do sistema existente
+      - name: cpers
+        description: Pessoa de contato da cobrança
+      - name: osb_group
+        description: Grupo de cálculos da fatura in loco
+      - name: mahnv
+        description: Procedimento de advertência
+      - name: mahnvumz
+        description: Procedimento advertência solicitação ligação/desligamento
+      - name: invoicing_party
+        description: Fornecedor de serviços que fatura o contrato
+      - name: copakont
+        description: 'Objeto resultado classificado contabilmente'
+      - name: transver
+        description: Contrato de transferência
+      - name: vbeginn
+        description: Início do contrato
+      - name: anlage
+        description: Instalação
+      - name: abszyk
+        description: Ciclo de prestações fixas a substituir ao nível do contrato
+      - name: absmnanp
+        description: Não ajustar prestação fixa automaticamente
+      - name: absstopdat
+        description: Dt.interrupção p/solicits.pgto.prestaç.fixa em solic.deslig.
+      - name: gemfakt
+        description: Faturar contratos em conjunto (contratos obrigatórios)
+      - name: bstatus
+        description: Status de processamento
+      - name: vbez
+        description: Texto para contrato
+      - name: vende
+        description: Fim do contrato
+      - name: vbisdat
+        description: Data de prorrogação do contrato
+      - name: einzdat_alt
+        description: Data de solicitação de ligação do sistema existente
+      - name: einzdat
+        description: Data solicit.ligação
+      - name: kuenddat
+        description: Data de rescisão do contrato
+      - name: kfrist
+        description: Núm.unidades de tempo para rescisão
+      - name: kuenper
+        description: Unidade de tempo para rescisão
+      - name: kzsondeinz
+        description: Caso especial do processamento da solicitação de ligação
+      - name: kzsondausz
+        description: Existe caso especial de processamento solicit.desligamento
+      - name: verper
+        description: Unidade de tempo para a prorrogação
+      - name: persnr
+        description: Nº pessoal
+      - name: manoutsort
+        description: Motivo da exclusão manual no cálculo da fatura
+      - name: mansp
+        description: Motivo do bloqueio de advertências
+      - name: fakturiert
+        description: Contrato já com fatura final
+      - name: serviceid
+        description: Fornecedor de serviços
+      - name: servprov_pay
+        description: Classe de pagamento
+      - name: srvprvref
+        description: Nº contrato externo de um fornecedor de serviços
+      - name: salesemployee
+        description: Representante de vendas
+      - name: salespartner
+        description: Parceiro Vendas e Distribuição
+      - name: salesdocument
+        description: Nº documento de vendas e distribuição
+      - name: ps_startdat
+        description: Data de início do esquema pagamento (EP)
+      - name: cokey
+        description: Chave classificação contábil CO contrato IS-U
+      - name: contractclass
+        description: Cl.contrato
+      - name: cancreason
+        description: Motivo da rescisão do contrato
+      - name: cancreason_new
+        description: Motivo de rescisão (CRM)
+      - name: rulegr
+        description: Grupo de regras para contratos básicos
+      - name: regiogroup
+        description: Agrupamento da estrutura regional
+      - name: cmgrp
+        description: Collections Management- grupo de dados mestre
+      - name: strat
+        description: Estratégia collection
+      - name: auteigeinz
+        description: Solicitação de ligação automática do proprietário
+      - name: auszdat
+        description: Data de solicitação de desligamento
+      - name: schlfakt
+        description: Cálculo final comum para solicitação ligação/desligamento
+      - name: bezug
+        description: Referência
+      - name: sswtcreason
+        description: Motivo de substituição de contrato
+      - name: xvera
+        description: Contrato criado com base em transferência de dados
+      - name: zzlpt_univ
+        description: Uso de Energia
+      - name: zzclandestino
+        description: Campo de seleção geral- X ou espaço
+  - name: stg_ezuz
+    columns:
+      - name: zuart
+        description: Tipo atribuição equipamento
+      - name: mandt
+        description: Mandante
+      - name: logikzw
+        description: Nº registrador lógico
+      - name: bis
+        description: Data até à qual é válida uma faixa de tempo
+      - name: logiknr2
+        description: Nº equipamento lógico
+      - name: ab
+        description: Data a partir da qual uma faixa de tempo é válida
+      - name: erdat
+        description: Data de criação do registro
+      - name: ernam
+        description: Nome do responsável que adicionou o objeto
+      - name: aedat
+        description: Data da última modificação
+      - name: aenam
+        description: Nome do responsável pela modificação do objeto
+      - name: abrfakt
+        description: Fator de cálculo
+      - name: messdrck
+        description: Pressão medida (pressão saída) em bares
+      - name: progt
+        description: Comando de receptor de sinais de ripple control
+      - name: attribut
+        description: Valor do atributo
+  - name: stg_t835t
+    columns:
+      - name: mandt
+        description: Mandante
+      - name: belzart
+        description: Tipo item documento
+      - name: text30
+        description: Texto (30 caracteres)
+      - name: spras
+        description: Código de idioma
+  - name: stg_zcfat_irreg_cab
+    columns:
+      - name: adat
+        description: Data de leitura relevante para cálculo
+      - name: mandt
+        description: Mandante
+      - name: ablbelnr
+        description: ID interno do documento de leitura
+      - name: ernam
+        description: Nome do responsável que adicionou o objeto
+      - name: erdat
+        description: Data de criação do registro
+      - name: tipo_devol
+        description: Tipo Devolução
+      - name: aplicacao
+        description: Aplicação
+      - name: fat_compl
+        description: Faturar Complemento
+      - name: anlage
+        description: Instalação
+      - name: fat_aberta
+        description: Fatura em aberto
+  - name: stg_zcfat_irreg_inf
+    columns:
+      - name: vertrag
+        description: Contrato
+      - name: mandt
+        description: Mandante
+      - name: belnr
+        description: Nº de um documento de cálculo
+      - name: belzart
+        description: Tipo item documento
+      - name: adat
+        description: Data de leitura relevante para cálculo
+      - name: data_lei_anterior
+        description: Data de leitura relevante para cálculo
+      - name: opbel_j
+        description: Nº de um documento da conta corrente contratual
+      - name: opbel_cm
+        description: Nº de um documento da conta corrente contratual
+      - name: opbel_cred
+        description: Nº de um documento da conta corrente contratual
+      - name: ajus_user
+        description: Operando de fórmula
+      - name: status
+        description: Status ('A' - Ativo ou 'I' - Inativo)
+      - name: status_wf
+        description: Status do Workflow
+      - name: atualiz_monet
+        description: Atualização monetária
+      - name: calc_juros
+        description: Juros
+      - name: alter_manual
+        description: Alteração manual
+      - name: valor_total
+        description: Valor devolvido
+      - name: leit_atual
+        description: Posição do medidor lida
+      - name: anlage
+        description: Instalação
+      - name: invoiced
+        description: Flag geral
+      - name: grupo_estim
+        description: FAT- Tipo de Estimativa
+      - name: cons_total
+        description: Quantidade cálculo formato interno do cálculo fatura
+      - name: cons_diario
+        description: Quantidade cálculo formato interno do cálculo fatura
+      - name: cons_faturado
+        description: Quantidade cálculo formato interno do cálculo fatura
+      - name: cons_atual
+        description: Quantidade cálculo formato interno do cálculo fatura
+      - name: cons_ajuste
+        description: Quantidade cálculo formato interno do cálculo fatura
+      - name: cons_diferenca
+        description: Quantidade cálculo formato interno do cálculo fatura
+      - name: cons_media
+        description: Quantidade cálculo formato interno do cálculo fatura
+      - name: cons_dia_complemento
+        description: Quantidade cálculo formato interno do cálculo fatura
+      - name: cons_fat_complemento
+        description: Quantidade cálculo formato interno do cálculo fatura
+      - name: cons_nao_faturado
+        description: Quantidade cálculo formato interno do cálculo fatura
+      - name: cons_reg_total
+        description: Quantidade cálculo formato interno do cálculo fatura
+      - name: cons_min_fase
+        description: Quantidade cálculo formato interno do cálculo fatura
+      - name: dif_real_dev
+        description: Quantidade cálculo formato interno do cálculo fatura
+      - name: leit_anterior
+        description: Posição do medidor em leitura prévia
+      - name: rpnum
+        description: Nº do plano pgto.em prestações na conta corrente contratual
+      - name: workitem
+        description: Identificação work item
+      - name: user_wf_initiator
+        description: Nome do usuário
+      - name: user_wf_solicitante
+        description: Nome do usuário
+  - name: stg_zfatt057_ophist
+    columns:
+      - name: mandt
+        description: Mandante
+      - name: belzart
+        description: Tipo item documento
+      - name: nettobtr_flag
+        description: Ativa Recebimento de valor do NETTOBTR
+      - name: ez_abrmenge_flag
+        description: Ativa Recebimento de valor do ABRMENGE
+      - name: flag
+        description: Marcação agrupamento
+      - name: operand
+        description: Operando
