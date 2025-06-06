@@ -1,3 +1,10 @@
+{{
+  config(
+    materialized = 'incremental',
+    incrementa_strategy= 'delete+insert',
+    unique_key = ['documento_calculo', 'id_leitura'],
+    )
+}}
 select
     documento_calculo,
     id_leitura
