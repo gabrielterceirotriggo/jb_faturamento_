@@ -1,0 +1,111 @@
+with estornos_ajustes_delta as (
+    select
+        documento_calculo,
+        data_criacao_calculo,
+        usuario_criacao_calculo,
+        motivo_estorno_calculo,
+        documento_estorno_ajuste
+    from
+        {{ ref ('estornos_ajustes_delta') }}
+),
+
+faturamento_historico as (
+    {{ select_cols_fat() }} {{ ref('stg_faturamento') }}
+),
+
+q_estornados_ajuste_fat as (
+    select
+        fh.mes_competencia,
+        fh.mes_referencia,
+        fh.documento_calculo,
+        fh.documento_impressao,
+        fh.fatura,
+        fh.instalacao,
+        fh.conta_contrato,
+        fh.parceiro_negocio,
+        fh.contrato,
+        fh.unidade_leitura,
+        fh.etapa,
+        fh.setor_industrial,
+        fh.grupo,
+        fh.categoria_tarifa,
+        fh.cliente_livre,
+        fh.subclasse,
+        fh.motivo_criacao_impressao,
+        fh.tipo_impressao,
+        fh.tipo_calculo,
+        fh.origem_documento,
+        fh.cnr,
+        'X' as estornado,
+        fh.estorno_pleno,
+        fh.estorno_ajuste,
+        fh.reversao,
+        fh.cancelamento,
+        fh.fatura_virtual,
+        fh.minimo,
+        fh.documento_estorno_pleno,
+        fh.data_estorno_pleno,
+        fh.motivo_estorno_pleno,
+        ead.documento_calculo as documento_estorno_ajuste,
+        ead.data_criacao_calculo as data_estorno_ajuste,
+        ead.motivo_estorno_calculo as motivo_estorno_ajuste,
+        fh.valor_fatura,
+        fh.valor_contabil,
+        fh.consumo_faturado,
+        fh.consumo_medido,
+        fh.eusd,
+        fh.eusdb,
+        fh.icms,
+        fh.icms_subvencao,
+        fh.pis,
+        fh.cofins,
+        fh.cip,
+        fh.retencao,
+        fh.receita_bandeiras,
+        fh.receita_consumo_faturado,
+        fh.tarifa,
+        fh.preco,
+        fh.correcao_monetaria,
+        fh.creditos,
+        fh.estornos,
+        fh.juros,
+        fh.multas,
+        fh.parcelamentos,
+        fh.outros_lancamentos,
+        fh.chave_reconciliacao,
+        fh.domicilio_fiscal,
+        fh.inicio_calculo,
+        fh.fim_calculo,
+        fh.quantidade_dias,
+        fh.data_competencia,
+        fh.data_atribuicao_calculo,
+        fh.data_apresentacao,
+        fh.data_vencimento_original,
+        fh.data_previsao_leitura,
+        fh.data_criacao_impressao,
+        fh.usuario_criacao_impressao,
+        fh.data_modificacao_impressao,
+        fh.usuario_modificacao_impressao,
+        fh.data_criacao_calculo,
+        fh.usuario_criacao_calculo,
+        ead.data_criacao_calculo as data_modificacao_calculo,
+        ead.usuario_criacao_calculo as usuario_modificacao_calculo,
+        fh.documento_calculo_anterior,
+        fh.estrutura_regional_politica,
+        fh.ordem_faturamento,
+        fh.consumo_registrado,
+        2 as flag,
+        case when fh.formulario_pagamento = ' ' then null else fh.formulario_pagamento end as formulario_pagamento
+    from
+        estornos_ajustes_delta ead
+    inner join
+        faturamento_historico fh on fh.documento_calculo = ead.documento_estorno_ajuste
+    where
+        fh.estorno_pleno is null
+),
+
+final as (
+    {{ select_from_estornado('q_estornados_ajuste_fat') }} 
+)
+
+select * from final

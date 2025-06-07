@@ -1,5 +1,5 @@
-{% macro select_from_faturamento(table) %}
-    select
+{%- macro select_cols_fat() -%}
+  select
         mes_competencia,
         mes_referencia,
         documento_calculo,
@@ -79,7 +79,6 @@
         documento_calculo_anterior,
         estrutura_regional_politica,
         ordem_faturamento,
-        consumo_registrado,
-        flag
-    from {{ table }}
-{% endmacro %}
+        consumo_registrado
+    from
+{%- endmacro -%}
