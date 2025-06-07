@@ -1,65 +1,137 @@
-with q_itens_receita as (
+with documentos_faturamento as (
     select
-        int_documentos_faturamento.mes_competencia,
-        int_documentos_faturamento.doc_calculo as documento_calculo,
-        int_documentos_faturamento.doc_impressao as documento_impressao,
+        mes_competencia,
+        doc_calculo,
+        doc_impressao,
+        estorno
+    from
+        {{ ref('int_documentos_faturamento') }}
+),
+
+dberdl as (
+    select
+        printdoc,
+        belzart,
+        sbasw,
+        linesort,
+        ab,
+        bis,
+        ktosl,
+        nettobtr,
+        stprz,
+        hvorg,
+        tvorg,
+        txjcd,
+        xtotal_amnt
+    from
+        {{ ref('stg_dberdl') }}
+),
+
+itens_receita_base as (
+    select
+        df.mes_competencia,
+        df.doc_calculo,
+        df.doc_impressao,
+        df.estorno,
+        d.belzart,
+        d.sbasw,
+        d.linesort,
+        d.ab,
+        d.bis,
+        d.ktosl,
+        d.nettobtr,
+        d.stprz,
+        d.hvorg,
+        d.tvorg,
+        d.txjcd
+    from
+        documentos_faturamento as df
+    left outer join
+        dberdl as d
+        on df.doc_impressao = d.printdoc
+    where
+        d.xtotal_amnt = 'X'
+),
+
+itens_receita_transformados as (
+    select
+        mes_competencia,
+        doc_calculo as documento_calculo,
+        doc_impressao as documento_impressao,
         null as belzeile,
         null as categoria_tarifa,
         null as setor_industrial,
         null as subclasse,
-        {# int_documentos_faturamento.tipo_calculo,
-        int_documentos_faturamento.tipo_documento, #}
-        dberdl.belzart,
+        belzart,
         '000' as escalao,
-        dberdl.sbasw as base_imposto,
-        int_documentos_faturamento.estorno,
+        sbasw as base_imposto,
+        estorno,
         case
-            when dberdl.linesort = ' ' then null
-            else dberdl.linesort
+            when linesort = ' ' then null
+            else linesort
         end as linesort,
         case
-            when dberdl.ab <> '00000000' then TO_DATE(dberdl.ab, 'YYYYMMDD')
+            when ab <> '00000000' then TO_DATE(ab, 'YYYYMMDD')
         end as inicio_calculo,
         case
-            when dberdl.bis <> '00000000' then TO_DATE(dberdl.bis, 'YYYYMMDD')
+            when bis <> '00000000' then TO_DATE(bis, 'YYYYMMDD')
         end as fim_calculo,
         case
-            when dberdl.ktosl = ' ' then null
-            else dberdl.ktosl
+            when ktosl = ' ' then null
+            else ktosl
         end as tipo_imposto,
         case
-            when
-                int_documentos_faturamento.estorno = 'X'
-                then dberdl.nettobtr * -1
-            else dberdl.nettobtr
+            when estorno = 'X' then nettobtr * -1
+            else nettobtr
         end as receita,
-        --dberdl.nettobtr AS receita,
         CAST(null as NUMBER) as consumo,
         CAST(null as NUMBER) as preco,
         case
-            when dberdl.stprz = ' ' then 0
-            else TRY_CAST(LTRIM(dberdl.stprz, ' ') as NUMBER(10, 3)) / 1000
+            when stprz = ' ' then 0
+            else TRY_CAST(LTRIM(stprz, ' ') as NUMBER(10, 3)) / 1000
         end as aliquota,
         case
-            when dberdl.hvorg = ' ' then null
-            else dberdl.hvorg
+            when hvorg = ' ' then null
+            else hvorg
         end as operacao,
         case
-            when dberdl.tvorg = ' ' then null
-            else dberdl.tvorg
+            when tvorg = ' ' then null
+            else tvorg
         end as sub_operacao,
         case
-            when dberdl.txjcd = ' ' then null
-            else dberdl.txjcd
+            when txjcd = ' ' then null
+            else txjcd
         end as domicilio_fiscal
     from
-        {{ ref('int_documentos_faturamento') }} as int_documentos_faturamento
-    left outer join
-        {{ ref('stg_dberdl') }} as dberdl
-        on
-            int_documentos_faturamento.doc_impressao = dberdl.printdoc
-    where
-        dberdl.xtotal_amnt = 'X'
+        itens_receita_base
+),
+
+final as (
+    select
+        mes_competencia,
+        documento_calculo,
+        documento_impressao,
+        belzeile,
+        categoria_tarifa,
+        setor_industrial,
+        subclasse,
+        belzart,
+        escalao,
+        base_imposto,
+        estorno,
+        linesort,
+        inicio_calculo,
+        fim_calculo,
+        tipo_imposto,
+        receita,
+        consumo,
+        preco,
+        aliquota,
+        operacao,
+        sub_operacao,
+        domicilio_fiscal
+    from
+        itens_receita_transformados
 )
 
-select * from q_itens_receita
+select * from final
