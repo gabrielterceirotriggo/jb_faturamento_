@@ -1,144 +1,169 @@
-with
--- dia_inicial AS (
---     SELECT 
---         --REPLACE(ULTIMA_CARGA, '-', ' ') AS dia_ini
---         '20250214' AS dia_ini
---     FROM 
---         {{ ('stg_tab_controle_cargas') }}
---     WHERE 
---         tabela = 'FATURAMENTO'
--- ),
-
-ccs_std_equatorial as (
+with erdk as (
     select
-        a.mandt,
-        a.opbel as documento_impressao,
-        a.erdat as data_criacao,
-        a.creation_time as hora_criacao,
-        a.aedat as data_modificacao,
-        a.ergrd as motivo_criacao,
-        a.ableinh as unidade_leitura,
-        a.regpolit as estrutura_regional_politica,
-        a.ernam as usuario_criacao,
-        a.aenam as usuario_modificacao,
-        a.budat as data_competencia,
-        a.faedn as data_vencimento,
-        a.total_amnt as valor_total,
-        a.partner as parceiro_negocio,
-        a.vkont as conta_contrato,
-        a.exbel as fatura,
-        a.billing_period as mes_referencia,
-        a.fikey as chave_reconciliacao,
-        a.stokz,
-        a.intopbel,
-        a.icreason as motivo_estorno_impressao,
-        a.nrzas as formulario_pagamento,
-        a.zzdataapr as data_apresentacao,
-        a.ztipo as tipo_impressao
-    from {{ ref ('stg_erdk') }} as a
+        mandt,
+        opbel,
+        erdat,
+        creation_time,
+        aedat,
+        ergrd,
+        ableinh,
+        regpolit,
+        ernam,
+        aenam,
+        budat,
+        faedn,
+        total_amnt,
+        partner,
+        vkont,
+        exbel,
+        billing_period,
+        fikey,
+        invoiced,
+        intopbel,
+        icreason,
+        nrzas,
+        zzdataapr,
+        ztipo
+    from
+        {{ ref ('stg_erdk') }}
+),
+
+ultima_execucao as (
+    select
+        ultima_execucao
+    from
+        {{ ref('stg_int_ultima_exec') }}
+),
+
+documentos_impressao_filtrados as (
+    select
+        mandt,
+        opbel as documento_impressao,
+        erdat as data_criacao,
+        creation_time as hora_criacao,
+        aedat as data_modificacao,
+        ergrd as motivo_criacao,
+        ableinh as unidade_leitura,
+        regpolit as estrutura_regional_politica,
+        ernam as usuario_criacao,
+        aenam as usuario_modificacao,
+        budat as data_competencia,
+        faedn as data_vencimento,
+        total_amnt as valor_total,
+        partner as parceiro_negocio,
+        vkont as conta_contrato,
+        exbel as fatura,
+        billing_period as mes_referencia,
+        fikey as chave_reconciliacao,
+        intopbel,
+        icreason as motivo_estorno_impressao,
+        nrzas as formulario_pagamento,
+        zzdataapr as data_apresentacao,
+        ztipo as tipo_impressao
+    from
+        erdk
     where
-        a.mandt = {{ mc_mandante(var('source_param')) }}
-        and a.erdat
-        >= (select ultima_execucao from {{ ref('stg_int_ultima_exec') }})
-        and a.erdat <= TO_CHAR(CURRENT_DATE(), 'YYYYMMDD')
-        and a.invoiced = 'X'
+        mandt = {{ mc_mandante(var('source_param')) }}
+        and erdat >= (select ultima_execucao from ultima_execucao)
+        and erdat <= TO_CHAR(CURRENT_DATE(), 'YYYYMMDD')
+        and invoiced = 'X'
+),
+
+dados_impressao_transformados as (
+    select
+        mandt,
+        documento_impressao,
+        motivo_criacao as motivo_criacao_impressao,
+        usuario_criacao,
+        conta_contrato,
+        data_criacao,
+        hora_criacao,
+        parceiro_negocio,
+        valor_total,
+        chave_reconciliacao,
+        case
+            when fatura <> ' ' then fatura
+        end as fatura,
+        case
+            when tipo_impressao <> ' ' then tipo_impressao
+        end as tipo_impressao,
+        case
+            when data_criacao <> '00000000'
+            then TRY_TO_TIMESTAMP(data_criacao || ' ' || hora_criacao, 'YYYYMMDD HH24MISS')
+        end as data_criacao_impressao,
+        case
+            when data_modificacao <> '00000000'
+            then TRY_TO_TIMESTAMP(data_modificacao || ' ' || hora_criacao, 'YYYYMMDD HH24MISS')
+        end as data_modificacao_impressao,
+        case
+            when usuario_modificacao <> ' ' then usuario_modificacao
+        end as usuario_modificacao,
+        case
+            when data_competencia <> '00000000'
+            then TO_DATE(data_competencia, 'YYYYMMDD')
+        end as data_competencia,
+        case
+            when data_vencimento <> '00000000'
+            then TO_DATE(data_vencimento, 'YYYYMMDD')
+        end as data_vencimento_original,
+        case
+            when data_apresentacao <> '00000000'
+            then TO_DATE(data_apresentacao, 'YYYYMMDD')
+        end as data_apresentacao,
+        case
+            when intopbel <> ' ' then intopbel
+        end as contrapartida,
+        case
+            when motivo_estorno_impressao <> ' ' then motivo_estorno_impressao
+        end as motivo_estorno_impressao,
+        case
+            when formulario_pagamento <> ' ' then formulario_pagamento
+        end as formulario_pagamento,
+        case
+            when estrutura_regional_politica <> ' ' then estrutura_regional_politica
+        end as estrutura_regional_politica,
+        case
+            when unidade_leitura <> ' ' then unidade_leitura
+        end as unidade_leitura,
+        case
+            when motivo_criacao = '04' then 'X'
+        end as estorno_pleno,
+        case
+            when tipo_impressao = 'FV' then 'X'
+        end as fatura_virtual
+    from
+        documentos_impressao_filtrados
+),
+
+final as (
+    select
+        mandt,
+        documento_impressao,
+        motivo_criacao_impressao,
+        usuario_criacao,
+        conta_contrato,
+        data_criacao,
+        hora_criacao,
+        parceiro_negocio,
+        valor_total,
+        chave_reconciliacao,
+        fatura,
+        tipo_impressao,
+        data_criacao_impressao,
+        data_modificacao_impressao,
+        usuario_modificacao,
+        data_competencia,
+        data_vencimento_original,
+        data_apresentacao,
+        contrapartida,
+        motivo_estorno_impressao,
+        formulario_pagamento,
+        estrutura_regional_politica,
+        unidade_leitura,
+        estorno_pleno,
+        fatura_virtual
+    from
+        dados_impressao_transformados
 )
 
-select
-    ccs_std_equatorial.mandt,
-    ccs_std_equatorial.documento_impressao,
-    ccs_std_equatorial.motivo_criacao as motivo_criacao_impressao,
-    ccs_std_equatorial.usuario_criacao,
-    ccs_std_equatorial.conta_contrato,
-    ccs_std_equatorial.data_criacao,
-    ccs_std_equatorial.hora_criacao,
-    ccs_std_equatorial.parceiro_negocio,
-    ccs_std_equatorial.valor_total,
-    ccs_std_equatorial.chave_reconciliacao,
-    case
-        when ccs_std_equatorial.fatura <> ' '
-            then
-                ccs_std_equatorial.fatura
-    end as fatura,
-    case
-        when ccs_std_equatorial.tipo_impressao <> ' '
-            then
-                ccs_std_equatorial.tipo_impressao
-    end as tipo_impressao,
-    case
-        when ccs_std_equatorial.data_criacao <> '00000000'
-            then
-                TRY_TO_TIMESTAMP(
-                    ccs_std_equatorial.data_criacao
-                    || ' '
-                    || ccs_std_equatorial.hora_criacao,
-                    'YYYYMMDD HH24MISS'
-                )
-    end as data_criacao_impressao,
-    case
-        when ccs_std_equatorial.data_modificacao <> '00000000'
-            then
-                TRY_TO_TIMESTAMP(
-                    ccs_std_equatorial.data_modificacao
-                    || ' '
-                    || ccs_std_equatorial.hora_criacao,
-                    'YYYYMMDD HH24MISS'
-                )
-    end as data_modificacao_impressao,
-    case
-        when ccs_std_equatorial.usuario_modificacao <> ' '
-            then
-                ccs_std_equatorial.usuario_modificacao
-    end as usuario_modificacao,
-    case
-        when ccs_std_equatorial.data_competencia <> '00000000'
-            then
-                TO_DATE(ccs_std_equatorial.data_competencia, 'YYYYMMDD')
-    end as data_competencia,
-    case
-        when ccs_std_equatorial.data_vencimento <> '00000000'
-            then
-                TO_DATE(ccs_std_equatorial.data_vencimento, 'YYYYMMDD')
-    end as data_vencimento_original,
-    case
-        when ccs_std_equatorial.data_apresentacao <> '00000000'
-            then
-                TO_DATE(ccs_std_equatorial.data_apresentacao, 'YYYYMMDD')
-    end as data_apresentacao,
-    case
-        when ccs_std_equatorial.intopbel <> ' '
-            then
-                ccs_std_equatorial.intopbel
-    end as contrapartida,
-    case
-        when ccs_std_equatorial.motivo_estorno_impressao <> ' '
-            then
-                ccs_std_equatorial.motivo_estorno_impressao
-    end as motivo_estorno_impressao,
-    case
-        when ccs_std_equatorial.formulario_pagamento <> ' '
-            then
-                ccs_std_equatorial.formulario_pagamento
-    end as formulario_pagamento,
-    case
-        when ccs_std_equatorial.estrutura_regional_politica <> ' '
-            then
-                ccs_std_equatorial.estrutura_regional_politica
-    end as estrutura_regional_politica,
-    case
-        when ccs_std_equatorial.unidade_leitura <> ' '
-            then
-                ccs_std_equatorial.unidade_leitura
-    end as unidade_leitura,
-    case
-        when ccs_std_equatorial.motivo_criacao = '04'
-            then
-                'X'
-    end as estorno_pleno,
-    case
-        when ccs_std_equatorial.tipo_impressao = 'FV'
-            then
-                'X'
-    end as fatura_virtual
-from
-    ccs_std_equatorial
+select * from final
