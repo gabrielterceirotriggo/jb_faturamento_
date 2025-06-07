@@ -94,8 +94,9 @@ dados_consumo_calculados as (
         case
             when
                 itf.flag = 'R'
-                and (itf.operacao = 'ZBXR' or itf.item_ordenacao = 'ZBTB')
-                and itf.tipo_imposto = 'MW2'
+                and (itf.operacao = 'ZBXR' 
+                or (itf.item_ordenacao = 'ZBTB'
+                and itf.tipo_imposto = 'MW2'))
                 then itf.receita
             else 0
         end as icms_subvencao,
@@ -158,7 +159,9 @@ dados_consumo_calculados as (
         end as multas,
         case
             when itf.flag = 'R' and fo.bloco = 'PARCELAMENTO' then itf.receita else 0
-        end as parcelamentos
+        end as parcelamentos,
+        itf.flag,
+        itf.item_documento
     from
         calculo_delta as cd
     inner join
@@ -183,25 +186,25 @@ consumo_agregado as (
         case
             when
                 sum(case
-                    when dt.flag = 'M' and dt.item_documento in ('ZRCAT')
-                        then dt.consumo_medido
+                    when flag = 'M' and item_documento in ('ZRCAT')
+                        then consumo_medido
                     else 0
                 end) <> 0
                 then
                     sum(case
                         when
-                            dt.flag = 'M' and dt.item_documento in ('ZRCAT')
-                            then dt.consumo_medido
+                            flag = 'M' and item_documento in ('ZRCAT')
+                            then consumo_medido
                         else 0
                     end)
             else
                 sum(case
                     when
-                        dt.flag = 'M'
-                        and dt.item_documento in (
+                        flag = 'M'
+                        and item_documento in (
                             'ZRCAFP', 'ZRCAIT', 'ZRCANP', 'ZRCARV'
                         )
-                        then dt.consumo_medido
+                        then consumo_medido
                     else 0
                 end)
         end as consumo_medido,
