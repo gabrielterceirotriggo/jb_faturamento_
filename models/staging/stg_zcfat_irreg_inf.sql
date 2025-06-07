@@ -5,7 +5,7 @@ select
     vertrag,
     anlage,
     adat,
-    status as "status",
+    status,
     invoiced,
     grupo_estim,
     qtde_dias,
