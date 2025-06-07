@@ -1,8 +1,25 @@
---depends_on: {{ ref('int_docs_dups_ord_fat') }}
+-- depends_on: {{ ref('int_docs_dups_ord_fat') }}
+
 {{
   config(
-    post_hook = ["{{atualiza_ordem()}}","{{vlr_cont_delta()}}"],
-    )
+    materialized='view',
+    description='This model serves as a trigger to execute operational macros (atualiza_ordem, vlr_cont_delta) immediately after the int_docs_dups_ord_fat model is built. It exists to break a dependency cycle that would occur if these hooks were placed directly on the parent model. It does not transform data.',
+    tags=['operations']
+  )
 }}
 
-select 1 as done
+{{
+  config(
+    post_hook = [
+      "{{ atualiza_ordem() }}",
+      "{{ vlr_cont_delta() }}"
+    ]
+  )
+}}
+
+/*
+  The SELECT statement is trivial and lightweight. Its only purpose is to
+  create a valid database object (a view) so that dbt has a node in the
+  DAG to which it can attach the post-hooks.
+*/
+select 1 as operation_status
