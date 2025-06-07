@@ -1,110 +1,186 @@
-with q_itens_extras as (
+with documentos_faturamento as (
     select
-        int_documentos_faturamento.mes_competencia,
-        int_documentos_faturamento.doc_calculo as documento_calculo,
-        int_documentos_faturamento.doc_impressao as documento_impressao,
-        int_documentos_faturamento.tipo_calculo,
-        int_documentos_faturamento.tipo_documento,
-        dberchz1.belzeile,
-        dberchz1.branche as setor_industrial,
-        dberchz1.tariftyp as categoria_tarifa,
-        dberchz1.temp_area as subclasse,
-        dberchz1.belzart,
-        dberchz1.linesort,
-        dberchz3.zonennr as escalao,
+        mandt,
+        doc_calculo,
+        doc_impressao,
+        tipo_calculo,
+        tipo_documento,
+        estorno,
+        mes_competencia
+    from
+        {{ ref('int_documentos_faturamento') }}
+),
+
+dberdlb as (
+    select
+        mandt,
+        printdoc,
+        billdoc,
+        billdocline,
+        nettobtr,
+        sttax,
+        hvorg,
+        txjcd
+    from
+        {{ ref('stg_dberdlb') }}
+),
+
+dberchz1 as (
+    select
+        mandt,
+        belnr,
+        belzeile,
+        branche,
+        tariftyp,
+        temp_area,
+        belzart,
+        linesort,
+        ab,
+        bis,
+        v_abrmenge,
+        n_abrmenge,
+        tvorg
+    from
+        {{ ref('stg_dberchz1') }}
+),
+
+dberchz3 as (
+    select
+        mandt,
+        belnr,
+        belzeile,
+        zonennr,
+        preisbtr,
+        nettobtr
+    from
+        {{ ref('stg_dberchz3') }}
+),
+
+itens_extras_faturamento_base as (
+    select
+        df.mes_competencia,
+        df.doc_calculo as documento_calculo,
+        df.doc_impressao as documento_impressao,
+        df.tipo_calculo,
+        df.tipo_documento,
+        dz1.belzeile,
+        dz1.branche as setor_industrial,
+        dz1.tariftyp as categoria_tarifa,
+        dz1.temp_area as subclasse,
+        dz1.belzart,
+        dz1.linesort,
+        dz3.zonennr as escalao,
         null as tipo_imposto,
-        dberchz3.preisbtr as preco,
-        dberdlb.nettobtr as receita,
-        dberdlb.sttax as base_imposto,
+        dz3.preisbtr as preco,
+        dlb.nettobtr as receita,
+        dlb.sttax as base_imposto,
         0 as aliquota,
-        dberdlb.hvorg as operacao,
-        dberdlb.txjcd as domicilio_fiscal,
-        int_documentos_faturamento.estorno,
+        dlb.hvorg as operacao,
+        dlb.txjcd as domicilio_fiscal,
+        df.estorno,
         case
-            when dberchz1.ab <> '00000000' then TO_DATE(dberchz1.ab, 'YYYYMMDD')
+            when dz1.ab <> '00000000' then TO_DATE(dz1.ab, 'YYYYMMDD')
         end as inicio_calculo,
         case
-            when
-                dberchz1.bis <> '00000000'
-                then TO_DATE(dberchz1.bis, 'YYYYMMDD')
+            when dz1.bis <> '00000000' then TO_DATE(dz1.bis, 'YYYYMMDD')
         end as fim_calculo,
         case
             when
-                int_documentos_faturamento.tipo_calculo = 'CM' and (
-                    (
-                        (dberchz1.v_abrmenge + dberchz1.n_abrmenge) > 0
-                        and dberchz3.nettobtr < 0
-                    )
-                    or (
-                        (dberchz1.v_abrmenge + dberchz1.n_abrmenge) < 0
-                        and dberchz3.nettobtr > 0
-                    )
+                df.tipo_calculo = 'CM' and (
+                    ((dz1.v_abrmenge + dz1.n_abrmenge) > 0 and dz3.nettobtr < 0)
+                    or ((dz1.v_abrmenge + dz1.n_abrmenge) < 0 and dz3.nettobtr > 0)
                 )
-                then (dberchz1.v_abrmenge + dberchz1.n_abrmenge) * -1
-            else dberchz1.v_abrmenge + dberchz1.n_abrmenge
+                then (dz1.v_abrmenge + dz1.n_abrmenge) * -1
+            else dz1.v_abrmenge + dz1.n_abrmenge
         end as consumo,
         case
-            when dberchz1.tvorg = ' ' then null
-            else dberchz1.tvorg
+            when dz1.tvorg = ' ' then null
+            else dz1.tvorg
         end as sub_operacao
     from
-        {{ ref('int_documentos_faturamento') }} as int_documentos_faturamento
+        documentos_faturamento as df
     left outer join
-        {{ ref('stg_dberdlb') }} as dberdlb
-        on
-            int_documentos_faturamento.doc_impressao = dberdlb.printdoc
-            and int_documentos_faturamento.doc_calculo = dberdlb.billdoc
+        dberdlb as dlb
+        on df.doc_impressao = dlb.printdoc and df.doc_calculo = dlb.billdoc
     left outer join
-        {{ ref('stg_dberchz1') }} as dberchz1
-        on
-            dberdlb.billdoc = dberchz1.belnr
-            and dberdlb.billdocline = dberchz1.belzeile
+        dberchz1 as dz1
+        on dlb.billdoc = dz1.belnr and dlb.billdocline = dz1.belzeile
     left outer join
-        {{ ref('stg_dberchz3') }} as dberchz3
-        on
-            dberchz1.belnr = dberchz3.belnr
-            and dberchz1.belzeile = dberchz3.belzeile
+        dberchz3 as dz3
+        on dz1.belnr = dz3.belnr and dz1.belzeile = dz3.belzeile
     where
-        dberchz1.belzart in (
+        dz1.belzart in (
             'ZGSAT', 'ZGSNP', 'ZGSFP', 'ZGSRV', 'ZGSIT', 'ZPCAFP', 'ZPCANP',
             'ZPGFP', 'ZPGNP', 'ZPCAT', 'ZPGAT', 'ZDR1', 'ZDR2', 'ZDR3', 'ZDR4',
             'ZDR5', 'ZDR6', 'ZUR1', 'ZUR2', 'ZUR3', 'ZEUSD', 'ZRAMAL', 'ZEUSDB',
             'ZDCFP', 'ZDCFPL', 'ZDCGER', 'ZDCMFP', 'ZDCMNP', 'ZDCNP', 'ZDCNPL',
             'ZDCOMP', 'ZDCONL', 'ZDCONT', 'ZDCT'
         )
+),
+
+itens_extras_transformados as (
+    select
+        mes_competencia,
+        documento_calculo,
+        documento_impressao,
+        belzeile,
+        setor_industrial,
+        categoria_tarifa,
+        subclasse,
+        belzart,
+        linesort,
+        escalao,
+        inicio_calculo,
+        fim_calculo,
+        tipo_imposto,
+        preco,
+        base_imposto,
+        aliquota,
+        estorno,
+        case
+            when estorno = 'X' then consumo * -1
+            else consumo
+        end as consumo,
+        case
+            when estorno = 'X' then receita * -1
+            else receita
+        end as receita,
+        operacao,
+        case
+            when sub_operacao = ' ' then null
+            else sub_operacao
+        end as sub_operacao,
+        domicilio_fiscal
+    from
+        itens_extras_faturamento_base
+),
+
+final as (
+    select
+        mes_competencia,
+        documento_calculo,
+        documento_impressao,
+        belzeile,
+        setor_industrial,
+        categoria_tarifa,
+        subclasse,
+        belzart,
+        linesort,
+        escalao,
+        inicio_calculo,
+        fim_calculo,
+        tipo_imposto,
+        preco,
+        base_imposto,
+        aliquota,
+        estorno,
+        consumo,
+        receita,
+        operacao,
+        sub_operacao,
+        domicilio_fiscal
+    from
+        itens_extras_transformados
 )
 
-select
-    mes_competencia,
-    documento_calculo,
-    documento_impressao,
-    belzeile,
-    setor_industrial,
-    categoria_tarifa,
-    subclasse,
-    belzart,
-    linesort,
-    escalao,
-    inicio_calculo,
-    fim_calculo,
-    tipo_imposto,
-    preco,
-    base_imposto,
-    aliquota,
-    estorno,
-    case
-        when estorno = 'X' then consumo * -1
-        else consumo
-    end as consumo,
-    case
-        when estorno = 'X' then receita * -1
-        else receita
-    end as receita,
-    operacao,
-    case
-        when sub_operacao = ' ' then null
-        else sub_operacao
-    end as sub_operacao,
-    domicilio_fiscal
-from
-    q_itens_extras
+select * from final
