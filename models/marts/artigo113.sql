@@ -1,3 +1,9 @@
+{{
+  config(
+    materialized = 'incremental',
+    incrementa_strategy= 'insert_overwrite',
+    )
+}}
 with zcfat_irreg_inf as (
 
     select
