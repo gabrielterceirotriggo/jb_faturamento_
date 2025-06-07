@@ -1,331 +1,184 @@
-with dt as (
+with calculo_delta as (
     select
-        int_calculo_delta.mes_competencia,
-        int_calculo_delta.documento_calculo,
-        int_calculo_delta.documento_impressao,
-        itens_faturamento.linha,
-        itens_faturamento.setor_industrial,
-        itens_faturamento.categoria_tarifa,
-        itens_faturamento.subclasse,
-        itens_faturamento.item_documento,
-        itens_faturamento.flag,
+        mes_competencia,
+        documento_calculo,
+        documento_impressao,
+        mes_referencia
+    from
+        {{ ref ('int_calculo_delta') }}
+),
+
+itens_faturamento as (
+    select
+        mes_competencia,
+        documento_calculo,
+        documento_impressao,
+        linha,
+        setor_industrial,
+        categoria_tarifa,
+        subclasse,
+        item_documento,
+        flag,
+        consumo,
+        receita,
+        tipo_imposto,
+        operacao,
+        sub_operacao,
+        item_ordenacao,
+        preco
+    from
+        {{ ref ('itens_faturamento') }}
+),
+
+faturamento_operacoes as (
+    select
+        operacao,
+        sub_operacao,
+        bloco
+    from
+        {{ ref ('stg_faturamento_operacoes') }}
+),
+
+dados_consumo_calculados as (
+    select
+        cd.mes_competencia,
+        cd.documento_calculo,
+        cd.documento_impressao,
+        itf.linha,
+        itf.setor_industrial,
+        itf.categoria_tarifa,
+        itf.subclasse,
         case
-            when int_calculo_delta.mes_referencia >= '202311'
-                then 
+            when cd.mes_referencia >= '202311'
+                then
                     case
-                        when itens_faturamento.flag = 'C'
-                        and itens_faturamento.item_documento in (
-                            'ZEAT',
-                            'ZBXE',
-                            'ZEANP',
-	                        'ZEAIT',
-                            'ZEAFP',
-                            'ZCMFNP',
-	                        'ZIPFTE',
-                            'ZEARV',
-                            'ZEMFUP',
-	                        'ZTUSNP',
-                            'ZTUSFP',
-                            'ZEAFPC',
-	                        'ZEAITC',
-                            'ZEANPC',
-                            'ZEARVC',
-	                        'ZEATC',
-                            'ZBXEC'
-                        ) then itens_faturamento.consumo else 0
+                        when itf.flag = 'C'
+                        and itf.item_documento in (
+                            'ZEAT', 'ZBXE', 'ZEANP', 'ZEAIT', 'ZEAFP', 'ZCMFNP',
+                            'ZIPFTE', 'ZEARV', 'ZEMFUP', 'ZTUSNP', 'ZTUSFP',
+                            'ZEAFPC', 'ZEAITC', 'ZEANPC', 'ZEARVC', 'ZEATC', 'ZBXEC'
+                        ) then itf.consumo else 0
                     end
                     -
                     case
-                        when itens_faturamento.flag = 'C'
-                        and itens_faturamento.item_documento in (
-                            'ZEGAT',
-                            'ZEGFP',
-                            'ZEGIT',
-                            'ZEGNP',
-                            'ZEGRV'
-                        ) then itens_faturamento.consumo else 0
+                        when itf.flag = 'C'
+                        and itf.item_documento in (
+                            'ZEGAT', 'ZEGFP', 'ZEGIT', 'ZEGNP', 'ZEGRV'
+                        ) then itf.consumo else 0
                     end
             else
                 case
-                    when itens_faturamento.flag = 'C'
-                    and itens_faturamento.item_documento in (
-                        'ZEAT',
-                        'ZBXE',
-                        'ZEANP',
-	                    'ZEAIT',
-                        'ZEAFP',
-                        'ZCMFNP',
-	                    'ZIPFTE',
-                        'ZEARV',
-                        'ZEMFUP',
-	                    'ZTUSNP',
-                        'ZTUSFP'
-                    ) then itens_faturamento.consumo else 0
+                    when itf.flag = 'C'
+                    and itf.item_documento in (
+                        'ZEAT', 'ZBXE', 'ZEANP', 'ZEAIT', 'ZEAFP', 'ZCMFNP',
+                        'ZIPFTE', 'ZEARV', 'ZEMFUP', 'ZTUSNP', 'ZTUSFP'
+                    ) then itf.consumo else 0
                 end
         end as consumo_faturado,
         case
             when
-                itens_faturamento.flag = 'M'
-                and itens_faturamento.item_documento in (
-                    'ZRCAT', 'ZRCAFP', 'ZRCAIT', 'ZRCANP', 'ZRCARV'
-                )
-                then itens_faturamento.consumo
+                itf.flag = 'M'
+                and itf.item_documento in ('ZRCAT', 'ZRCAFP', 'ZRCAIT', 'ZRCANP', 'ZRCARV')
+                then itf.consumo
             else 0
         end as consumo_medido,
         case
-            when
-                itens_faturamento.flag = 'D'
-                and itens_faturamento.item_documento in ('ZEUSD')
-                then itens_faturamento.receita
-            else 0
+            when itf.flag = 'D' and itf.item_documento = 'ZEUSD' then itf.receita else 0
         end as eusd,
         case
-            when
-                itens_faturamento.flag = 'D'
-                and itens_faturamento.item_documento in ('ZEUSDB')
-                then itens_faturamento.receita
-            else 0
+            when itf.flag = 'D' and itf.item_documento = 'ZEUSDB' then itf.receita else 0
         end as eusdb,
         case
-            when
-                itens_faturamento.flag = 'R'
-                and itens_faturamento.tipo_imposto in ('MW2')
-                then itens_faturamento.receita
-            else 0
+            when itf.flag = 'R' and itf.tipo_imposto = 'MW2' then itf.receita else 0
         end as icms,
         case
             when
-                itens_faturamento.flag = 'R'
-                and itens_faturamento.operacao in ('ZBXR')
-                or itens_faturamento.item_ordenacao in ('ZBTB')
-                and itens_faturamento.tipo_imposto in ('MW2')
-                then itens_faturamento.receita
+                itf.flag = 'R'
+                and (itf.operacao = 'ZBXR' or itf.item_ordenacao = 'ZBTB')
+                and itf.tipo_imposto = 'MW2'
+                then itf.receita
             else 0
         end as icms_subvencao,
         case
-            when
-                itens_faturamento.flag = 'R'
-                and itens_faturamento.tipo_imposto in ('PIS')
-                then itens_faturamento.receita
-            else 0
+            when itf.flag = 'R' and itf.tipo_imposto = 'PIS' then itf.receita else 0
         end as pis,
         case
-            when
-                itens_faturamento.flag = 'R'
-                and itens_faturamento.tipo_imposto in ('COF')
-                then itens_faturamento.receita
-            else 0
+            when itf.flag = 'R' and itf.tipo_imposto = 'COF' then itf.receita else 0
         end as cofins,
         case
-            when
-                itens_faturamento.flag = 'R'
-                and itens_faturamento.operacao in (
-                    'CIP1', 'CIP2', 'CIP3', 'CIP4'
-                )
-                then itens_faturamento.receita
-            else 0
+            when itf.flag = 'R' and itf.operacao in ('CIP1', 'CIP2', 'CIP3', 'CIP4') then itf.receita else 0
         end as cip,
         case
-            when itens_faturamento.item_documento = 'WHTAX'
-                then itens_faturamento.receita
-            else 0
+            when itf.item_documento = 'WHTAX' then itf.receita else 0
         end as retencao,
         case
-            when
-                itens_faturamento.item_ordenacao in
-                (
-                    'ZEAT',
-                    'ZEFP',
-                    'ZENP',
-                    'ZTFP',
-                    'ZTNP',
-                    'ZMFB',
-                    'ZMUE',
-                    'ZMUT',
-                    'ZEIP',
-                    'ZTIP',
-                    'ZTAT',
-                    'ZTRV',
-                    'ZERV',
-                    'ZEIT',
-                    'ZTIT',
-                    'ZCRI'
-                )
-                then itens_faturamento.preco
-            else 0
-        end as tarifa,
-        case
-            when
-                itens_faturamento.item_ordenacao in
-                ('ZDAM', 'ZDVM')
-                then itens_faturamento.receita
-            else 0
+            when itf.item_ordenacao in ('ZDAM', 'ZDVM') then itf.receita else 0
         end as receita_bandeiras,
         case
-            when int_calculo_delta.mes_referencia >= '202311'
-                then
-                    case
-                        when
-                            itens_faturamento.item_ordenacao in
-                            (
-                                'ZEAT',
-                                'ZBXE',
-                                'ZBXT',
-                                'ZEFP',
-                                'ZENP',
-                                'ZTFP',
-                                'ZTNP',
-                                'ZMFB',
-                                'ZMUE',
-                                'ZMUT',
-                                'ZEIP',
-                                'ZTIP',
-                                'ZTAT',
-                                'ZTRV',
-                                'ZERV',
-                                'ZEIT',
-                                'ZTIT',
-                                'ZCRI',
-                                'ZEGN',
-                                'ZEGR',
-                                'ZEGI',
-                                'ZEGF',
-                                'ZEGT',
-                                'ZTGN',
-                                'ZTGR',
-                                'ZTGI',
-                                'ZTGF',
-                                'ZTGT',
-                                'ZBEC',
-                                'ZEFC',
-                                'ZEIC',
-                                'ZENC',
-                                'ZECR',
-                                'ZEAC',
-                                'ZTFC',
-                                'ZTIC',
-                                'ZTNC',
-                                'ZTCR',
-                                'ZTAC'
-                            )
-                            then itens_faturamento.receita
-                        else 0
-                    end
-            when
-                itens_faturamento.item_ordenacao in
-                (
-                    'ZEAT',
-                    'ZBXE',
-                    'ZBXT',
-                    'ZEFP',
-                    'ZENP',
-                    'ZTFP',
-                    'ZTNP',
-                    'ZMFB',
-                    'ZMUE',
-                    'ZMUT',
-                    'ZEIP',
-                    'ZTIP',
-                    'ZTAT',
-                    'ZTRV',
-                    'ZERV',
-                    'ZEIT',
-                    'ZTIT',
-                    'ZCRI'
-                )
-                then itens_faturamento.receita
-            else 0
+            when cd.mes_referencia >= '202311' then
+                case
+                    when itf.item_ordenacao in (
+                        'ZEAT', 'ZBXE', 'ZBXT', 'ZEFP', 'ZENP', 'ZTFP', 'ZTNP',
+                        'ZMFB', 'ZMUE', 'ZMUT', 'ZEIP', 'ZTIP', 'ZTAT', 'ZTRV',
+                        'ZERV', 'ZEIT', 'ZTIT', 'ZCRI', 'ZEGN', 'ZEGR', 'ZEGI',
+                        'ZEGF', 'ZEGT', 'ZTGN', 'ZTGR', 'ZTGI', 'ZTGF', 'ZTGT',
+                        'ZBEC', 'ZEFC', 'ZEIC', 'ZENC', 'ZECR', 'ZEAC', 'ZTFC',
+                        'ZTIC', 'ZTNC', 'ZTCR', 'ZTAC'
+                    ) then itf.receita else 0
+                end
+            else
+                case
+                    when itf.item_ordenacao in (
+                        'ZEAT', 'ZBXE', 'ZBXT', 'ZEFP', 'ZENP', 'ZTFP', 'ZTNP',
+                        'ZMFB', 'ZMUE', 'ZMUT', 'ZEIP', 'ZTIP', 'ZTAT', 'ZTRV',
+                        'ZERV', 'ZEIT', 'ZTIT', 'ZCRI'
+                    ) then itf.receita else 0
+                end
         end as receita_consumo_faturado,
         case
-            when
-                itens_faturamento.flag in ('R')
-                and faturamento_operacoes.bloco = 'CORRECAO MONETARIA'
-                then itens_faturamento.receita
-            else 0
+            when itf.item_ordenacao in (
+                'ZEAT', 'ZEFP', 'ZENP', 'ZTFP', 'ZTNP', 'ZMFB', 'ZMUE', 'ZMUT',
+                'ZEIP', 'ZTIP', 'ZTAT', 'ZTRV', 'ZERV', 'ZEIT', 'ZTIT', 'ZCRI'
+            ) then itf.preco else 0
+        end as tarifa,
+        case
+            when itf.flag = 'R' and fo.bloco = 'CORRECAO MONETARIA' then itf.receita else 0
         end as correcao_monetaria,
         case
-            when
-                itens_faturamento.flag in ('R')
-                and faturamento_operacoes.bloco = 'CREDITO'
-                then itens_faturamento.receita
-            else 0
+            when itf.flag = 'R' and fo.bloco = 'CREDITO' then itf.receita else 0
         end as creditos,
         case
-            when
-                itens_faturamento.flag in ('R')
-                and faturamento_operacoes.bloco = 'ESTORNO'
-                then itens_faturamento.receita
-            else 0
+            when itf.flag = 'R' and fo.bloco = 'ESTORNO' then itf.receita else 0
         end as estornos,
         case
-            when
-                itens_faturamento.flag in ('R')
-                and faturamento_operacoes.bloco = 'JUROS'
-                then itens_faturamento.receita
-            else 0
+            when itf.flag = 'R' and fo.bloco = 'JUROS' then itf.receita else 0
         end as juros,
         case
-            when
-                itens_faturamento.flag in ('R')
-                and faturamento_operacoes.bloco = 'MULTA'
-                then itens_faturamento.receita
-            else 0
+            when itf.flag = 'R' and fo.bloco = 'MULTA' then itf.receita else 0
         end as multas,
         case
-            when
-                itens_faturamento.flag in ('R')
-                and faturamento_operacoes.bloco = 'PARCELAMENTO'
-                then itens_faturamento.receita
-            else 0
+            when itf.flag = 'R' and fo.bloco = 'PARCELAMENTO' then itf.receita else 0
         end as parcelamentos
     from
-        {{ ref ('int_calculo_delta') }} as int_calculo_delta
+        calculo_delta as cd
     inner join
-        {{ ref ('itens_faturamento') }} as itens_faturamento
+        itens_faturamento as itf
         on
-            int_calculo_delta.mes_competencia
-            = itens_faturamento.mes_competencia
-            and int_calculo_delta.documento_calculo
-            = itens_faturamento.documento_calculo
-            and int_calculo_delta.documento_impressao
-            = itens_faturamento.documento_impressao
+            cd.mes_competencia = itf.mes_competencia
+            and cd.documento_calculo = itf.documento_calculo
+            and cd.documento_impressao = itf.documento_impressao
     left outer join
-        {{ ref ('stg_faturamento_operacoes') }} as faturamento_operacoes
+        faturamento_operacoes as fo
         on
-            itens_faturamento.operacao = faturamento_operacoes.operacao
-            and itens_faturamento.sub_operacao
-            = faturamento_operacoes.sub_operacao
+            itf.operacao = fo.operacao
+            and itf.sub_operacao = fo.sub_operacao
 ),
 
-q_tarifa as (
-    select distinct
-        dt.mes_competencia,
-        dt.documento_calculo,
-        dt.documento_impressao,
-        dt.tarifa
-    from
-        dt
-),
-
-q_soma_tarifa as (
-    select 
-        q_tarifa.mes_competencia,
-        q_tarifa.documento_calculo,
-        q_tarifa.documento_impressao,
-        sum(q_tarifa.tarifa) as tarifa
-    from
-        q_tarifa
-    group by
-        q_tarifa.mes_competencia,
-        q_tarifa.documento_calculo,
-        q_tarifa.documento_impressao
-),
-
-q_soma as (
+consumo_agregado as (
     select
-        dt.mes_competencia,
-        dt.documento_calculo,
-        dt.documento_impressao,
+        mes_competencia,
+        documento_calculo,
+        documento_impressao,
         sum(consumo_faturado) as consumo_faturado,
         case
             when
@@ -362,7 +215,6 @@ q_soma as (
         sum(retencao) as retencao,
         sum(receita_bandeiras) as receita_bandeiras,
         sum(receita_consumo_faturado) as receita_consumo_faturado,
-        sum(tarifa) as tarifa,
         sum(correcao_monetaria) as correcao_monetaria,
         sum(creditos) as creditos,
         sum(estornos) as estornos,
@@ -370,74 +222,36 @@ q_soma as (
         sum(multas) as multas,
         sum(parcelamentos) as parcelamentos
     from
-        dt
+        dados_consumo_calculados
     group by
-        dt.mes_competencia,
-        dt.documento_calculo,
-        dt.documento_impressao
+        mes_competencia,
+        documento_calculo,
+        documento_impressao
 ),
 
-q_trata as (
-    select
-        dt.mes_competencia,
-        dt.documento_calculo,
-        dt.documento_impressao,
-        dt.setor_industrial,
-        dt.categoria_tarifa,
-        dt.subclasse,
-        {# coalesce(cast(dt.linha as INT), 0) as linha #}
-        case
-            when dt.linha is null then 0
-            else cast(dt.linha as INT)
-        end as linha
-    from
-        dt
-    group by
-        dt.mes_competencia,
-        dt.documento_calculo,
-        dt.documento_impressao,
-        linha,
-        dt.setor_industrial,
-        dt.categoria_tarifa,
-        dt.subclasse
-),
-
-{# q_order as (
+tarifa_agregada as (
     select
         mes_competencia,
         documento_calculo,
         documento_impressao,
-        linha,
-        setor_industrial,
-        categoria_tarifa,
-        subclasse
+        sum(tarifa) as tarifa
     from
-        q_trata
-    order by
-        mes_competencia asc,
-        documento_calculo asc,
-        documento_impressao asc,
-        linha desc
-),
-
-q_rank as (
-    select
+        (
+            select distinct
+                mes_competencia,
+                documento_calculo,
+                documento_impressao,
+                tarifa
+            from
+                dados_consumo_calculados
+        )
+    group by
         mes_competencia,
         documento_calculo,
-        documento_impressao,
-        linha,
-        setor_industrial,
-        categoria_tarifa,
-        subclasse,
-        row_number() over (
-            partition by mes_competencia, documento_calculo, documento_impressao
-            order by linha desc
-        ) as posicao
-    from
-        q_order
-), #}
+        documento_impressao
+),
 
-q_filtro as (
+metadados_faturamento_recentes as (
     select
         mes_competencia,
         documento_calculo,
@@ -446,55 +260,58 @@ q_filtro as (
         categoria_tarifa,
         subclasse
     from
-        q_trata
-    qualify ROW_NUMBER() over (
+        dados_consumo_calculados
+    qualify row_number() over (
         partition by
             mes_competencia,
             documento_calculo,
             documento_impressao
         order by
-            mes_competencia asc,
-            documento_calculo asc,
-            documento_impressao asc,
-            linha desc
+            coalesce(cast(linha as int), 0) desc
     ) = 1
+),
+
+final as (
+    select
+        mfr.mes_competencia,
+        mfr.documento_calculo,
+        mfr.documento_impressao,
+        mfr.setor_industrial,
+        mfr.categoria_tarifa,
+        mfr.subclasse,
+        ca.consumo_faturado,
+        ca.consumo_medido,
+        ca.eusd,
+        ca.eusdb,
+        ca.icms,
+        ca.icms_subvencao,
+        ca.pis,
+        ca.cofins,
+        ca.cip,
+        ca.retencao,
+        ca.receita_bandeiras,
+        ca.receita_consumo_faturado,
+        ta.tarifa,
+        ca.correcao_monetaria,
+        ca.creditos,
+        ca.estornos,
+        ca.juros,
+        ca.multas,
+        ca.parcelamentos
+    from
+        metadados_faturamento_recentes as mfr
+    left outer join
+        consumo_agregado as ca
+        on
+            mfr.mes_competencia = ca.mes_competencia
+            and mfr.documento_calculo = ca.documento_calculo
+            and mfr.documento_impressao = ca.documento_impressao
+    left outer join
+        tarifa_agregada as ta
+        on
+            mfr.mes_competencia = ta.mes_competencia
+            and mfr.documento_calculo = ta.documento_calculo
+            and mfr.documento_impressao = ta.documento_impressao
 )
 
-select
-    q_filtro.mes_competencia,
-    q_filtro.documento_calculo,
-    q_filtro.documento_impressao,
-    q_filtro.setor_industrial,
-    q_filtro.categoria_tarifa,
-    q_filtro.subclasse,
-    q_soma.consumo_faturado,
-    q_soma.consumo_medido,
-    q_soma.eusd,
-    q_soma.eusdb,
-    q_soma.icms,
-    q_soma.icms_subvencao,
-    q_soma.pis,
-    q_soma.cofins,
-    q_soma.cip,
-    q_soma.retencao,
-    q_soma.receita_bandeiras,
-    q_soma.receita_consumo_faturado,
-    q_soma_tarifa.tarifa,
-    q_soma.correcao_monetaria,
-    q_soma.creditos,
-    q_soma.estornos,
-    q_soma.juros,
-    q_soma.multas,
-    q_soma.parcelamentos
-from
-    q_filtro
-left outer join q_soma
-    on
-        q_filtro.mes_competencia = q_soma.mes_competencia
-        and q_filtro.documento_calculo = q_soma.documento_calculo
-        and q_filtro.documento_impressao = q_soma.documento_impressao
-left outer join q_soma_tarifa
-    on
-        q_filtro.mes_competencia = q_soma_tarifa.mes_competencia
-        and q_filtro.documento_calculo = q_soma_tarifa.documento_calculo
-        and q_filtro.documento_impressao = q_soma_tarifa.documento_impressao
+select * from final
