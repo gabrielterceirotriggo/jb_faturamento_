@@ -28,6 +28,6 @@ vars:
   source_param: "EQTL_MA"
   source_orig: "CCS_MA"
 
-#on-run-start: "ALTER WAREHOUSE wh_cargas_criticas SET WAREHOUSE_SIZE = 'MEDIUM';"
-#on-run-end: "ALTER WAREHOUSE wh_cargas_criticas SET WAREHOUSE_SIZE = 'X-SMALL';"
+on-run-start: "ALTER WAREHOUSE wh_cargas_criticas SET WAREHOUSE_SIZE = 'MEDIUM';"
+on-run-end: "ALTER WAREHOUSE wh_cargas_criticas SET WAREHOUSE_SIZE = 'X-SMALL';"
 #on-run-end: ["{{ atualiza_ordem() }}", "{{ vlr_cont_delta() }}"]

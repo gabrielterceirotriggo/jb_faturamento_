@@ -21,8 +21,8 @@ with estornos_plenos_delta as (
         {{ ref ('estornos_plenos_delta') }}
 ),
 
-faturamento_historico as (
-    {{ select_cols_fat() }} {{ ref('stg_faturamento') }}
+faturamento_delta as (
+    {{ select_cols_fat() }} {{ ref('faturamento_delta') }}
 ),
 
 q_estornos_pleno_fat_delta as (
