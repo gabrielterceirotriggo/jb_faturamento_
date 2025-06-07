@@ -62,7 +62,7 @@ ettifn as (
         {{ ref ('stg_ettifn') }}
 ),
 
-enriched_precalc_data as (
+enriquecimento_dados_precalc as (
     select
         pd.mes_competencia,
         pd.mes_referencia,
@@ -124,7 +124,7 @@ enriched_precalc_data as (
             and e.bis >= TO_CHAR(pd.fim_calculo, 'YYYYMMDD')
 ),
 
-transformed_calculations as (
+transformacoes_calculadas as (
     select distinct
         mes_competencia,
         mes_referencia,
@@ -204,7 +204,7 @@ transformed_calculations as (
                     raw_formulario_pagamento
         end as formulario_pagamento
     from
-        enriched_precalc_data
+        enriquecimento_dados_precalc
 ),
 
 final as (
@@ -262,7 +262,7 @@ final as (
         documento_estorno_ajuste,
         formulario_pagamento
     from
-        transformed_calculations
+        transformacoes_calculadas
 )
 
 select * from final

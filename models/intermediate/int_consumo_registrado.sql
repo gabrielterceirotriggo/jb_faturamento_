@@ -1,57 +1,11 @@
-with int_calculo_delta as (
+with calculo_delta as (
     select
         mes_competencia,
-        mes_referencia,
         documento_calculo,
         documento_impressao,
-        fatura,
-        instalacao,
-        conta_contrato,
-        parceiro_negocio,
-        contrato,
-        unidade_leitura,
-        etapa,
-        motivo_criacao_impressao,
-        tipo_impressao,
-        tipo_calculo,
-        origem_documento,
-        cnr,
-        estornado,
-        estorno_pleno,
         estorno_ajuste,
-        reversao,
-        cancelamento,
-        fatura_virtual,
-        minimo,
-        inicio_calculo,
-        fim_calculo,
-        quantidade_dias,
-        documento_estorno_pleno,
-        data_estorno_pleno,
-        motivo_estorno_pleno,
-        documento_estorno_ajuste,
-        data_estorno_ajuste,
-        motivo_estorno_ajuste,
-        valor_fatura,
-        valor_contabil,
-        chave_reconciliacao,
-        formulario_pagamento,
-        domicilio_fiscal,
-        data_competencia,
-        data_atribuicao_calculo,
-        data_apresentacao,
-        data_vencimento_original,
-        data_previsao_leitura,
-        data_criacao_impressao,
-        usuario_criacao_impressao,
-        data_modificacao_impressao,
-        usuario_modificacao_impressao,
-        data_criacao_calculo,
-        usuario_criacao_calculo,
-        data_modificacao_calculo,
-        usuario_modificacao_calculo,
-        documento_calculo_anterior,
-        estrutura_regional_politica
+        estorno_pleno,
+        cnr
     from
         {{ ref ('int_calculo_delta') }}
 ),
@@ -61,11 +15,10 @@ dberchz2 as (
         mandt,
         belnr,
         belzeile,
-        ablbelnr,
         logikzw,
         v_zwstdiff,
         n_zwstdiff,
-        data_dados
+        ablbelnr
     from
         {{ ref('stg_dberchz2') }}
 ),
@@ -76,16 +29,9 @@ dberchz1 as (
         belnr,
         belzeile,
         belzart,
-        branche,
-        tvorg,
-        linesort,
-        ab,
         bis,
-        tariftyp,
-        temp_area,
         v_abrmenge,
-        n_abrmenge,
-        data_dados
+        n_abrmenge
     from
         {{ ref('stg_dberchz1') }}
 ),
@@ -93,50 +39,11 @@ dberchz1 as (
 etdz as (
     select
         mandt,
-        equnr,
-        zwnummer,
+        logikzw,
         bis,
         ab,
-        logikzw,
-        spartyp,
-        zwkenn,
-        kennziff,
-        zwart,
-        zwfakt,
-        stanzvor,
-        stanznac,
-        zwtyp,
-        bliwirk,
         massread,
-        anzerg,
-        kzmessw,
-        ueberver,
-        steuergrp,
-        nablesen,
-        pruefkl,
-        temp_area,
-        pr_area_ai,
-        calor_area,
-        hoekorr,
-        thgber,
-        kzahle,
-        kzahlt,
-        gas_prs_ar,
-        crgpress,
-        erdat,
-        ernam,
-        aedat,
-        aenam,
-        massbill,
-        gewkey,
-        zspanns,
-        zstroms,
-        zspannp,
-        zstromp,
-        intsizeid,
-        touperiod,
-        vee_code,
-        data_dados
+        zwfakt
     from
         {{ ref ('stg_etdz') }}
 ),
@@ -146,17 +53,9 @@ ezuz as (
         mandt,
         logikzw,
         bis,
-        zuart,
-        logiknr2,
         ab,
-        messdrck,
-        abrfakt,
-        progt,
-        attribut,
-        erdat,
-        ernam,
-        aedat,
-        aenam
+        logiknr2,
+        abrfakt
     from
         {{ ref ('stg_ezuz') }}
 ),
@@ -164,35 +63,11 @@ ezuz as (
 egerh as (
     select
         mandt,
-        equnr,
+        logiknr,
         bis,
         ab,
         kombinat,
-        logiknr,
-        zwgruppe,
-        einbdat,
-        ausbdat,
-        gerwechs,
-        devloc,
-        devgrp,
-        wgruppe,
-        ppm_meter,
-        primwnr1,
-        sekwnr1,
-        primwnr2,
-        sekwnr2,
-        lossdtgroup,
-        rating,
-        p_voltage,
-        s_voltage,
-        ams,
-        amcg_cap_grp,
-        msg_attr_id,
-        cap_act_grp,
-        einbzeit,
-        ausbzeit,
-        zeitzone,
-        data_dados
+        equnr
     from
         {{ ref ('stg_egerh') }}
 ),
@@ -202,260 +77,266 @@ te835t as (
         mandt,
         spras,
         belzart,
-        text30,
-        data_dados
+        text30
     from
         {{ ref('stg_te835t') }}
 ),
 
-q1_0 as (
+dados_leitura_base as (
     select
-        db2.mandt,
-        tcd.mes_competencia,
-        tcd.documento_calculo,
-        tcd.documento_impressao,
-        db2.logikzw,
-        db1.bis,
-        db1.belzart,
-        db1.v_abrmenge,
-        db1.n_abrmenge,
-        db2.v_zwstdiff,
-        db2.n_zwstdiff,
-        db2.ablbelnr as id_leitura,
-        tcd.estorno_ajuste,
-        tcd.estorno_pleno,
-        tcd.cnr
+        d2.mandt,
+        cd.mes_competencia,
+        cd.documento_calculo,
+        cd.documento_impressao,
+        d2.logikzw,
+        d1.bis,
+        d1.belzart,
+        d1.v_abrmenge,
+        d1.n_abrmenge,
+        d2.v_zwstdiff,
+        d2.n_zwstdiff,
+        d2.ablbelnr as id_leitura,
+        cd.estorno_ajuste,
+        cd.estorno_pleno,
+        cd.cnr
     from
-        int_calculo_delta as tcd
+        calculo_delta as cd
     left outer join
-        dberchz2 as db2
+        dberchz2 as d2
         on
-            db2.mandt = {{ mc_mandante(var('source_param')) }}
-            and tcd.documento_calculo = db2.belnr
-            and db2.ablbelnr <> ' '
+            d2.mandt = {{ mc_mandante(var('source_param')) }}
+            and cd.documento_calculo = d2.belnr
+            and d2.ablbelnr <> ' '
     left outer join
-        dberchz1 as db1
+        dberchz1 as d1
         on
-            db2.mandt = db1.mandt
-            and db2.belnr = db1.belnr
-            and db2.belzeile = db1.belzeile
+            d2.mandt = d1.mandt
+            and d2.belnr = d1.belnr
+            and d2.belzeile = d1.belzeile
 ),
 
-q1_1 as (
+enriquecimento_constante_medidor as (
     select
-        q1_0.mandt,
-        q1_0.mes_competencia,
-        q1_0.documento_calculo,
-        q1_0.documento_impressao,
-        q1_0.belzart,
+        dlb.mandt,
+        dlb.mes_competencia,
+        dlb.documento_calculo,
+        dlb.documento_impressao,
+        dlb.belzart,
         etdz.zwfakt as constante_medidor,
-        q1_0.v_abrmenge,
-        q1_0.n_abrmenge,
-        q1_0.n_zwstdiff,
-        q1_0.v_zwstdiff,
-        q1_0.id_leitura,
-        q1_0.logikzw,
-        q1_0.bis,
-        q1_0.estorno_ajuste,
-        q1_0.estorno_pleno,
-        q1_0.cnr
+        dlb.v_abrmenge,
+        dlb.n_abrmenge,
+        dlb.n_zwstdiff,
+        dlb.v_zwstdiff,
+        dlb.id_leitura,
+        dlb.logikzw,
+        dlb.bis,
+        dlb.estorno_ajuste,
+        dlb.estorno_pleno,
+        dlb.cnr
     from
-        q1_0
+        dados_leitura_base as dlb
     left outer join
         etdz
         on
-            q1_0.mandt = etdz.mandt
-            and q1_0.logikzw = etdz.logikzw
-            and q1_0.bis >= etdz.ab
-            and q1_0.bis <= etdz.bis
+            dlb.mandt = etdz.mandt
+            and dlb.logikzw = etdz.logikzw
+            and dlb.bis >= etdz.ab
+            and dlb.bis <= etdz.bis
     where
         etdz.massread = 'KWH'
-        and q1_0.mandt = {{ mc_mandante(var('source_param')) }}
+        and dlb.mandt = {{ mc_mandante(var('source_param')) }}
 ),
 
-q1_2 as (
+enriquecimento_fator_calculo as (
     select
-        q1_1.mandt,
-        q1_1.mes_competencia,
-        q1_1.documento_calculo,
-        q1_1.documento_impressao,
-        q1_1.belzart,
-        q1_1.constante_medidor,
-        q1_1.v_abrmenge,
-        q1_1.n_abrmenge,
-        q1_1.v_zwstdiff,
-        q1_1.n_zwstdiff,
-        q1_1.id_leitura,
-        ezuz.abrfakt as fator_calculo,
-        q1_1.bis,
-        ezuz.logiknr2,
-        q1_1.estorno_ajuste,
-        q1_1.estorno_pleno,
-        q1_1.cnr
+        ecm.mandt,
+        ecm.mes_competencia,
+        ecm.documento_calculo,
+        ecm.documento_impressao,
+        ecm.belzart,
+        ecm.constante_medidor,
+        ecm.v_abrmenge,
+        ecm.n_abrmenge,
+        ecm.v_zwstdiff,
+        ecm.n_zwstdiff,
+        ecm.id_leitura,
+        ezz.abrfakt as fator_calculo,
+        ecm.bis,
+        ezz.logiknr2,
+        ecm.estorno_ajuste,
+        ecm.estorno_pleno,
+        ecm.cnr
     from
-        q1_1
+        enriquecimento_constante_medidor as ecm
     left outer join
-        ezuz
+        ezuz as ezz
         on
-            q1_1.mandt = ezuz.mandt
-            and q1_1.logikzw = ezuz.logikzw
-            and q1_1.bis >= ezuz.ab
-            and q1_1.bis <= ezuz.bis
+            ecm.mandt = ezz.mandt
+            and ecm.logikzw = ezz.logikzw
+            and ecm.bis >= ezz.ab
+            and ecm.bis <= ezz.bis
     where
-        q1_1.mandt = {{ mc_mandante(var('source_param')) }}
+        ecm.mandt = {{ mc_mandante(var('source_param')) }}
 ),
 
-q1_3 as (
+identificacao_equipamento as (
     select
-        q1_2.mandt,
-        q1_2.mes_competencia,
-        q1_2.documento_calculo,
-        q1_2.documento_impressao,
-        q1_2.belzart,
-        q1_2.constante_medidor,
-        q1_2.v_abrmenge,
-        q1_2.n_abrmenge,
-        q1_2.v_zwstdiff,
-        q1_2.n_zwstdiff,
-        q1_2.id_leitura,
-        q1_2.fator_calculo,
-        q1_2.estorno_ajuste,
-        egerh.equnr,
-        q1_2.estorno_pleno,
-        q1_2.cnr
+        efc.mandt,
+        efc.mes_competencia,
+        efc.documento_calculo,
+        efc.documento_impressao,
+        efc.belzart,
+        efc.constante_medidor,
+        efc.v_abrmenge,
+        efc.n_abrmenge,
+        efc.v_zwstdiff,
+        efc.n_zwstdiff,
+        efc.id_leitura,
+        efc.fator_calculo,
+        efc.estorno_ajuste,
+        eg.equnr,
+        efc.estorno_pleno,
+        efc.cnr,
+        efc.bis,
+        efc.logiknr2
     from
-        q1_2
+        enriquecimento_fator_calculo as efc
     left outer join
-        egerh
+        egerh as eg
         on
-            q1_2.mandt = egerh.mandt
-            and q1_2.logiknr2 = egerh.logiknr
-            and q1_2.bis >= egerh.ab
-            and q1_2.bis <= egerh.bis
-            and egerh.kombinat = 'W'
+            efc.mandt = eg.mandt
+            and efc.logiknr2 = eg.logiknr
+            and efc.bis >= eg.ab
+            and efc.bis <= eg.bis
+            and eg.kombinat = 'W'
     where
-        q1_2.mandt = {{ mc_mandante(var('source_param')) }}
+        efc.mandt = {{ mc_mandante(var('source_param')) }}
 ),
 
-q1_4 as (
+calculo_consumo_bruto as (
     select
-        q1_3.mandt,
-        q1_3.mes_competencia,
-        q1_3.documento_calculo,
-        q1_3.documento_impressao,
-        q1_3.fator_calculo,
-        q1_3.equnr,
-        q1_3.estorno_pleno,
-        q1_3.belzart,
+        ie.mandt,
+        ie.mes_competencia,
+        ie.documento_calculo,
+        ie.documento_impressao,
+        ie.fator_calculo,
+        ie.equnr,
+        ie.estorno_pleno,
+        ie.belzart,
         case
-            when q1_3.estorno_ajuste = 'X' or q1_3.cnr = 'X'
+            when ie.estorno_ajuste = 'X' or ie.cnr = 'X'
                 then
-                    (q1_3.v_abrmenge + q1_3.n_abrmenge)
+                    (ie.v_abrmenge + ie.n_abrmenge)
             else
-                (q1_3.v_zwstdiff + q1_3.n_zwstdiff)
-                * q1_3.constante_medidor
-                * COALESCE(q1_3.fator_calculo, 1)
+                (ie.v_zwstdiff + ie.n_zwstdiff)
+                * ie.constante_medidor
+                * COALESCE(ie.fator_calculo, 1)
         end as consumo_registrado_dberchz2
     from
-        q1_3
+        identificacao_equipamento as ie
     left outer join
-        te835t
+        te835t as t8
         on
-            q1_3.mandt = te835t.mandt
-            and q1_3.belzart = te835t.belzart
+            ie.mandt = t8.mandt
+            and ie.belzart = t8.belzart
     where
-        te835t.spras = 'P'
-        and te835t.mandt = {{ mc_mandante(var('source_param')) }}
-        and (te835t.text30 not like '% RV' or te835t.belzart = 'ZRCARV')
-        and te835t.text30 not like '%Gerado%'
-        and te835t.text30 not like '%Reativo Exced%'
+        t8.spras = 'P'
+        and t8.mandt = {{ mc_mandante(var('source_param')) }}
+        and (t8.text30 not like '% RV' or t8.belzart = 'ZRCARV')
+        and t8.text30 not like '%Gerado%'
+        and t8.text30 not like '%Reativo Exced%'
 ),
 
-case as (
+consumo_agregado_por_tipo as (
     select
-        q1_4.mandt,
-        q1_4.mes_competencia,
-        q1_4.documento_calculo,
-        q1_4.documento_impressao,
-        q1_4.fator_calculo,
-        q1_4.equnr,
-        q1_4.estorno_pleno,
+        mandt,
+        mes_competencia,
+        documento_calculo,
+        documento_impressao,
+        fator_calculo,
+        equnr,
+        estorno_pleno,
         case
             when
                 SUM(
                     case
-                        when
-                            q1_4.belzart in ('ZRCAT')
-                            then q1_4.consumo_registrado_dberchz2
+                        when belzart = 'ZRCAT'
+                        then consumo_registrado_dberchz2
                         else 0
                     end
-                )
-                <> 0
+                ) <> 0
                 then
                     SUM(
                         case
-                            when
-                                q1_4.belzart in ('ZRCAT')
-                                then q1_4.consumo_registrado_dberchz2
+                            when belzart = 'ZRCAT'
+                            then consumo_registrado_dberchz2
                             else 0
                         end
                     )
             else
                 SUM(
                     case
-                        when
-                            q1_4.belzart in (
-                                'ZRCAFP', 'ZRCAIT', 'ZRCANP', 'ZRCARV'
-                            )
-                            then q1_4.consumo_registrado_dberchz2
+                        when belzart in ('ZRCAFP', 'ZRCAIT', 'ZRCANP', 'ZRCARV')
+                        then consumo_registrado_dberchz2
                         else 0
                     end
                 )
         end as consumo_registrado_dberchz2
     from
-        q1_4
+        calculo_consumo_bruto
     group by
-        q1_4.mandt,
-        q1_4.mes_competencia,
-        q1_4.documento_calculo,
-        q1_4.documento_impressao,
-        q1_4.fator_calculo,
-        q1_4.equnr,
-        q1_4.estorno_pleno
+        mandt,
+        mes_competencia,
+        documento_calculo,
+        documento_impressao,
+        fator_calculo,
+        equnr,
+        estorno_pleno
 ),
 
-q2 as (
+consumo_filtrado as (
     select
-        mandt,
         mes_competencia,
         documento_calculo,
         documento_impressao,
         consumo_registrado_dberchz2,
         estorno_pleno
     from
-        case
+        consumo_agregado_por_tipo
     where
         (fator_calculo is null and equnr is null)
         or
         (fator_calculo is not null and equnr is not null)
+),
+
+consumo_final_ajustado as (
+    select
+        mes_competencia,
+        documento_calculo,
+        documento_impressao,
+        case
+            when estorno_pleno = 'X'
+                then SUM(consumo_registrado_dberchz2) * -1
+            else
+                SUM(consumo_registrado_dberchz2)
+        end as consumo_registrado
+    from
+        consumo_filtrado
+    group by
+        mes_competencia,
+        documento_calculo,
+        documento_impressao,
+        estorno_pleno
+),
+
+final as (
+    select
+        mes_competencia,
+        documento_calculo,
+        documento_impressao,
+        consumo_registrado
+    from
+        consumo_final_ajustado
 )
 
-select
-    q2.mes_competencia,
-    q2.documento_calculo,
-    q2.documento_impressao,
-    case
-        when
-            q2.estorno_pleno = 'X'
-            then
-                SUM(q2.consumo_registrado_dberchz2) * -1
-        else
-            SUM(q2.consumo_registrado_dberchz2)
-    end as consumo_registrado
-from
-    q2
-group by
-    q2.mes_competencia,
-    q2.documento_calculo,
-    q2.documento_impressao,
-    q2.estorno_pleno
+select * from final
