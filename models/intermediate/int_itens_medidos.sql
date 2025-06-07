@@ -1,80 +1,159 @@
-with q_itens_medidos as (
+with documentos_faturamento as (
     select
-        int_documentos_faturamento.mes_competencia,
-        int_documentos_faturamento.doc_calculo as documento_calculo,
-        int_documentos_faturamento.doc_impressao as documento_impressao,
-        int_documentos_faturamento.tipo_calculo,
-        int_documentos_faturamento.tipo_documento,
-        dberchz1.belzeile,
-        dberchz1.branche as setor_industrial,
-        dberchz1.tariftyp as categoria_tarifa,
-        dberchz1.temp_area as subclasse,
-        dberchz1.belzart,
-        dberchz1.linesort,
-        dberchz3.zonennr as escalao,
+        mes_competencia,
+        doc_calculo,
+        doc_impressao,
+        tipo_calculo,
+        estorno,
+        mandt
+    from
+        {{ ref('int_documentos_faturamento') }}
+),
+
+dberdlb as (
+    select
+        mandt,
+        printdoc,
+        billdoc,
+        billdocline,
+        nettobtr,
+        sttax,
+        hvorg,
+        txjcd,
+        xtotal_amnt
+    from
+        {{ ref('stg_dberdlb') }}
+),
+
+dberchz1 as (
+    select
+        mandt,
+        belnr,
+        belzeile,
+        branche,
+        tariftyp,
+        temp_area,
+        belzart,
+        linesort,
+        ab,
+        bis,
+        v_abrmenge,
+        n_abrmenge,
+        tvorg,
+        ein01
+    from
+        {{ ref('stg_dberchz1') }}
+),
+
+dberchz3 as (
+    select
+        mandt,
+        belnr,
+        belzeile,
+        zonennr,
+        preisbtr,
+        nettobtr
+    from
+        {{ ref('stg_dberchz3') }}
+),
+
+zfatt057_ophist as (
+    select
+        belzart,
+        operand,
+        ez_abrmenge_flag
+    from
+        {{ ref('stg_zfatt057_ophist') }}
+),
+
+itens_medidos_base as (
+    select
+        df.mes_competencia,
+        df.doc_calculo,
+        df.doc_impressao,
+        df.tipo_calculo,
+        df.estorno,
+        dz1.belzeile,
+        dz1.branche,
+        dz1.tariftyp,
+        dz1.temp_area,
+        dz1.belzart,
+        dz1.linesort,
+        dz3.zonennr,
+        dz3.preisbtr,
+        dlb.nettobtr,
+        dlb.sttax,
+        dlb.hvorg,
+        dlb.txjcd,
+        dz1.ab,
+        dz1.bis,
+        dz1.v_abrmenge,
+        dz1.n_abrmenge,
+        dz3.nettobtr as nettobtr_dz3,
+        dz1.tvorg
+    from
+        documentos_faturamento as df
+    left outer join dberdlb as dlb
+        on df.doc_impressao = dlb.printdoc and df.doc_calculo = dlb.billdoc
+    left outer join dberchz1 as dz1
+        on dlb.billdoc = dz1.belnr and dlb.billdocline = dz1.belzeile
+    left outer join dberchz3 as dz3
+        on dz1.belnr = dz3.belnr and dz1.belzeile = dz3.belzeile
+    left outer join zfatt057_ophist as zo
+        on dz1.belzart = zo.belzart and dz1.ein01 = zo.operand
+    where
+        zo.ez_abrmenge_flag = 'X'
+        and dlb.xtotal_amnt <> 'X'
+),
+
+itens_medidos_transformados as (
+    select
+        mes_competencia,
+        doc_calculo as documento_calculo,
+        doc_impressao as documento_impressao,
+        belzeile,
+        branche as setor_industrial,
+        tariftyp as categoria_tarifa,
+        temp_area as subclasse,
+        belzart,
+        linesort,
+        zonennr as escalao,
         null as tipo_imposto,
-        dberchz3.preisbtr as preco,
-        dberdlb.nettobtr as receita,
-        dberdlb.sttax as base_imposto,
+        preisbtr as preco,
+        nettobtr as receita,
+        sttax as base_imposto,
         0 as aliquota,
-        dberdlb.hvorg as operacao,
-        dberdlb.txjcd as domicilio_fiscal,
-        int_documentos_faturamento.estorno,
+        hvorg as operacao,
+        txjcd as domicilio_fiscal,
         case
-            when dberchz1.ab <> '00000000' then TO_DATE(dberchz1.ab, 'YYYYMMDD')
+            when ab <> '00000000' then TO_DATE(ab, 'YYYYMMDD')
         end as inicio_calculo,
         case
-            when dberchz1.bis <> '00000000' then TO_DATE(dberchz1.bis, 'YYYYMMDD')
+            when bis <> '00000000' then TO_DATE(bis, 'YYYYMMDD')
         end as fim_calculo,
         case
             when
-                int_documentos_faturamento.tipo_calculo = 'CM'
+                tipo_calculo = 'CM'
                 and (
-                    (
-                        (dberchz1.v_abrmenge + dberchz1.n_abrmenge) > 0
-                        and dberchz3.nettobtr < 0
-                    )
+                    ((v_abrmenge + n_abrmenge) > 0 and nettobtr_dz3 < 0)
                     or
-                    (
-                        (dberchz1.v_abrmenge + dberchz1.n_abrmenge) < 0
-                        and dberchz3.nettobtr > 0
-                    )
+                    ((v_abrmenge + n_abrmenge) < 0 and nettobtr_dz3 > 0)
                 )
-                then (dberchz1.v_abrmenge + dberchz1.n_abrmenge) * -1
-            else dberchz1.v_abrmenge + dberchz1.n_abrmenge
-        end as consumo,
+                then (v_abrmenge + n_abrmenge) * -1
+            else v_abrmenge + n_abrmenge
+        end as consumo_bruto,
         case
-            when dberchz1.tvorg = ' ' then null
-            else dberchz1.tvorg
-        end as sub_operacao
+            when tvorg = ' ' then null
+            else tvorg
+        end as sub_operacao,
+        case
+            when estorno = 'X' then consumo_bruto * -1 else consumo_bruto
+        end as consumo
     from
-        {{ ref('int_documentos_faturamento') }} as int_documentos_faturamento
-    left outer join
-        {{ ref('stg_dberdlb') }} as dberdlb
-        on
-            int_documentos_faturamento.doc_impressao = dberdlb.printdoc
-            and int_documentos_faturamento.doc_calculo = dberdlb.billdoc
-    left outer join
-        {{ ref('stg_dberchz1') }} as dberchz1
-        on
-            dberdlb.billdoc = dberchz1.belnr
-            and dberdlb.billdocline = dberchz1.belzeile
-    left outer join
-        {{ ref('stg_dberchz3') }} as dberchz3
-        on
-            dberchz1.belnr = dberchz3.belnr
-            and dberchz1.belzeile = dberchz3.belzeile
-    left outer join
-        {{ ref('stg_zfatt057_ophist') }} as zfatt057_ophist
-        on
-            dberchz1.belzart = zfatt057_ophist.belzart
-            and dberchz1.ein01 = zfatt057_ophist.operand
-    where
-        zfatt057_ophist.ez_abrmenge_flag = 'X'
-        and dberdlb.xtotal_amnt <> 'X'
+        itens_medidos_base
 ),
 
-ajustes as (
+final as (
     select
         mes_competencia,
         documento_calculo,
@@ -89,11 +168,7 @@ ajustes as (
         inicio_calculo,
         fim_calculo,
         tipo_imposto,
-        case
-            when estorno = 'X'
-            then consumo * -1
-            else consumo
-        end as consumo,
+        consumo,
         preco,
         receita,
         base_imposto,
@@ -101,7 +176,8 @@ ajustes as (
         operacao,
         sub_operacao,
         domicilio_fiscal
-    from q_itens_medidos
+    from
+        itens_medidos_transformados
 )
 
-select * from ajustes
+select * from final
