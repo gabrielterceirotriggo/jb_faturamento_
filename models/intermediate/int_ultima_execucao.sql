@@ -1,5 +1,4 @@
--- depends_on: {{ ref('int_docs_dups_ord_fat') }}
-
+--depends_on: {{ ref('int_docs_dups_ord_fat') }}
 {{
   config(
     pre_hook = [
@@ -9,4 +8,15 @@
   )
 }}
 
-select TO_CHAR(CURRENT_DATE(), 'YYYYMMDD') as ultima_execucao
+with obter_data_execucao as (
+    select
+        to_char(current_date(), 'YYYYMMDD') as ultima_execucao
+),
+
+final as (
+    select
+        ultima_execucao
+    from obter_data_execucao
+)
+
+select * from final
