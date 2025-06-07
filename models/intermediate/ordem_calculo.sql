@@ -1,15 +1,46 @@
-select
-    a.anlage as instalacao,
-    a.abrvorg as tipo_calculo,
-    a.ableinh as ul,
-    a.ernam as criado_por,
-    TO_DATE(a.abrdats, 'YYYYMMDD') as data_calc_previsto,
-    case
-        when a.trigstat = '1' then 'NAO_CALCULAVEL'
-        when a.trigstat = '2' then 'CALCULAVEL'
-    end as status,
-    TO_DATE(a.erdat, 'YYYYMMDD') as data_criacao
-from
-    {{ ref ('stg_etrg') }} as a
-where
-    a.mandt = {{ mc_mandante(var('source_param')) }}
+with etrg as (
+    select
+        anlage,
+        abrvorg,
+        ableinh,
+        ernam,
+        abrdats,
+        trigstat,
+        erdat,
+        mandt
+    from
+        {{ ref('stg_etrg') }}
+),
+
+calculo_previsto as (
+    select
+        anlage as instalacao,
+        abrvorg as tipo_calculo,
+        ableinh as ul,
+        ernam as criado_por,
+        to_date(abrdats, 'YYYYMMDD') as data_calc_previsto,
+        case
+            when trigstat = '1' then 'NAO_CALCULAVEL'
+            when trigstat = '2' then 'CALCULAVEL'
+        end as status,
+        to_date(erdat, 'YYYYMMDD') as data_criacao
+    from
+        etrg
+    where
+        mandt = {{ mc_mandante(var('source_param')) }}
+),
+
+final as (
+    select
+        instalacao,
+        tipo_calculo,
+        ul,
+        criado_por,
+        data_calc_previsto,
+        status,
+        data_criacao
+    from
+        calculo_previsto
+)
+
+select * from final
