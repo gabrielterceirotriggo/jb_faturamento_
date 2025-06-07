@@ -17,4 +17,4 @@ select
     data_dados
     --erchc_erchc_pk
 from
-    {{ mc_source(var('source_param'), 'ERCHC') }}
+    {{ source('RAW', 'ERCHC') }}

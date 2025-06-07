@@ -45,4 +45,4 @@ select
     vee_code,
     data_dados
 from
-    {{ mc_source(var('source_param'),'ETDZ') }}
+    {{ source('RAW','ETDZ') }}

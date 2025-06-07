@@ -12,4 +12,4 @@ select
     fat_aberta,
     data_dados
 from
-    {{ mc_source(var('source_param'),'ZCFAT_IRREG_CAB') }}
+    {{ source('RAW','ZCFAT_IRREG_CAB') }}

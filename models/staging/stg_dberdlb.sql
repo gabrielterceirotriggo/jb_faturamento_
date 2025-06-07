@@ -19,4 +19,4 @@ select
     data_dados
     --constraint dberdlb_dberdlb_pk primary key (mandt, printdoc, printdocline)
 from
-    {{ mc_source(var('source_param'),'DBERDLB') }}
+    {{ source('RAW','DBERDLB') }}

@@ -30,4 +30,4 @@ select
     zeitzone,
     data_dados
 from
-    {{ mc_source(var('source_param'),'EGERH') }}
+    {{ source('RAW','EGERH') }}

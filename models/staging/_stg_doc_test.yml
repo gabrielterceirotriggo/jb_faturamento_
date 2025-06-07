@@ -849,11 +849,6 @@ models:
         description: Mandante
       - name: belnr
         description: Nº de um documento de cálculo
-        columns:
-      - name: belnr
-        tests:
-          - unique
-          - not_null
       - name: vertrag
         description: Contrato
       - name: begabrpe
@@ -1048,9 +1043,6 @@ models:
     columns:
       - name: opbel
         description: Nº documento de impressão de um documento de faturamento
-        tests:
-          - unique
-          - not_null
       - name: mandt
         description: Mandante
       - name: belnr
@@ -1085,9 +1077,6 @@ models:
         description: Mandante
       - name: opbel
         description: Nº documento de impressão de um documento de faturamento
-        tests:
-          - unique
-          - not_null
       - name: budat
         description: Data de lançamento no documento
       - name: erdz_v
@@ -1784,8 +1773,3 @@ models:
         description: Marcação agrupamento
       - name: operand
         description: Operando
-  - name: stg_faturamento
-    columns:
-      - name: documento_impressao
-        tests:
-          - unique

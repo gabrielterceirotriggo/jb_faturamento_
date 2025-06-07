@@ -9,4 +9,4 @@ select
     ernam,
     data_dados
 from
-    {{ mc_source(var('source_param'),'ETRG') }}
+    {{ source('RAW','ETRG') }}

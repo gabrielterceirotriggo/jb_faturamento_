@@ -37,4 +37,4 @@ select
     n_zwstdiff,
     data_dados
 from
-    {{ mc_source(var('source_param'),'DBERCHZ2') }}
+    {{ source('RAW','DBERCHZ2') }}

@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: "{{ var('source_orig', 'CCS_MA') }}"
+  - name: "RAW"
     database: eqtlinfo_raw
     schema: "{{ var('source_orig', 'CCS_MA') }}"
     tables:
@@ -106,7 +106,7 @@ sources:
             warn_after: {count: 12, period: hour}
             error_after: {count: 24, period: hour}
 
-  - name: "{{ var('source_param', 'EQTL_MA') }}"
+  - name: "PROD"
     database: eqtlinfo_prd
     schema: "{{ var('source_param', 'EQTL_MA') }}"
     tables:

@@ -16,4 +16,4 @@ select
     data_dados
 --constraint dberchz1_dberchz1_1729607942903359_pk primary key (mandt, belnr, belzeile)
 from
-    {{ mc_source(var('source_param'),'DBERCHZ1') }}
+    {{ source('RAW','DBERCHZ1') }}

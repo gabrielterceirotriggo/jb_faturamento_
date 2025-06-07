@@ -96,6 +96,6 @@ select
     zzlpt_univ,
     zzclandestino
 from
-    {{ mc_source(var('source_param'),'EVER') }}
+    {{ source('RAW','EVER') }}
 -- WHERE
 -- 	ERDAT = '20250214'

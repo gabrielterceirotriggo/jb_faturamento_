@@ -14,6 +14,6 @@ select
     aedat,
     aenam
 from
-    {{ mc_source(var('source_param'),'EZUZ') }}
+    {{ source('RAW','EZUZ') }}
 -- WHERE
 -- 	ERDAT = '20250214'

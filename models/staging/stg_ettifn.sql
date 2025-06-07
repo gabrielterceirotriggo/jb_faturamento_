@@ -25,4 +25,4 @@ select
     waers,
     data_dados
 from
-    {{ mc_source(var('source_param'),'ETTIFN') }}
+    {{ source('RAW','ETTIFN') }}

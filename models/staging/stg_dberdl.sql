@@ -17,4 +17,4 @@ select
     stprz,
     data_dados
 from
-    {{ mc_source(var('source_param'),'DBERDL') }}
+    {{ source('RAW','DBERDL') }}

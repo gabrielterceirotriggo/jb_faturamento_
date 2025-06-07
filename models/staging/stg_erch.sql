@@ -99,4 +99,4 @@ select
     --data_dados
     --erch_erch_pk
 from
-    {{ mc_source(var('source_param'), 'ERCH') }}
+    {{ source('RAW', 'ERCH') }}

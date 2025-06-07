@@ -1,0 +1,12 @@
+version: 2
+
+data_tests:
+  - name: assert_unique_faturamento
+    description: >
+      Este teste verifica a unicidade dos registros na tabela FATURAMENTO.
+
+      Ele garante que a combinação das colunas mes_competencia, documento_calculo e documento_impressao seja única entre todas as linhas. O teste funciona agrupando os registros por essas três colunas e contando quantos registros existem em cada grupo.
+
+      Se qualquer grupo tiver mais de um registro, significa que existe uma combinação duplicada, e o teste irá falhar. 
+      
+      Esta é uma verificação de integridade de dados crucial para assegurar que cada documento de faturamento seja representado apenas uma vez para um determinado mês de competência.

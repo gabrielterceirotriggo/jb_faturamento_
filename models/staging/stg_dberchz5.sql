@@ -14,4 +14,4 @@ select
     n_abrmenge,
     data_dados
 from
-    {{ mc_source(var('source_param'),'DBERCHZ5') }}
+    {{ source('RAW','DBERCHZ5') }}

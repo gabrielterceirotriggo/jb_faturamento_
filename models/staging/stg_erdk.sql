@@ -72,6 +72,6 @@ select
     data_dados
 --erdk_erdk_pk
 from
-    {{ mc_source(var('source_param'),'ERDK') }}
+    {{ source('RAW','ERDK') }}
 -- WHERE
 -- 	ERDAT = '20250214'

@@ -5,4 +5,4 @@ select
     text30,
     data_dados
 from
-    {{ mc_source(var('source_param'),'TE835T') }}
+    {{ source('RAW','TE835T') }}

@@ -44,4 +44,4 @@ select
     dif_real_dev,
     data_dados
 from
-    {{ mc_source(var('source_param'),'ZCFAT_IRREG_INF') }}
+    {{ source('RAW','ZCFAT_IRREG_INF') }}

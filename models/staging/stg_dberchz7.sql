@@ -39,4 +39,4 @@ select
     n_nettobtr_l,
     data_dados
 from
-    {{ mc_source(var('source_param'),'DBERCHZ7') }}
+    {{ source('RAW','DBERCHZ7') }}

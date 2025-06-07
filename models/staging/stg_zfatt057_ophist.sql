@@ -7,4 +7,4 @@ select
     ez_abrmenge_flag,
     data_dados
 from
-    {{ mc_source(var('source_param'),'ZFATT057_OPHIST') }}
+    {{ source('RAW','ZFATT057_OPHIST') }}
