@@ -3,7 +3,6 @@ select
     documento_calculo as unique_field_1,
     documento_impressao as unique_field_2,
     count(*) as n_records
-
 from {{ source('PROD', 'FATURAMENTO') }}
 where
     mes_competencia is not null

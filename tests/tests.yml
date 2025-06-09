@@ -3,8 +3,5 @@ version: 2
 data_tests:
   - name: assert_unique_faturamento
     description: "Garante que cada combinação de mês de competência, documento de cálculo e documento de impressão seja única, evitando faturamentos duplicados."
-  - name: assert_unique_erdk
-    description: "Garante que cada número de documento de impressão (opbel) seja único na tabela de faturamento (ERDK), prevenindo a duplicidade de faturas."
-  - name: assert_unique_erch
-    description: "Garante que cada número de documento contábil (belnr) seja único na tabela ERCH, prevenindo lançamentos de faturamento duplicados."
-  
+  - name: assert_unique_erchc
+    description: "Garante que a ligação entre um documento de impressão (opbel) e um documento de faturamento (belnr) seja única na tabela ERCHC."

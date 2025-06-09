@@ -6,105 +6,125 @@ sources:
     schema: "{{ var('source_orig', 'CCS_MA') }}"
     tables:
       - name: ERDK
+        columns:
+          - name: opbel
+            tests:
+              - unique
+              - not_null
+              - relationships:
+                  to: source('RAW', 'ERCHC')
+                  field: opbel
         config:
           freshness:
-            warn_after: {count: 12, period: hour}
-            error_after: {count: 24, period: hour}
+            warn_after: { count: 12, period: hour }
+            error_after: { count: 24, period: hour }
       - name: ERCHC
+        columns:
+          - name: belnr
+            tests:
+              - not null
+              - relationships:
+                  to: source('RAW', 'ERCH')
+                  field: belnr
         config:
           freshness:
-            warn_after: {count: 12, period: hour}
-            error_after: {count: 24, period: hour}
+            warn_after: { count: 12, period: hour }
+            error_after: { count: 24, period: hour }
       - name: ERCH
+        columns:
+          - name: belnr
+            tests:
+              - unique
+              - not_null
         config:
           freshness:
-            warn_after: {count: 12, period: hour}
-            error_after: {count: 24, period: hour}
+            warn_after: { count: 12, period: hour }
+            error_after: { count: 24, period: hour }
       - name: DBERCHZ1
         config:
           freshness:
-            warn_after: {count: 12, period: hour}
-            error_after: {count: 24, period: hour}
+            warn_after: { count: 12, period: hour }
+            error_after: { count: 24, period: hour }
       - name: DBERCHZ3
         config:
           freshness:
-            warn_after: {count: 12, period: hour}
-            error_after: {count: 24, period: hour}
+            warn_after: { count: 12, period: hour }
+            error_after: { count: 24, period: hour }
       - name: DBERDLB
         config:
           freshness:
-            warn_after: {count: 12, period: hour}
-            error_after: {count: 24, period: hour}
+            warn_after: { count: 12, period: hour }
+            error_after: { count: 24, period: hour }
       - name: DBERDL
         config:
           freshness:
-            warn_after: {count: 12, period: hour}
-            error_after: {count: 24, period: hour}
+            warn_after: { count: 12, period: hour }
+            error_after: { count: 24, period: hour }
       - name: ZFATT057_OPHIST
         config:
           freshness:
-            warn_after: {count: 12, period: hour}
-            error_after: {count: 24, period: hour}
+            warn_after: { count: 12, period: hour }
+            error_after: { count: 24, period: hour }
       - name: DBERCHZ5
         config:
           freshness:
-            warn_after: {count: 12, period: hour}
-            error_after: {count: 24, period: hour}
+            warn_after: { count: 12, period: hour }
+            error_after: { count: 24, period: hour }
       - name: DBERCHZ7
         config:
           freshness:
-            warn_after: {count: 12, period: hour}
-            error_after: {count: 24, period: hour}
+            warn_after: { count: 12, period: hour }
+            error_after: { count: 24, period: hour }
       - name: ETTIFN
         config:
           freshness:
-            warn_after: {count: 12, period: hour}
-            error_after: {count: 24, period: hour}
+            warn_after: { count: 12, period: hour }
+            error_after: { count: 24, period: hour }
       - name: EVER
         config:
           freshness:
-            warn_after: {count: 12, period: hour}
-            error_after: {count: 24, period: hour}
+            warn_after: { count: 12, period: hour }
+            error_after: { count: 24, period: hour }
       - name: ZCFAT_IRREG_INF
         config:
           freshness:
-            warn_after: {count: 12, period: hour}
-            error_after: {count: 24, period: hour}
+            warn_after: { count: 12, period: hour }
+            error_after: { count: 24, period: hour }
       - name: ZCFAT_IRREG_CAB
         config:
           freshness:
-            warn_after: {count: 12, period: hour}
-            error_after: {count: 24, period: hour}
+            warn_after: { count: 12, period: hour }
+            error_after: { count: 24, period: hour }
       - name: ETRG
         config:
           freshness:
-            warn_after: {count: 12, period: hour}
-            error_after: {count: 24, period: hour}
+            warn_after: { count: 12, period: hour }
+            error_after: { count: 24, period: hour }
       - name: DBERCHZ2
         config:
           freshness:
-            warn_after: {count: 12, period: hour}
-            error_after: {count: 24, period: hour}
+            warn_after: { count: 12, period: hour }
+            error_after: { count: 24, period: hour }
       - name: ETDZ
         config:
           freshness:
-            warn_after: {count: 12, period: hour}
-            error_after: {count: 24, period: hour}
+            warn_after: { count: 12, period: hour }
+            error_after: { count: 24, period: hour }
       - name: EZUZ
         config:
           freshness:
-            warn_after: {count: 12, period: hour}
-            error_after: {count: 24, period: hour}
+            warn_after: { count: 12, period: hour }
+            error_after: { count: 24, period: hour }
       - name: EGERH
         config:
           freshness:
-            warn_after: {count: 12, period: hour}
-            error_after: {count: 24, period: hour}
+            warn_after: { count: 12, period: hour }
+            error_after: { count: 24, period: hour }
       - name: TE835T
         config:
           freshness:
-            warn_after: {count: 12, period: hour}
-            error_after: {count: 24, period: hour}
+            warn_after: { count: 12, period: hour }
+            error_after: { count: 24, period: hour }
 
   - name: "PROD"
     database: eqtlinfo_prd
@@ -113,23 +133,23 @@ sources:
       - name: TAB_CONTROLE_CARGAS
         config:
           freshness:
-            warn_after: {count: 12, period: hour}
-            error_after: {count: 24, period: hour}
+            warn_after: { count: 12, period: hour }
+            error_after: { count: 24, period: hour }
       - name: FATURAMENTO_OPERACOES
         config:
           freshness:
-            warn_after: {count: 12, period: hour}
-            error_after: {count: 24, period: hour}
+            warn_after: { count: 12, period: hour }
+            error_after: { count: 24, period: hour }
       - name: FATURAMENTO
         config:
           freshness:
-            warn_after: {count: 12, period: hour}
-            error_after: {count: 24, period: hour}
+            warn_after: { count: 12, period: hour }
+            error_after: { count: 24, period: hour }
       - name: INT_ULTIMA_EXECUCAO
         config:
           freshness:
-            warn_after: {count: 12, period: hour}
-            error_after: {count: 24, period: hour}
+            warn_after: { count: 12, period: hour }
+            error_after: { count: 24, period: hour }
 
   - name: "HML"
     database: sandbox
