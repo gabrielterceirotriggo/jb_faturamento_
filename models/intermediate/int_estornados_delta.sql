@@ -10,6 +10,7 @@ with erch as (
 q_estornados_pleno_fat as (
     {{ select_from_estornado('') }} {{ ref('int_estornados_pleno_fat') }}
 ),
+
 q_estornos_pleno_fat as (
     {{ select_from_estornado('') }} {{ ref('int_estornos_pleno_fat') }}
 ),
@@ -132,13 +133,13 @@ registros_agrupados as (
 ),
 
 registros_ranqueados as (
-    select
-        *
+    select *
     from registros_agrupados
     qualify ROW_NUMBER() over (
-        partition by mes_competencia,
-        documento_calculo,
-        documento_impressao
+        partition by
+            mes_competencia,
+            documento_calculo,
+            documento_impressao
         order by flag asc
     ) = 1
 ),
@@ -225,15 +226,20 @@ busca_motivos_estorno_ajuste as (
         rr.ordem_faturamento,
         rr.consumo_registrado,
         rr.flag,
-        case when e.bcreason = ' ' then null else e.bcreason end as motivo_estorno_ajuste
-    from registros_ranqueados rr
-    left outer join erch e
-        on rr.documento_calculo = e.belnr
-        and e.mandt = {{ mc_mandante(var('source_param')) }}
+        case when e.bcreason = ' ' then null else e.bcreason end
+            as motivo_estorno_ajuste
+    from registros_ranqueados as rr
+    left outer join erch as e
+        on
+            rr.documento_calculo = e.belnr
+            and e.mandt = {{ mc_mandante(var('source_param')) }}
 ),
 
 final as (
-    {{ select_from_estornado('busca_motivos_estorno_ajuste') }} 
+    {{ select_from_estornado('busca_motivos_estorno_ajuste') }}
 )
 
-select *, CURRENT_TIMESTAMP() as data_dados from final
+select
+    *,
+    CURRENT_TIMESTAMP() as data_dados
+from final

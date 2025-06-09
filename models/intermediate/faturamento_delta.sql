@@ -175,15 +175,15 @@ dados_faturamento_unificados as (
         icd.tipo_impressao as tipo_impressao_original,
         icd.formulario_pagamento as formulario_pagamento_original
     from
-        calculo_delta icd
+        calculo_delta as icd
     inner join
-        consumo_delta csd
+        consumo_delta as csd
         on
             icd.mes_competencia = csd.mes_competencia
             and icd.documento_calculo = csd.documento_calculo
             and icd.documento_impressao = csd.documento_impressao
     left outer join
-        consumo_registrado csr
+        consumo_registrado as csr
         on
             icd.mes_competencia = csr.mes_competencia
             and icd.documento_calculo = csr.documento_calculo

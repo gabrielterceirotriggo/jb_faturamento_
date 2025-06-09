@@ -31,8 +31,7 @@ erch as (
 ),
 
 ultima_execucao as (
-    select
-        ultima_execucao
+    select ultima_execucao
     from
         {{ ref('stg_int_ultima_exec') }}
 ),
@@ -55,9 +54,11 @@ calculos as (
     from
         erdk as a
     inner join
-        erchc as b on a.mandt = b.mandt and a.opbel = b.opbel
+        erchc as b
+        on a.mandt = b.mandt and a.opbel = b.opbel
     inner join
-        erch as c on b.mandt = c.mandt and b.belnr = c.belnr
+        erch as c
+        on b.mandt = c.mandt and b.belnr = c.belnr
     where
         a.mandt = {{ mc_mandante(var('source_param')) }}
         and a.invoiced = 'X'
@@ -84,9 +85,11 @@ estornos_plenos as (
     from
         erdk as a
     inner join
-        erchc as b on a.mandt = b.mandt and a.intopbel = b.opbel
+        erchc as b
+        on a.mandt = b.mandt and a.intopbel = b.opbel
     inner join
-        erch as c on b.mandt = c.mandt and b.belnr = c.belnr
+        erch as c
+        on b.mandt = c.mandt and b.belnr = c.belnr
     where
         a.mandt = {{ mc_mandante(var('source_param')) }}
         and a.invoiced = 'X'

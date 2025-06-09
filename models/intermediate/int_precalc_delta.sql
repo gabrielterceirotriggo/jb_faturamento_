@@ -83,8 +83,7 @@ ettifn as (
 ),
 
 ultima_execucao as (
-    select
-        ultima_execucao
+    select ultima_execucao
     from
         {{ ref('stg_int_ultima_exec') }}
 ),
@@ -159,11 +158,17 @@ dados_faturamento_base as (
                     a.budat
         end as data_estorno_pleno
     from
-        erdk a
-    inner join erchc b on a.mandt = b.mandt and a.opbel = b.opbel
-    inner join erch c on b.mandt = c.mandt and b.belnr = c.belnr
-    left join ever d on c.mandt = d.mandt and c.vertrag = d.vertrag
-    left join ettifn e on d.anlage = e.anlage and e.operand = 'FL_MINIMO' and c.endabrpe = e.bis and c.belnr = e.belnr
+        erdk as a
+    inner join erchc as b on a.mandt = b.mandt and a.opbel = b.opbel
+    inner join erch as c on b.mandt = c.mandt and b.belnr = c.belnr
+    left join ever as d on c.mandt = d.mandt and c.vertrag = d.vertrag
+    left join
+        ettifn as e
+        on
+            d.anlage = e.anlage
+            and e.operand = 'FL_MINIMO'
+            and c.endabrpe = e.bis
+            and c.belnr = e.belnr
     where
         a.mandt = {{ mc_mandante(var('source_param')) }}
         and a.erdat >= (select ultima_execucao from ultima_execucao)
@@ -173,53 +178,113 @@ dados_faturamento_base as (
 
 faturamento_transformado as (
     select distinct
-        SUBSTR(data_competencia, 1, 6) as mes_competencia,
-        LEFT(billing_period, 4) || SUBSTR(billing_period, 6, 2) as mes_referencia,
         documento_calculo,
         documento_impressao,
-        case when fatura <> ' ' then fatura end as fatura,
-        case when anlage <> ' ' then anlage end as instalacao,
         vkont as conta_contrato,
         gpartner as parceiro_negocio,
         vertrag as contrato,
         ableinh as unidade_leitura,
-        SUBSTR(ableinh, 3, 2) as etapa,
         motivo_criacao_impressao,
         tipo_impressao,
         belegart as tipo_calculo,
-        case when zzorigdoc <> ' ' then zzorigdoc end as origem_documento,
-        case when zzorigdoc in ('IP', 'RS', 'FR', 'DS', 'CL') then 'X' end as cnr,
         estorno_pleno,
-        case when sc_belnr_h <> ' ' then 'X' end as estorno_ajuste,
         fatura_virtual,
         minimo,
-        case when begabrpe <> '00000000' then TO_DATE(begabrpe, 'YYYYMMDD') end as inicio_calculo,
-        case when endabrpe <> '00000000' then TO_DATE(endabrpe, 'YYYYMMDD') end as fim_calculo,
         contrapartida as documento_estorno_pleno,
-        case when data_estorno_pleno <> '00000000' then TO_DATE(data_estorno_pleno, 'YYYYMMDD') end as data_estorno_pleno,
         motivo_estorno_impressao as motivo_estorno_pleno,
-        case when sc_belnr_n <> ' ' then sc_belnr_n else sc_belnr_h end as documento_estorno_ajuste,
-        case when stornodat <> '00000000' then TO_DATE(stornodat, 'YYYYMMDD') end as data_estorno_ajuste,
-        case when bcreason <> ' ' then bcreason end as motivo_estorno_ajuste,
         valor_total as valor_fatura,
         chave_reconciliacao,
         formulario_pagamento,
         txjcd as domicilio_fiscal,
-        case when data_competencia <> '00000000' then TO_DATE(data_competencia, 'YYYYMMDD') end as data_competencia,
-        case when zuorddaa <> '00000000' then TO_DATE(zuorddaa, 'YYYYMMDD') end as data_atribuicao_calculo,
-        case when data_apresentacao <> '00000000' then TO_DATE(data_apresentacao, 'YYYYMMDD') end as data_apresentacao,
-        case when data_vencimento_original <> '00000000' then TO_DATE(data_vencimento_original, 'YYYYMMDD') end as data_vencimento_original,
-        case when adatsoll <> '00000000' then TO_DATE(adatsoll, 'YYYYMMDD') end as data_previsao_leitura,
-        case when data_criacao_impressao_raw <> '00000000' then TO_TIMESTAMP_NTZ(data_criacao_impressao_raw || hora_criacao, 'YYYYMMDDHH24MISS') end as data_criacao_impressao,
-        case when usuario_criacao <> ' ' then usuario_criacao end as usuario_criacao_impressao,
-        case when data_modificacao_impressao_raw <> '00000000' then TO_DATE(data_modificacao_impressao_raw, 'YYYYMMDD') end as data_modificacao_impressao,
-        case when usuario_modificacao <> ' ' then usuario_modificacao end as usuario_modificacao_impressao,
-        case when erdat_erch <> '00000000' and eroetim <> ' ' then TO_TIMESTAMP_NTZ(erdat_erch || ' ' || eroetim, 'YYYYMMDD HH24MI') when erdat_erch <> '00000000' then TO_DATE(erdat_erch, 'YYYYMMDD') end as data_criacao_calculo,
-        case when ernam_erch <> ' ' then ernam_erch end as usuario_criacao_calculo,
-        case when aedat_erch <> '00000000' then TO_DATE(aedat_erch, 'YYYYMMDD') end as data_modificacao_calculo,
-        case when aenam_erch <> ' ' then aenam_erch end as usuario_modificacao_calculo,
-        case when belnralt <> ' ' then belnralt end as documento_calculo_anterior,
-        case when estrutura_regional_politica <> ' ' then estrutura_regional_politica end as estrutura_regional_politica
+        SUBSTR(data_competencia, 1, 6) as mes_competencia,
+        LEFT(billing_period, 4)
+        || SUBSTR(billing_period, 6, 2) as mes_referencia,
+        case when fatura <> ' ' then fatura end as fatura,
+        case when anlage <> ' ' then anlage end as instalacao,
+        SUBSTR(ableinh, 3, 2) as etapa,
+        case when zzorigdoc <> ' ' then zzorigdoc end as origem_documento,
+        case when zzorigdoc in ('IP', 'RS', 'FR', 'DS', 'CL') then 'X' end
+            as cnr,
+        case when sc_belnr_h <> ' ' then 'X' end as estorno_ajuste,
+        case
+            when begabrpe <> '00000000' then TO_DATE(begabrpe, 'YYYYMMDD')
+        end as inicio_calculo,
+        case
+            when endabrpe <> '00000000' then TO_DATE(endabrpe, 'YYYYMMDD')
+        end as fim_calculo,
+        case
+            when
+                data_estorno_pleno <> '00000000'
+                then TO_DATE(data_estorno_pleno, 'YYYYMMDD')
+        end as data_estorno_pleno,
+        case when sc_belnr_n <> ' ' then sc_belnr_n else sc_belnr_h end
+            as documento_estorno_ajuste,
+        case
+            when stornodat <> '00000000' then TO_DATE(stornodat, 'YYYYMMDD')
+        end as data_estorno_ajuste,
+        case when bcreason <> ' ' then bcreason end as motivo_estorno_ajuste,
+        case
+            when
+                data_competencia <> '00000000'
+                then TO_DATE(data_competencia, 'YYYYMMDD')
+        end as data_competencia,
+        case
+            when zuorddaa <> '00000000' then TO_DATE(zuorddaa, 'YYYYMMDD')
+        end as data_atribuicao_calculo,
+        case
+            when
+                data_apresentacao <> '00000000'
+                then TO_DATE(data_apresentacao, 'YYYYMMDD')
+        end as data_apresentacao,
+        case
+            when
+                data_vencimento_original <> '00000000'
+                then TO_DATE(data_vencimento_original, 'YYYYMMDD')
+        end as data_vencimento_original,
+        case
+            when adatsoll <> '00000000' then TO_DATE(adatsoll, 'YYYYMMDD')
+        end as data_previsao_leitura,
+        case
+            when
+                data_criacao_impressao_raw <> '00000000'
+                then
+                    TO_TIMESTAMP_NTZ(
+                        data_criacao_impressao_raw || hora_criacao,
+                        'YYYYMMDDHH24MISS'
+                    )
+        end as data_criacao_impressao,
+        case when usuario_criacao <> ' ' then usuario_criacao end
+            as usuario_criacao_impressao,
+        case
+            when
+                data_modificacao_impressao_raw <> '00000000'
+                then TO_DATE(data_modificacao_impressao_raw, 'YYYYMMDD')
+        end as data_modificacao_impressao,
+        case when usuario_modificacao <> ' ' then usuario_modificacao end
+            as usuario_modificacao_impressao,
+        case
+            when
+                erdat_erch <> '00000000' and eroetim <> ' '
+                then
+                    TO_TIMESTAMP_NTZ(
+                        erdat_erch || ' ' || eroetim, 'YYYYMMDD HH24MI'
+                    )
+            when erdat_erch <> '00000000' then TO_DATE(erdat_erch, 'YYYYMMDD')
+        end as data_criacao_calculo,
+        case when ernam_erch <> ' ' then ernam_erch end
+            as usuario_criacao_calculo,
+        case
+            when aedat_erch <> '00000000' then TO_DATE(aedat_erch, 'YYYYMMDD')
+        end as data_modificacao_calculo,
+        case when aenam_erch <> ' ' then aenam_erch end
+            as usuario_modificacao_calculo,
+        case when belnralt <> ' ' then belnralt end
+            as documento_calculo_anterior,
+        case
+            when
+                estrutura_regional_politica <> ' '
+                then estrutura_regional_politica
+        end as estrutura_regional_politica
     from
         dados_faturamento_base
 ),

@@ -43,8 +43,9 @@ faturamento_enriquecido as (
         contratos_para_ranquear as c
     left join
         faturamento as b
-        on c.conta_contrato = b.conta_contrato
-        and c.mes_referencia = b.mes_referencia
+        on
+            c.conta_contrato = b.conta_contrato
+            and c.mes_referencia = b.mes_referencia
 ),
 
 final as (

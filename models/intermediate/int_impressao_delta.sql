@@ -29,8 +29,7 @@ with erdk as (
 ),
 
 ultima_execucao as (
-    select
-        ultima_execucao
+    select ultima_execucao
     from
         {{ ref('stg_int_ultima_exec') }}
 ),
@@ -89,26 +88,33 @@ dados_impressao_transformados as (
         end as tipo_impressao,
         case
             when data_criacao <> '00000000'
-            then TRY_TO_TIMESTAMP(data_criacao || ' ' || hora_criacao, 'YYYYMMDD HH24MISS')
+                then
+                    TRY_TO_TIMESTAMP(
+                        data_criacao || ' ' || hora_criacao, 'YYYYMMDD HH24MISS'
+                    )
         end as data_criacao_impressao,
         case
             when data_modificacao <> '00000000'
-            then TRY_TO_TIMESTAMP(data_modificacao || ' ' || hora_criacao, 'YYYYMMDD HH24MISS')
+                then
+                    TRY_TO_TIMESTAMP(
+                        data_modificacao || ' ' || hora_criacao,
+                        'YYYYMMDD HH24MISS'
+                    )
         end as data_modificacao_impressao,
         case
             when usuario_modificacao <> ' ' then usuario_modificacao
         end as usuario_modificacao,
         case
             when data_competencia <> '00000000'
-            then TO_DATE(data_competencia, 'YYYYMMDD')
+                then TO_DATE(data_competencia, 'YYYYMMDD')
         end as data_competencia,
         case
             when data_vencimento <> '00000000'
-            then TO_DATE(data_vencimento, 'YYYYMMDD')
+                then TO_DATE(data_vencimento, 'YYYYMMDD')
         end as data_vencimento_original,
         case
             when data_apresentacao <> '00000000'
-            then TO_DATE(data_apresentacao, 'YYYYMMDD')
+                then TO_DATE(data_apresentacao, 'YYYYMMDD')
         end as data_apresentacao,
         case
             when intopbel <> ' ' then intopbel
@@ -120,7 +126,9 @@ dados_impressao_transformados as (
             when formulario_pagamento <> ' ' then formulario_pagamento
         end as formulario_pagamento,
         case
-            when estrutura_regional_politica <> ' ' then estrutura_regional_politica
+            when
+                estrutura_regional_politica <> ' '
+                then estrutura_regional_politica
         end as estrutura_regional_politica,
         case
             when unidade_leitura <> ' ' then unidade_leitura

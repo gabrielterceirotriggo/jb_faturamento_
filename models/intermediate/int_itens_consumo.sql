@@ -122,7 +122,10 @@ itens_consumo_base_tipo1 as (
                 df.tipo_calculo = 'CM'
                 and (
                     ((dz1.v_abrmenge + dz1.n_abrmenge) > 0 and dz3.nettobtr < 0)
-                    or ((dz1.v_abrmenge + dz1.n_abrmenge) < 0 and dz3.nettobtr > 0)
+                    or (
+                        (dz1.v_abrmenge + dz1.n_abrmenge) < 0
+                        and dz3.nettobtr > 0
+                    )
                 )
                 then (dz1.v_abrmenge + dz1.n_abrmenge) * -1
             else dz1.v_abrmenge + dz1.n_abrmenge
@@ -130,17 +133,20 @@ itens_consumo_base_tipo1 as (
     from
         documentos_faturamento as df
     left join dberdlb as dlb
-        on df.mandt = dlb.mandt
-        and df.doc_impressao = dlb.printdoc
-        and df.doc_calculo = dlb.billdoc
+        on
+            df.mandt = dlb.mandt
+            and df.doc_impressao = dlb.printdoc
+            and df.doc_calculo = dlb.billdoc
     left join dberchz1 as dz1
-        on dlb.mandt = dz1.mandt
-        and dlb.billdoc = dz1.belnr
-        and dlb.billdocline = dz1.belzeile
+        on
+            dlb.mandt = dz1.mandt
+            and dlb.billdoc = dz1.belnr
+            and dlb.billdocline = dz1.belzeile
     left join dberchz3 as dz3
-        on dz1.mandt = dz3.mandt
-        and dz1.belnr = dz3.belnr
-        and dz1.belzeile = dz3.belzeile
+        on
+            dz1.mandt = dz3.mandt
+            and dz1.belnr = dz3.belnr
+            and dz1.belzeile = dz3.belzeile
     where
         dlb.xtotal_amnt = 'X'
         and df.mandt = {{ mc_mandante(var('source_param')) }}
@@ -180,7 +186,10 @@ itens_consumo_base_tipo2 as (
                 df.tipo_calculo = 'CM'
                 and (
                     ((dz5.v_abrmenge + dz5.n_abrmenge) > 0 and dz7.nettobtr < 0)
-                    or ((dz5.v_abrmenge + dz5.n_abrmenge) < 0 and dz7.nettobtr > 0)
+                    or (
+                        (dz5.v_abrmenge + dz5.n_abrmenge) < 0
+                        and dz7.nettobtr > 0
+                    )
                 )
                 then (dz5.v_abrmenge + dz5.n_abrmenge) * -1
             else dz5.v_abrmenge + dz5.n_abrmenge
@@ -188,17 +197,20 @@ itens_consumo_base_tipo2 as (
     from
         documentos_faturamento as df
     left join dberdlb as dlb
-        on df.mandt = dlb.mandt
-        and df.doc_impressao = dlb.printdoc
-        and df.doc_calculo = dlb.billdoc
+        on
+            df.mandt = dlb.mandt
+            and df.doc_impressao = dlb.printdoc
+            and df.doc_calculo = dlb.billdoc
     left join dberchz5 as dz5
-        on dlb.mandt = dz5.mandt
-        and dlb.billdoc = dz5.belnr
-        and dlb.billdocline = dz5.belzeile
+        on
+            dlb.mandt = dz5.mandt
+            and dlb.billdoc = dz5.belnr
+            and dlb.billdocline = dz5.belzeile
     left join dberchz7 as dz7
-        on dz5.mandt = dz7.mandt
-        and dz5.belnr = dz7.belnr
-        and dz5.belzeile = dz7.belzeile
+        on
+            dz5.mandt = dz7.mandt
+            and dz5.belnr = dz7.belnr
+            and dz5.belzeile = dz7.belzeile
     where
         dlb.xtotal_amnt = 'X'
         and df.mandt = {{ mc_mandante(var('source_param')) }}
@@ -229,7 +241,8 @@ itens_consumo_transformados_tipo1 as (
         estorno,
         case when estorno = 'X' then consumo * -1 else consumo end as consumo,
         case when estorno = 'X' then receita * -1 else receita end as receita,
-        case when sub_operacao = ' ' then null else sub_operacao end as sub_operacao
+        case when sub_operacao = ' ' then null else sub_operacao end
+            as sub_operacao
     from
         itens_consumo_base_tipo1
     where
@@ -261,7 +274,8 @@ itens_consumo_transformados_tipo2 as (
         estorno,
         case when estorno = 'X' then consumo * -1 else consumo end as consumo,
         case when estorno = 'X' then receita * -1 else receita end as receita,
-        case when sub_operacao = ' ' then null else sub_operacao end as sub_operacao
+        case when sub_operacao = ' ' then null else sub_operacao end
+            as sub_operacao
     from
         itens_consumo_base_tipo2
     where

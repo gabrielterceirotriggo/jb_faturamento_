@@ -261,7 +261,7 @@ consumo_agregado_por_tipo as (
                 SUM(
                     case
                         when belzart = 'ZRCAT'
-                        then consumo_registrado_dberchz2
+                            then consumo_registrado_dberchz2
                         else 0
                     end
                 ) <> 0
@@ -269,7 +269,7 @@ consumo_agregado_por_tipo as (
                     SUM(
                         case
                             when belzart = 'ZRCAT'
-                            then consumo_registrado_dberchz2
+                                then consumo_registrado_dberchz2
                             else 0
                         end
                     )
@@ -277,7 +277,7 @@ consumo_agregado_por_tipo as (
                 SUM(
                     case
                         when belzart in ('ZRCAFP', 'ZRCAIT', 'ZRCANP', 'ZRCARV')
-                        then consumo_registrado_dberchz2
+                            then consumo_registrado_dberchz2
                         else 0
                     end
                 )

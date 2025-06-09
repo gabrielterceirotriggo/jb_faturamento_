@@ -5,7 +5,7 @@ select
     count(*) as n_records
 
 from {{ source('PROD', 'FATURAMENTO') }}
-where 
+where
     mes_competencia is not null
     and documento_calculo is not null
     and documento_impressao is not null

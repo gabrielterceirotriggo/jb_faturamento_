@@ -106,16 +106,20 @@ q_estornos_pleno_fat as (
         fh.multas * -1 as multas,
         fh.parcelamentos * -1 as parcelamentos,
         fh.outros_lancamentos * -1 as outros_lancamentos,
-        case when fh.formulario_pagamento = ' ' then null else fh.formulario_pagamento end as formulario_pagamento,
+        case
+            when fh.formulario_pagamento = ' ' then null else
+                fh.formulario_pagamento
+        end as formulario_pagamento,
         fh.quantidade_dias * -1 as quantidade_dias
     from
-        estornos_plenos_delta epd
+        estornos_plenos_delta as epd
     inner join
-        faturamento_historico fh on fh.documento_impressao = epd.contrapartida
+        faturamento_historico as fh
+        on epd.contrapartida = fh.documento_impressao
 ),
 
 final as (
-    {{ select_from_estornado('q_estornos_pleno_fat') }} 
+    {{ select_from_estornado('q_estornos_pleno_fat') }}
 )
 
 select * from final

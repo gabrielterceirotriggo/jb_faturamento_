@@ -113,9 +113,9 @@ enriquecimento_dados_precalc as (
         pd.estrutura_regional_politica,
         e.anlage as ettifn_anlage
     from
-        precalc_delta pd
+        precalc_delta as pd
     left outer join
-        ettifn e
+        ettifn as e
         on
             e.mandt = {{ mc_mandante(var('source_param')) }}
             and pd.instalacao = e.anlage

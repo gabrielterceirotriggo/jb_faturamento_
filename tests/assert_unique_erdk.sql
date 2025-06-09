@@ -3,7 +3,7 @@ select
     count(*) as n_records
 
 from {{ source('RAW', 'ERDK') }}
-where 
+where
     opbel is not null
 group by opbel
 having count(*) > 1

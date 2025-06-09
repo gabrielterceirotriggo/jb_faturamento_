@@ -95,17 +95,21 @@ q_estornados_ajuste_fat as (
         fh.ordem_faturamento,
         fh.consumo_registrado,
         2 as flag,
-        case when fh.formulario_pagamento = ' ' then null else fh.formulario_pagamento end as formulario_pagamento
+        case
+            when fh.formulario_pagamento = ' ' then null else
+                fh.formulario_pagamento
+        end as formulario_pagamento
     from
-        estornos_ajustes_delta ead
+        estornos_ajustes_delta as ead
     inner join
-        faturamento_historico fh on fh.documento_calculo = ead.documento_estorno_ajuste
+        faturamento_historico as fh
+        on ead.documento_estorno_ajuste = fh.documento_calculo
     where
         fh.estorno_pleno is null
 ),
 
 final as (
-    {{ select_from_estornado('q_estornados_ajuste_fat') }} 
+    {{ select_from_estornado('q_estornados_ajuste_fat') }}
 )
 
 select * from final

@@ -17,7 +17,8 @@ estornos_preparados as (
         CAST(documento_calculo as VARCHAR(12)) as documento_calculo,
         CAST(usuario_criacao_calculo as VARCHAR(12)) as usuario_criacao_calculo,
         CAST(motivo_estorno_ajuste as VARCHAR(2)) as motivo_estorno_calculo,
-        CAST(documento_estorno_ajuste as VARCHAR(12)) as documento_estorno_ajuste,
+        CAST(documento_estorno_ajuste as VARCHAR(12))
+            as documento_estorno_ajuste,
         CAST(valor_fatura as DECIMAL(13, 2)) as valor_fatura
     from
         calculo_delta

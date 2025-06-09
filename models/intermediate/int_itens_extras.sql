@@ -88,7 +88,10 @@ itens_extras_faturamento_base as (
             when
                 df.tipo_calculo = 'CM' and (
                     ((dz1.v_abrmenge + dz1.n_abrmenge) > 0 and dz3.nettobtr < 0)
-                    or ((dz1.v_abrmenge + dz1.n_abrmenge) < 0 and dz3.nettobtr > 0)
+                    or (
+                        (dz1.v_abrmenge + dz1.n_abrmenge) < 0
+                        and dz3.nettobtr > 0
+                    )
                 )
                 then (dz1.v_abrmenge + dz1.n_abrmenge) * -1
             else dz1.v_abrmenge + dz1.n_abrmenge
@@ -137,6 +140,8 @@ itens_extras_transformados as (
         base_imposto,
         aliquota,
         estorno,
+        operacao,
+        domicilio_fiscal,
         case
             when estorno = 'X' then consumo * -1
             else consumo
@@ -145,12 +150,10 @@ itens_extras_transformados as (
             when estorno = 'X' then receita * -1
             else receita
         end as receita,
-        operacao,
         case
             when sub_operacao = ' ' then null
             else sub_operacao
-        end as sub_operacao,
-        domicilio_fiscal
+        end as sub_operacao
     from
         itens_extras_faturamento_base
 ),

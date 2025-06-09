@@ -95,17 +95,21 @@ q_estornados_ajuste_delta as (
         fd.ordem_faturamento,
         fd.consumo_registrado,
         1 as flag,
-        case when fd.formulario_pagamento = ' ' then null else fd.formulario_pagamento end as formulario_pagamento
+        case
+            when fd.formulario_pagamento = ' ' then null else
+                fd.formulario_pagamento
+        end as formulario_pagamento
     from
-        estornos_ajustes_delta ead
+        estornos_ajustes_delta as ead
     inner join
-        faturamento_delta fd on fd.documento_calculo = ead.documento_estorno_ajuste
+        faturamento_delta as fd
+        on ead.documento_estorno_ajuste = fd.documento_calculo
     where
         fd.estorno_pleno is null
 ),
 
 final as (
-    {{ select_from_estornado('q_estornados_ajuste_delta') }} 
+    {{ select_from_estornado('q_estornados_ajuste_delta') }}
 )
 
 select * from final

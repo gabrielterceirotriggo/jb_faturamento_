@@ -1,7 +1,6 @@
 with faturamento_delta as (
 
-    select
-        documento_calculo
+    select documento_calculo
     from
         {{ ref('faturamento_delta') }}
 
@@ -27,8 +26,9 @@ documentos_com_leitura as (
         faturamento_delta
     left outer join
         dberchz2
-        on faturamento_delta.documento_calculo = dberchz2.belnr
-        and dberchz2.mandt = {{ mc_mandante(var('source_param')) }}
+        on
+            faturamento_delta.documento_calculo = dberchz2.belnr
+            and dberchz2.mandt = {{ mc_mandante(var('source_param')) }}
     where
         dberchz2.mandt = {{ mc_mandante(var('source_param')) }}
 

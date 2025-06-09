@@ -9,13 +9,11 @@
 }}
 
 with obter_data_execucao as (
-    select
-        to_char(current_date(), 'YYYYMMDD') as ultima_execucao
+    select to_char(current_date(), 'YYYYMMDD') as ultima_execucao
 ),
 
 final as (
-    select
-        ultima_execucao
+    select ultima_execucao
     from obter_data_execucao
 )
 

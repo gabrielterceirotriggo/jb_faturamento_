@@ -48,66 +48,106 @@ dados_consumo_calculados as (
         itf.setor_industrial,
         itf.categoria_tarifa,
         itf.subclasse,
+        itf.flag,
+        itf.item_documento,
         case
             when cd.mes_referencia >= '202311'
                 then
                     case
-                        when itf.flag = 'C'
-                        and itf.item_documento in (
-                            'ZEAT', 'ZBXE', 'ZEANP', 'ZEAIT', 'ZEAFP', 'ZCMFNP',
-                            'ZIPFTE', 'ZEARV', 'ZEMFUP', 'ZTUSNP', 'ZTUSFP',
-                            'ZEAFPC', 'ZEAITC', 'ZEANPC', 'ZEARVC', 'ZEATC', 'ZBXEC'
-                        ) then itf.consumo else 0
+                        when
+                            itf.flag = 'C'
+                            and itf.item_documento in (
+                                'ZEAT',
+                                'ZBXE',
+                                'ZEANP',
+                                'ZEAIT',
+                                'ZEAFP',
+                                'ZCMFNP',
+                                'ZIPFTE', 'ZEARV', 'ZEMFUP', 'ZTUSNP', 'ZTUSFP',
+                                'ZEAFPC',
+                                'ZEAITC',
+                                'ZEANPC',
+                                'ZEARVC',
+                                'ZEATC',
+                                'ZBXEC'
+                            ) then itf.consumo
+                        else 0
                     end
                     -
                     case
-                        when itf.flag = 'C'
-                        and itf.item_documento in (
-                            'ZEGAT', 'ZEGFP', 'ZEGIT', 'ZEGNP', 'ZEGRV'
-                        ) then itf.consumo else 0
+                        when
+                            itf.flag = 'C'
+                            and itf.item_documento in (
+                                'ZEGAT', 'ZEGFP', 'ZEGIT', 'ZEGNP', 'ZEGRV'
+                            ) then itf.consumo
+                        else 0
                     end
-            else
-                case
-                    when itf.flag = 'C'
-                    and itf.item_documento in (
-                        'ZEAT', 'ZBXE', 'ZEANP', 'ZEAIT', 'ZEAFP', 'ZCMFNP',
-                        'ZIPFTE', 'ZEARV', 'ZEMFUP', 'ZTUSNP', 'ZTUSFP'
-                    ) then itf.consumo else 0
-                end
+            when
+                itf.flag = 'C'
+                and itf.item_documento in (
+                    'ZEAT', 'ZBXE', 'ZEANP', 'ZEAIT', 'ZEAFP', 'ZCMFNP',
+                    'ZIPFTE', 'ZEARV', 'ZEMFUP', 'ZTUSNP', 'ZTUSFP'
+                ) then itf.consumo
+            else 0
         end as consumo_faturado,
         case
             when
                 itf.flag = 'M'
-                and itf.item_documento in ('ZRCAT', 'ZRCAFP', 'ZRCAIT', 'ZRCANP', 'ZRCARV')
+                and itf.item_documento in (
+                    'ZRCAT', 'ZRCAFP', 'ZRCAIT', 'ZRCANP', 'ZRCARV'
+                )
                 then itf.consumo
             else 0
         end as consumo_medido,
         case
-            when itf.flag = 'D' and itf.item_documento = 'ZEUSD' then itf.receita else 0
+            when
+                itf.flag = 'D' and itf.item_documento = 'ZEUSD'
+                then itf.receita
+            else 0
         end as eusd,
         case
-            when itf.flag = 'D' and itf.item_documento = 'ZEUSDB' then itf.receita else 0
+            when
+                itf.flag = 'D' and itf.item_documento = 'ZEUSDB'
+                then itf.receita
+            else 0
         end as eusdb,
         case
-            when itf.flag = 'R' and itf.tipo_imposto = 'MW2' then itf.receita else 0
+            when
+                itf.flag = 'R' and itf.tipo_imposto = 'MW2'
+                then itf.receita
+            else 0
         end as icms,
         case
             when
                 itf.flag = 'R'
-                and (itf.operacao = 'ZBXR' 
-                or (itf.item_ordenacao = 'ZBTB'
-                and itf.tipo_imposto = 'MW2'))
+                and (
+                    itf.operacao = 'ZBXR'
+                    or (
+                        itf.item_ordenacao = 'ZBTB'
+                        and itf.tipo_imposto = 'MW2'
+                    )
+                )
                 then itf.receita
             else 0
         end as icms_subvencao,
         case
-            when itf.flag = 'R' and itf.tipo_imposto = 'PIS' then itf.receita else 0
+            when
+                itf.flag = 'R' and itf.tipo_imposto = 'PIS'
+                then itf.receita
+            else 0
         end as pis,
         case
-            when itf.flag = 'R' and itf.tipo_imposto = 'COF' then itf.receita else 0
+            when
+                itf.flag = 'R' and itf.tipo_imposto = 'COF'
+                then itf.receita
+            else 0
         end as cofins,
         case
-            when itf.flag = 'R' and itf.operacao in ('CIP1', 'CIP2', 'CIP3', 'CIP4') then itf.receita else 0
+            when
+                itf.flag = 'R'
+                and itf.operacao in ('CIP1', 'CIP2', 'CIP3', 'CIP4')
+                then itf.receita
+            else 0
         end as cip,
         case
             when itf.item_documento = 'WHTAX' then itf.receita else 0
@@ -116,25 +156,54 @@ dados_consumo_calculados as (
             when itf.item_ordenacao in ('ZDAM', 'ZDVM') then itf.receita else 0
         end as receita_bandeiras,
         case
-            when cd.mes_referencia >= '202311' then
-                case
-                    when itf.item_ordenacao in (
-                        'ZEAT', 'ZBXE', 'ZBXT', 'ZEFP', 'ZENP', 'ZTFP', 'ZTNP',
-                        'ZMFB', 'ZMUE', 'ZMUT', 'ZEIP', 'ZTIP', 'ZTAT', 'ZTRV',
-                        'ZERV', 'ZEIT', 'ZTIT', 'ZCRI', 'ZEGN', 'ZEGR', 'ZEGI',
-                        'ZEGF', 'ZEGT', 'ZTGN', 'ZTGR', 'ZTGI', 'ZTGF', 'ZTGT',
-                        'ZBEC', 'ZEFC', 'ZEIC', 'ZENC', 'ZECR', 'ZEAC', 'ZTFC',
-                        'ZTIC', 'ZTNC', 'ZTCR', 'ZTAC'
-                    ) then itf.receita else 0
-                end
-            else
-                case
-                    when itf.item_ordenacao in (
-                        'ZEAT', 'ZBXE', 'ZBXT', 'ZEFP', 'ZENP', 'ZTFP', 'ZTNP',
-                        'ZMFB', 'ZMUE', 'ZMUT', 'ZEIP', 'ZTIP', 'ZTAT', 'ZTRV',
-                        'ZERV', 'ZEIT', 'ZTIT', 'ZCRI'
-                    ) then itf.receita else 0
-                end
+            when cd.mes_referencia >= '202311'
+                then
+                    case
+                        when itf.item_ordenacao in (
+                            'ZEAT',
+                            'ZBXE',
+                            'ZBXT',
+                            'ZEFP',
+                            'ZENP',
+                            'ZTFP',
+                            'ZTNP',
+                            'ZMFB',
+                            'ZMUE',
+                            'ZMUT',
+                            'ZEIP',
+                            'ZTIP',
+                            'ZTAT',
+                            'ZTRV',
+                            'ZERV',
+                            'ZEIT',
+                            'ZTIT',
+                            'ZCRI',
+                            'ZEGN',
+                            'ZEGR',
+                            'ZEGI',
+                            'ZEGF',
+                            'ZEGT',
+                            'ZTGN',
+                            'ZTGR',
+                            'ZTGI',
+                            'ZTGF',
+                            'ZTGT',
+                            'ZBEC',
+                            'ZEFC',
+                            'ZEIC',
+                            'ZENC',
+                            'ZECR',
+                            'ZEAC',
+                            'ZTFC',
+                            'ZTIC', 'ZTNC', 'ZTCR', 'ZTAC'
+                        ) then itf.receita else 0
+                    end
+            when itf.item_ordenacao in (
+                'ZEAT', 'ZBXE', 'ZBXT', 'ZEFP', 'ZENP', 'ZTFP', 'ZTNP',
+                'ZMFB', 'ZMUE', 'ZMUT', 'ZEIP', 'ZTIP', 'ZTAT', 'ZTRV',
+                'ZERV', 'ZEIT', 'ZTIT', 'ZCRI'
+            ) then itf.receita
+            else 0
         end as receita_consumo_faturado,
         case
             when itf.item_ordenacao in (
@@ -143,7 +212,10 @@ dados_consumo_calculados as (
             ) then itf.preco else 0
         end as tarifa,
         case
-            when itf.flag = 'R' and fo.bloco = 'CORRECAO MONETARIA' then itf.receita else 0
+            when
+                itf.flag = 'R' and fo.bloco = 'CORRECAO MONETARIA'
+                then itf.receita
+            else 0
         end as correcao_monetaria,
         case
             when itf.flag = 'R' and fo.bloco = 'CREDITO' then itf.receita else 0
@@ -158,10 +230,11 @@ dados_consumo_calculados as (
             when itf.flag = 'R' and fo.bloco = 'MULTA' then itf.receita else 0
         end as multas,
         case
-            when itf.flag = 'R' and fo.bloco = 'PARCELAMENTO' then itf.receita else 0
-        end as parcelamentos,
-        itf.flag,
-        itf.item_documento
+            when
+                itf.flag = 'R' and fo.bloco = 'PARCELAMENTO'
+                then itf.receita
+            else 0
+        end as parcelamentos
     from
         calculo_delta as cd
     inner join

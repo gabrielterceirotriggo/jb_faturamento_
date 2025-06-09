@@ -107,15 +107,19 @@ q_estornados_pleno_fat_delta as (
         fd.ordem_faturamento,
         fd.consumo_registrado,
         1 as flag,
-        case when fd.formulario_pagamento = ' ' then null else fd.formulario_pagamento end as formulario_pagamento
+        case
+            when fd.formulario_pagamento = ' ' then null else
+                fd.formulario_pagamento
+        end as formulario_pagamento
     from
-        estornos_plenos_delta epd
+        estornos_plenos_delta as epd
     inner join
-        faturamento_delta fd on fd.documento_impressao = epd.contrapartida
+        faturamento_delta as fd
+        on epd.contrapartida = fd.documento_impressao
 ),
 
 final as (
-    {{ select_from_estornado('q_estornados_pleno_fat_delta') }} 
+    {{ select_from_estornado('q_estornados_pleno_fat_delta') }}
 )
 
 select * from final

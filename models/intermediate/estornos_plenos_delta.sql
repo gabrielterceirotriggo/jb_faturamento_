@@ -35,9 +35,9 @@ estornos_plenos_transformados as (
         chave_reconciliacao,
         motivo_estorno_impressao,
         contrapartida,
-        valor_total * -1 as valor_total,
         estorno_pleno,
         fatura_virtual,
+        valor_total * -1 as valor_total,
         TO_VARCHAR(data_competencia, 'YYYYMM') as mes_competencia
     from
         impressao_delta
