@@ -2,11 +2,9 @@ version: 2
 
 data_tests:
   - name: assert_unique_faturamento
-    description: >
-      Este teste verifica a unicidade dos registros na tabela FATURAMENTO.
-
-      Ele garante que a combinação das colunas mes_competencia, documento_calculo e documento_impressao seja única entre todas as linhas. O teste funciona agrupando os registros por essas três colunas e contando quantos registros existem em cada grupo.
-
-      Se qualquer grupo tiver mais de um registro, significa que existe uma combinação duplicada, e o teste irá falhar. 
-      
-      Esta é uma verificação de integridade de dados crucial para assegurar que cada documento de faturamento seja representado apenas uma vez para um determinado mês de competência.
+    description: "Garante que cada combinação de mês de competência, documento de cálculo e documento de impressão seja única, evitando faturamentos duplicados."
+  - name: assert_unique_erdk
+    description: "Garante que cada número de documento de impressão (opbel) seja único na tabela de faturamento (ERDK), prevenindo a duplicidade de faturas."
+  - name: assert_unique_erch
+    description: "Garante que cada número de documento contábil (belnr) seja único na tabela ERCH, prevenindo lançamentos de faturamento duplicados."
+  
