@@ -10,7 +10,8 @@ from (select
     where
         erdk.invoiced = 'X'
         and erchc.belnr = erch.belnr
-        and erch.belegart is not null) as df
+        and erch.belegart is not null
+        and erdk.erdat >= '20250501') as df
 left join {{ source('RAW', 'DBERDLB') }} as dlb
     on df.opbel = dlb.printdoc
     and df.belnr = dlb.billdoc

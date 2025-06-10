@@ -14,6 +14,8 @@ sources:
               - relationships:
                   to: source('RAW', 'ERCHC')
                   field: opbel
+                  config:
+                    where: "intopbel is null"
         config:
           freshness:
             warn_after: { count: 12, period: hour }
@@ -22,10 +24,13 @@ sources:
         columns:
           - name: belnr
             tests:
-              - not null
+              - not_null
               - relationships:
                   to: source('RAW', 'ERCH')
                   field: belnr
+          - name: opbel
+            tests:
+              - not_null
         config:
           freshness:
             warn_after: { count: 12, period: hour }
