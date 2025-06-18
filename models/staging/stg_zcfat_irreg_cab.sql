@@ -9,7 +9,6 @@ select
     ernam,
     erdat,
     tipo_devol,
-    fat_aberta,
-    data_dados
+    fat_aberta
 from
     {{ source('RAW','ZCFAT_IRREG_CAB') }}

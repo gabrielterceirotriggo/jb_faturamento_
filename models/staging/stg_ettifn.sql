@@ -22,7 +22,6 @@ select
     string4,
     ersatzwert,
     betrag,
-    waers,
-    data_dados
+    waers
 from
     {{ source('RAW','ETTIFN') }}

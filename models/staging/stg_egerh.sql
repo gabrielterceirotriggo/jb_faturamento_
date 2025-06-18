@@ -27,7 +27,6 @@ select
     cap_act_grp,
     einbzeit,
     ausbzeit,
-    zeitzone,
-    data_dados
+    zeitzone
 from
     {{ source('RAW','EGERH') }}

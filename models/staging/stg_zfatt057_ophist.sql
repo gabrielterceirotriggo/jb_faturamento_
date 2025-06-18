@@ -4,7 +4,6 @@ select
     belzart,
     flag,
     nettobtr_flag,
-    ez_abrmenge_flag,
-    data_dados
+    ez_abrmenge_flag
 from
     {{ source('RAW','ZFATT057_OPHIST') }}

@@ -36,7 +36,6 @@ select
     preisart,
     segment,
     v_nettobtr_l,
-    n_nettobtr_l,
-    data_dados
+    n_nettobtr_l
 from
     {{ source('RAW','DBERCHZ7') }}

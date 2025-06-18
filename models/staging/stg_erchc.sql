@@ -13,8 +13,7 @@ select
     invoiced,
     spcanc,
     statupd,
-    statupd_canc,
-    data_dados
+    statupd_canc
     --erchc_erchc_pk
 from
     {{ source('RAW', 'ERCHC') }}

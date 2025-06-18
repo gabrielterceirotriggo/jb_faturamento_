@@ -41,7 +41,6 @@ select
     valor_total,
     cons_reg_total,
     cons_min_fase,
-    dif_real_dev,
-    data_dados
+    dif_real_dev
 from
     {{ source('RAW','ZCFAT_IRREG_INF') }}

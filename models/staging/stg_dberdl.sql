@@ -14,7 +14,6 @@ select
     linesort,
     ab,
     bis,
-    stprz,
-    data_dados
+    stprz
 from
     {{ source('RAW','DBERDL') }}

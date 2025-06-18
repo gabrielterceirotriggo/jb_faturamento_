@@ -42,7 +42,6 @@ select
     zstromp,
     intsizeid,
     touperiod,
-    vee_code,
-    data_dados
+    vee_code
 from
     {{ source('RAW','ETDZ') }}

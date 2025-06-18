@@ -11,7 +11,6 @@ select
     tariftyp,
     temp_area,
     v_abrmenge,
-    n_abrmenge,
-    data_dados
+    n_abrmenge
 from
     {{ source('RAW','DBERCHZ5') }}

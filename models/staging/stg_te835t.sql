@@ -2,7 +2,6 @@ select
     mandt,
     spras,
     belzart,
-    text30,
-    data_dados
+    text30
 from
     {{ source('RAW','TE835T') }}

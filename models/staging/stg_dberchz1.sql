@@ -12,8 +12,7 @@ select
     temp_area,
     v_abrmenge,
     n_abrmenge,
-    ein01,
-    data_dados
+    ein01
 --constraint dberchz1_dberchz1_1729607942903359_pk primary key (mandt, belnr, belzeile)
 from
     {{ source('RAW','DBERCHZ1') }}

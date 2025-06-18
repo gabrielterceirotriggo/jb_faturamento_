@@ -6,7 +6,6 @@ select
     trigstat,
     ableinh,
     erdat,
-    ernam,
-    data_dados
+    ernam
 from
     {{ source('RAW','ETRG') }}

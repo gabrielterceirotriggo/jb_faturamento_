@@ -68,8 +68,7 @@ select
     revlock,
     sepa_prenot,
     invdocno,
-    selection_date,
-    data_dados
+    selection_date
 --erdk_erdk_pk
 from
     {{ source('RAW','ERDK') }}

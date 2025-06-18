@@ -34,7 +34,6 @@ select
     v_zwstvor,
     n_zwstvor,
     v_zwstdiff,
-    n_zwstdiff,
-    data_dados
+    n_zwstdiff
 from
     {{ source('RAW','DBERCHZ2') }}

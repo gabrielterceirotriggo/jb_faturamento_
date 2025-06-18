@@ -15,8 +15,7 @@ select
     nettobtr,
     sttax,
     ztipo,
-    zordem,
-    data_dados
+    zordem
     --constraint dberdlb_dberdlb_pk primary key (mandt, printdoc, printdocline)
 from
     {{ source('RAW','DBERDLB') }}

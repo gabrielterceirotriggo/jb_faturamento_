@@ -7,6 +7,8 @@
         {{ source('EQTL_PI', table_name) }}
     {% elif source_param == 'EQTL_AL' %}
         {{ source('EQTL_AL', table_name) }}
+    {% elif source_param == 'EQTL_AP' %}
+        {{ source('EQTL_AP', table_name) }}
     {% else %}
         {% do log("Destino inválido para source_param: " ~ source_param) %}
     {% endif %}
