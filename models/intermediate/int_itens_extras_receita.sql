@@ -50,7 +50,7 @@ itens_faturamento_impostos_base as (
         dberdl as d
         on df.doc_impressao = d.printdoc
     where
-        d.xtotal_amnt <> 'X'
+        COALESCE(d.xtotal_amnt, ' ') <> 'X'
         and d.linesort in (
             'ZDR1', 'ZDR2', 'ZDR3', 'ZDR4', 'ZDR5',
             'ZDR6', 'ZUR1', 'ZUR2', 'ZUR3', 'ZDES'
@@ -75,10 +75,10 @@ itens_faturamento_impostos_transformados as (
             else linesort
         end as linesort,
         case
-            when ab <> '00000000' then TO_DATE(ab, 'YYYYMMDD')
+            when COALESCE(ab, '00000000') <> '00000000' then TO_DATE(ab, 'YYYYMMDD')
         end as inicio_calculo,
         case
-            when bis <> '00000000' then TO_DATE(bis, 'YYYYMMDD')
+            when COALESCE(bis, '00000000') <> '00000000' then TO_DATE(bis, 'YYYYMMDD')
         end as fim_calculo,
         case
             when ktosl = ' ' then null

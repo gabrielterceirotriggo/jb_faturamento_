@@ -71,10 +71,10 @@ itens_receita_transformados as (
             else linesort
         end as linesort,
         case
-            when ab <> '00000000' then TO_DATE(ab, 'YYYYMMDD')
+            when COALESCE(ab, '00000000') <> '00000000' then TO_DATE(ab, 'YYYYMMDD')
         end as inicio_calculo,
         case
-            when bis <> '00000000' then TO_DATE(bis, 'YYYYMMDD')
+            when COALESCE(bis, '00000000') <> '00000000' then TO_DATE(bis, 'YYYYMMDD')
         end as fim_calculo,
         case
             when ktosl = ' ' then null

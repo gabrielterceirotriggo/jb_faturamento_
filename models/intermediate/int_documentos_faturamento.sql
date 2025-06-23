@@ -43,13 +43,13 @@ calculos as (
         a.opbel as doc_impressao,
         c.belegart as tipo_calculo,
         case
-            when c.zzorigdoc <> ' ' then c.zzorigdoc
+            when COALESCE(c.zzorigdoc, ' ') <> ' ' then c.zzorigdoc
         end as tipo_documento,
         case
             when a.ergrd = '04' then 'X'
         end as estorno,
         case
-            when a.budat <> '00000000' then SUBSTR(a.budat, 1, 6)
+            when COALESCE(a.budat, '00000000') <> '00000000' then SUBSTR(a.budat, 1, 6)
         end as mes_competencia
     from
         erdk as a
@@ -62,7 +62,7 @@ calculos as (
     where
         a.mandt = {{ mc_mandante(var('source_param')) }}
         and a.invoiced = 'X'
-        and a.ergrd <> '04'
+        and COALESCE(a.ergrd, ' ') <> '04'
         and a.erdat >= (select ultima_execucao from ultima_execucao)
         and a.erdat <= TO_CHAR(CURRENT_DATE(), 'YYYYMMDD')
 ),
@@ -74,13 +74,13 @@ estornos_plenos as (
         a.opbel as doc_impressao,
         c.belegart as tipo_calculo,
         case
-            when c.zzorigdoc <> ' ' then c.zzorigdoc
+            when COALESCE(c.zzorigdoc, ' ') <> ' ' then c.zzorigdoc
         end as tipo_documento,
         case
             when a.ergrd = '04' then 'X'
         end as estorno,
         case
-            when a.budat <> '00000000' then SUBSTR(a.budat, 1, 6)
+            when COALESCE(a.budat, '00000000') <> '00000000' then SUBSTR(a.budat, 1, 6)
         end as mes_competencia
     from
         erdk as a

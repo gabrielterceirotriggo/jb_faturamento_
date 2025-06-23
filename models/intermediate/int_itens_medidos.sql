@@ -103,7 +103,7 @@ itens_medidos_base as (
         on dz1.belzart = zo.belzart and dz1.ein01 = zo.operand
     where
         zo.ez_abrmenge_flag = 'X'
-        and dlb.xtotal_amnt <> 'X'
+        and COALESCE(dlb.xtotal_amnt, ' ') <> 'X'
 ),
 
 itens_medidos_transformados as (
@@ -126,21 +126,21 @@ itens_medidos_transformados as (
         hvorg as operacao,
         txjcd as domicilio_fiscal,
         case
-            when ab <> '00000000' then TO_DATE(ab, 'YYYYMMDD')
+            when COALESCE(ab, '00000000') <> '00000000' then TO_DATE(ab, 'YYYYMMDD')
         end as inicio_calculo,
         case
-            when bis <> '00000000' then TO_DATE(bis, 'YYYYMMDD')
+            when COALESCE(bis, '00000000') <> '00000000' then TO_DATE(bis, 'YYYYMMDD')
         end as fim_calculo,
         case
             when
                 tipo_calculo = 'CM'
                 and (
-                    ((v_abrmenge + n_abrmenge) > 0 and nettobtr_dz3 < 0)
+                    ((COALESCE(v_abrmenge, 0) + COALESCE(n_abrmenge, 0)) > 0 and COALESCE(nettobtr_dz3, 0) < 0)
                     or
-                    ((v_abrmenge + n_abrmenge) < 0 and nettobtr_dz3 > 0)
+                    ((COALESCE(v_abrmenge, 0) + COALESCE(n_abrmenge, 0)) < 0 and COALESCE(nettobtr_dz3, 0) > 0)
                 )
-                then (v_abrmenge + n_abrmenge) * -1
-            else v_abrmenge + n_abrmenge
+                then (COALESCE(v_abrmenge, 0) + COALESCE(n_abrmenge, 0)) * -1
+            else COALESCE(v_abrmenge, 0) + COALESCE(n_abrmenge, 0)
         end as consumo_bruto,
         case
             when tvorg = ' ' then null

@@ -81,10 +81,10 @@ dados_impressao_transformados as (
         valor_total,
         chave_reconciliacao,
         case
-            when fatura <> ' ' then fatura
+            when COALESCE(fatura, ' ') <> ' ' then fatura
         end as fatura,
         case
-            when tipo_impressao <> ' ' then tipo_impressao
+            when COALESCE(tipo_impressao, ' ') <> ' ' then tipo_impressao
         end as tipo_impressao,
         case
             when data_criacao <> '00000000'
@@ -102,36 +102,36 @@ dados_impressao_transformados as (
                     )
         end as data_modificacao_impressao,
         case
-            when usuario_modificacao <> ' ' then usuario_modificacao
+            when COALESCE(usuario_modificacao, ' ') <> ' ' then usuario_modificacao
         end as usuario_modificacao,
         case
-            when data_competencia <> '00000000'
+            when COALESCE(data_competencia, '00000000') <> '00000000'
                 then TO_DATE(data_competencia, 'YYYYMMDD')
         end as data_competencia,
         case
-            when data_vencimento <> '00000000'
+            when COALESCE(data_vencimento, '00000000') <> '00000000'
                 then TO_DATE(data_vencimento, 'YYYYMMDD')
         end as data_vencimento_original,
         case
-            when data_apresentacao <> '00000000'
+            when COALESCE(data_apresentacao, '00000000') <> '00000000'
                 then TO_DATE(data_apresentacao, 'YYYYMMDD')
         end as data_apresentacao,
         case
-            when intopbel <> ' ' then intopbel
+            when COALESCE(intopbel, ' ') <> ' ' then intopbel
         end as contrapartida,
         case
-            when motivo_estorno_impressao <> ' ' then motivo_estorno_impressao
+            when COALESCE(motivo_estorno_impressao, ' ') <> ' ' then motivo_estorno_impressao
         end as motivo_estorno_impressao,
         case
-            when formulario_pagamento <> ' ' then formulario_pagamento
+            when COALESCE(formulario_pagamento, ' ') <> ' ' then formulario_pagamento
         end as formulario_pagamento,
         case
             when
-                estrutura_regional_politica <> ' '
+                COALESCE(estrutura_regional_politica, ' ') <> ' '
                 then estrutura_regional_politica
         end as estrutura_regional_politica,
         case
-            when unidade_leitura <> ' ' then unidade_leitura
+            when COALESCE(unidade_leitura, ' ') <> ' ' then unidade_leitura
         end as unidade_leitura,
         case
             when motivo_criacao = '04' then 'X'

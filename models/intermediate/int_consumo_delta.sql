@@ -260,14 +260,14 @@ consumo_agregado as (
             when
                 sum(case
                     when flag = 'M' and item_documento in ('ZRCAT')
-                        then consumo_medido
+                        then COALESCE(consumo_medido, 0)
                     else 0
                 end) <> 0
                 then
                     sum(case
                         when
                             flag = 'M' and item_documento in ('ZRCAT')
-                            then consumo_medido
+                            then COALESCE(consumo_medido, 0)
                         else 0
                     end)
             else
@@ -277,7 +277,7 @@ consumo_agregado as (
                         and item_documento in (
                             'ZRCAFP', 'ZRCAIT', 'ZRCANP', 'ZRCARV'
                         )
-                        then consumo_medido
+                        then COALESCE(consumo_medido, 0)
                     else 0
                 end)
         end as consumo_medido,

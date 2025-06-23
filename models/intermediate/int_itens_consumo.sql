@@ -112,23 +112,23 @@ itens_consumo_base_tipo1 as (
         dlb.txjcd as domicilio_fiscal,
         df.estorno,
         case
-            when dz1.ab <> '00000000' then TO_DATE(dz1.ab, 'YYYYMMDD')
+            when COALESCE(dz1.ab, '00000000') <> '00000000' then TO_DATE(dz1.ab, 'YYYYMMDD')
         end as inicio_calculo,
         case
-            when dz1.bis <> '00000000' then TO_DATE(dz1.bis, 'YYYYMMDD')
+            when COALESCE(dz1.bis, '00000000') <> '00000000' then TO_DATE(dz1.bis, 'YYYYMMDD')
         end as fim_calculo,
         case
             when
                 df.tipo_calculo = 'CM'
                 and (
-                    ((dz1.v_abrmenge + dz1.n_abrmenge) > 0 and dz3.nettobtr < 0)
+                    ((COALESCE(dz1.v_abrmenge, 0) + COALESCE(dz1.n_abrmenge, 0)) > 0 and dz3.nettobtr < 0)
                     or (
-                        (dz1.v_abrmenge + dz1.n_abrmenge) < 0
+                        (COALESCE(dz1.v_abrmenge, 0) + COALESCE(dz1.n_abrmenge, 0)) < 0
                         and dz3.nettobtr > 0
                     )
                 )
-                then (dz1.v_abrmenge + dz1.n_abrmenge) * -1
-            else dz1.v_abrmenge + dz1.n_abrmenge
+                then (COALESCE(dz1.v_abrmenge, 0) + COALESCE(dz1.n_abrmenge, 0)) * -1
+            else COALESCE(dz1.v_abrmenge, 0) + COALESCE(dz1.n_abrmenge, 0)
         end as consumo
     from
         documentos_faturamento as df
@@ -176,23 +176,23 @@ itens_consumo_base_tipo2 as (
         dlb.txjcd as domicilio_fiscal,
         df.estorno,
         case
-            when dz5.ab <> '00000000' then TO_DATE(dz5.ab, 'YYYYMMDD')
+            when COALESCE(dz5.ab, '00000000') <> '00000000' then TO_DATE(dz5.ab, 'YYYYMMDD')
         end as inicio_calculo,
         case
-            when dz5.bis <> '00000000' then TO_DATE(dz5.bis, 'YYYYMMDD')
+            when COALESCE(dz5.bis, '00000000') <> '00000000' then TO_DATE(dz5.bis, 'YYYYMMDD')
         end as fim_calculo,
         case
             when
                 df.tipo_calculo = 'CM'
                 and (
-                    ((dz5.v_abrmenge + dz5.n_abrmenge) > 0 and dz7.nettobtr < 0)
+                    (COALESCE((dz5, 0).v_abrmenge + COALESCE(dz5.n_abrmenge, 0)) > 0 and COALESCE(dz7.nettobtr, 0) < 0)
                     or (
-                        (dz5.v_abrmenge + dz5.n_abrmenge) < 0
-                        and dz7.nettobtr > 0
+                        (COALESCE(dz5.v_abrmenge, 0) + COALESCE(dz5.n_abrmenge, 0)) < 0
+                        and COALESCE(dz7.nettobtr, 0) > 0
                     )
                 )
-                then (dz5.v_abrmenge + dz5.n_abrmenge) * -1
-            else dz5.v_abrmenge + dz5.n_abrmenge
+                then (COALESCE(dz5.v_abrmenge, 0) + COALESCE(dz5.n_abrmenge, 0)) * -1
+            else COALESCE(dz5.v_abrmenge, 0) + COALESCE(dz5.n_abrmenge, 0)
         end as consumo
     from
         documentos_faturamento as df

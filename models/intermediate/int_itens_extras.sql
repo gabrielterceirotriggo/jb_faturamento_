@@ -79,25 +79,25 @@ itens_extras_faturamento_base as (
         dlb.txjcd as domicilio_fiscal,
         df.estorno,
         case
-            when dz1.ab <> '00000000' then TO_DATE(dz1.ab, 'YYYYMMDD')
+            when COALESCE(dz1.ab, '00000000') <> '00000000' then TO_DATE(dz1.ab, 'YYYYMMDD')
         end as inicio_calculo,
         case
-            when dz1.bis <> '00000000' then TO_DATE(dz1.bis, 'YYYYMMDD')
+            when COALESCE(dz1.bis, '00000000') <> '00000000' then TO_DATE(dz1.bis, 'YYYYMMDD')
         end as fim_calculo,
         case
             when
                 df.tipo_calculo = 'CM' and (
-                    ((dz1.v_abrmenge + dz1.n_abrmenge) > 0 and dz3.nettobtr < 0)
+                    ((COALESCE(dz1.v_abrmenge, 0) + COALESCE(dz1.n_abrmenge, 0)) > 0 and COALESCE(dz3.nettobtr, 0) < 0)
                     or (
-                        (dz1.v_abrmenge + dz1.n_abrmenge) < 0
-                        and dz3.nettobtr > 0
+                        (COALESCE(dz1.v_abrmenge, 0) + COALESCE(dz1.n_abrmenge, 0)) < 0
+                        and COALESCE(dz3.nettobtr, 0) > 0
                     )
                 )
-                then (dz1.v_abrmenge + dz1.n_abrmenge) * -1
-            else dz1.v_abrmenge + dz1.n_abrmenge
+                then (COALESCE(dz1.v_abrmenge, 0) + COALESCE(dz1.n_abrmenge, 0)) * -1
+            else COALESCE(dz1.v_abrmenge, 0) + COALESCE(dz1.n_abrmenge, 0)
         end as consumo,
         case
-            when dz1.tvorg = ' ' then null
+            when COALESCE(dz1.tvorg, ' ') = ' ' then null
             else dz1.tvorg
         end as sub_operacao
     from

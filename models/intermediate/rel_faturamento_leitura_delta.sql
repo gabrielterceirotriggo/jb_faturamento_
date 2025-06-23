@@ -42,7 +42,7 @@ leituras_validas as (
     from
         documentos_com_leitura
     where
-        id_leitura <> ' '
+        COALESCE(id_leitura, ' ') <> ' '
 
 ),
 

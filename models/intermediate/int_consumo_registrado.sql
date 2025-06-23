@@ -106,7 +106,7 @@ dados_leitura_base as (
         on
             d2.mandt = {{ mc_mandante(var('source_param')) }}
             and cd.documento_calculo = d2.belnr
-            and d2.ablbelnr <> ' '
+            and COALESCE(d2.ablbelnr, ' ') <> ' '
     left outer join
         dberchz1 as d1
         on
