@@ -145,7 +145,7 @@ dados_consumo_calculados as (
         case
             when
                 itf.flag = 'R'
-                and itf.operacao in ('CIP1', 'CIP2', 'CIP3', 'CIP4')
+                and itf.operacao in ('CIP1', 'CIP2', 'CIP3', 'CIP4', 'CIP6')
                 then itf.receita
             else 0
         end as cip,

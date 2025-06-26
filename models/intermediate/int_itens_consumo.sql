@@ -185,12 +185,11 @@ itens_consumo_base_tipo2 as (
             when
                 df.tipo_calculo = 'CM'
                 and (
-                    (COALESCE((dz5, 0).v_abrmenge + COALESCE(dz5.n_abrmenge, 0)) > 0 and COALESCE(dz7.nettobtr, 0) < 0)
+                    (COALESCE(dz5.v_abrmenge, 0) + COALESCE(dz5.n_abrmenge, 0)) > 0 and COALESCE(dz7.nettobtr, 0) < 0)
                     or (
                         (COALESCE(dz5.v_abrmenge, 0) + COALESCE(dz5.n_abrmenge, 0)) < 0
                         and COALESCE(dz7.nettobtr, 0) > 0
                     )
-                )
                 then (COALESCE(dz5.v_abrmenge, 0) + COALESCE(dz5.n_abrmenge, 0)) * -1
             else COALESCE(dz5.v_abrmenge, 0) + COALESCE(dz5.n_abrmenge, 0)
         end as consumo

@@ -134,4 +134,4 @@ final as (
         itens_receita_transformados
 )
 
-select * from final
+select * from final 
