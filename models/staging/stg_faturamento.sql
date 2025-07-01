@@ -1,1 +1,1 @@
-select * from {{ source('PRoD', 'FATURAMENTO') }}
+select * from {{ source('PROD', 'FATURAMENTO') }}
