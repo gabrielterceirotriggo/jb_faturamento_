@@ -59,6 +59,7 @@ dberchz3 as (
 
 zfatt057_ophist as (
     select
+        mandt,
         belzart,
         operand,
         ez_abrmenge_flag
@@ -100,10 +101,11 @@ itens_medidos_base as (
     left outer join dberchz3 as dz3
         on dz1.belnr = dz3.belnr and dz1.belzeile = dz3.belzeile
     left outer join zfatt057_ophist as zo
-        on dz1.belzart = zo.belzart and dz1.ein01 = zo.operand
+        on df.mandt = zo.mandt and dz1.belzart = zo.belzart and dz1.ein01 = zo.operand
     where
         zo.ez_abrmenge_flag = 'X'
         and COALESCE(dlb.xtotal_amnt, ' ') <> 'X'
+        and df.mandt = {{ mc_mandante(var('source_param')) }}
 ),
 
 itens_medidos_transformados as (

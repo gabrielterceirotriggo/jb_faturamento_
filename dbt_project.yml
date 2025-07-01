@@ -27,3 +27,6 @@ vars:
   dia_fim: "{{ modules.datetime.date.today().strftime('%Y%m%d') }}"
   source_param: "EQTL_MA"
   source_orig: "CCS_MA"
+
+#on-run-start: "alter warehouse WH_CARGAS_CRITICAS set warehouse_size = 'medium'"
+#on-run-start: "alter warehouse WH_CARGAS_CRITICAS set warehouse_size = 'small'"

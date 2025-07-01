@@ -1,1 +1,1 @@
-select * from {{ source('HML', 'FATURAMENTO') }}
+select * from {{ source('PRoD', 'FATURAMENTO') }}
