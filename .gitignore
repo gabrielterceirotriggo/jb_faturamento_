@@ -4,3 +4,8 @@ profiles.yml
 target/
 logs/
 .env
+*.sqlfluff
+*.sqlfluffignore
+dbt_source_freshness.xlsx
+source_freshness.py
+sources_faturamento.csv
