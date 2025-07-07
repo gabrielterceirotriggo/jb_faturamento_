@@ -32,6 +32,7 @@ itens_faturamento as (
 
 faturamento_operacoes as (
     select
+        mandt,
         operacao,
         sub_operacao,
         bloco
@@ -248,6 +249,7 @@ dados_consumo_calculados as (
         on
             itf.operacao = fo.operacao
             and itf.sub_operacao = fo.sub_operacao
+            and fo.mandt = {{mc_mandante(var('source_param'))}}
 ),
 
 consumo_agregado as (
