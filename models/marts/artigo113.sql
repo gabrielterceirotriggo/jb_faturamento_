@@ -99,7 +99,7 @@ final as (
         item_documento,
         contrato,
         instalacao,
-        status,
+        status as "status",
         total_dias_periodo,
         total_dias_faturado,
         total_dias_nao_faturado,

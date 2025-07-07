@@ -18,12 +18,12 @@ calculo_previsto as (
         abrvorg as tipo_calculo,
         ableinh as ul,
         ernam as criado_por,
-        to_date(abrdats, 'YYYYMMDD') as data_calc_previsto,
+        try_to_date(abrdats, 'YYYYMMDD') as data_calc_previsto,
         case
             when trigstat = '1' then 'NAO_CALCULAVEL'
             when trigstat = '2' then 'CALCULAVEL'
         end as status,
-        to_date(erdat, 'YYYYMMDD') as data_criacao
+        try_to_date(erdat, 'YYYYMMDD') as data_criacao
     from
         etrg
     where
