@@ -8,7 +8,7 @@ with erdk as (
         budat,
         erdat
     from
-        {{ ref('stg_erdk') }}
+        {{ ref('stg_erdk_fat') }}
 ),
 
 erchc as (
@@ -17,7 +17,7 @@ erchc as (
         opbel,
         belnr
     from
-        {{ ref('stg_erchc') }}
+        {{ ref('stg_erchc_fat') }}
 ),
 
 erch as (
@@ -27,13 +27,13 @@ erch as (
         belegart,
         zzorigdoc
     from
-        {{ ref('stg_erch') }}
+        {{ ref('stg_erch_fat') }}
 ),
 
 ultima_execucao as (
     select ultima_execucao
     from
-        {{ ref('stg_int_ultima_exec') }}
+        {{ ref('stg_int_ultima_exec_fat') }}
 ),
 
 calculos as (

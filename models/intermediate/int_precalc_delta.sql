@@ -21,7 +21,7 @@ with erdk as (
         regpolit,
         invoiced
     from
-        {{ ref('stg_erdk') }}
+        {{ ref('stg_erdk_fat') }}
 ),
 
 erchc as (
@@ -30,7 +30,7 @@ erchc as (
         opbel,
         belnr
     from
-        {{ ref('stg_erchc') }}
+        {{ ref('stg_erchc_fat') }}
 ),
 
 erch as (
@@ -60,7 +60,7 @@ erch as (
         aenam as aenam_erch,
         belnralt
     from
-        {{ ref('stg_erch') }}
+        {{ ref('stg_erch_fat') }}
 ),
 
 ever as (
@@ -69,7 +69,7 @@ ever as (
         vertrag,
         anlage
     from
-        {{ ref('stg_ever') }}
+        {{ ref('stg_ever_fat') }}
 ),
 
 ettifn as (
@@ -79,13 +79,13 @@ ettifn as (
         bis,
         belnr
     from
-        {{ ref('stg_ettifn') }}
+        {{ ref('stg_ettifn_fat') }}
 ),
 
 ultima_execucao as (
     select ultima_execucao
     from
-        {{ ref('stg_int_ultima_exec') }}
+        {{ ref('stg_int_ultima_exec_fat') }}
 ),
 
 dados_faturamento_base as (

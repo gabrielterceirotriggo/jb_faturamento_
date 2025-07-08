@@ -22,7 +22,7 @@ dberdlb as (
         txjcd,
         xtotal_amnt
     from
-        {{ ref('stg_dberdlb') }}
+        {{ ref('stg_dberdlb_fat') }}
 ),
 
 dberchz1 as (
@@ -42,7 +42,7 @@ dberchz1 as (
         tvorg,
         ein01
     from
-        {{ ref('stg_dberchz1') }}
+        {{ ref('stg_dberchz1_fat') }}
 ),
 
 dberchz3 as (
@@ -54,7 +54,7 @@ dberchz3 as (
         preisbtr,
         nettobtr
     from
-        {{ ref('stg_dberchz3') }}
+        {{ ref('stg_dberchz3_fat') }}
 ),
 
 zfatt057_ophist as (
@@ -64,7 +64,7 @@ zfatt057_ophist as (
         operand,
         ez_abrmenge_flag
     from
-        {{ ref('stg_zfatt057_ophist') }}
+        {{ ref('stg_zfatt057_ophist_fat') }}
 ),
 
 itens_medidos_base as (

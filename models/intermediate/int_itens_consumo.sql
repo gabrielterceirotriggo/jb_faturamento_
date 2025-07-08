@@ -42,7 +42,7 @@ dberchz1 as (
         v_abrmenge,
         n_abrmenge
     from
-        {{ ref('stg_dberchz1') }}
+        {{ ref('stg_dberchz1_fat') }}
 ),
 
 dberchz3 as (
@@ -54,7 +54,7 @@ dberchz3 as (
         preisbtr,
         nettobtr
     from
-        {{ ref('stg_dberchz3') }}
+        {{ ref('stg_dberchz3_fat') }}
 ),
 
 dberchz5 as (
@@ -73,7 +73,7 @@ dberchz5 as (
         v_abrmenge,
         n_abrmenge
     from
-        {{ ref('stg_dberchz5') }}
+        {{ ref('stg_dberchz5_fat') }}
 ),
 
 dberchz7 as (
@@ -85,7 +85,7 @@ dberchz7 as (
         preisbtr,
         nettobtr
     from
-        {{ ref('stg_dberchz7') }}
+        {{ ref('stg_dberchz7_fat') }}
 ),
 
 itens_consumo_base_tipo1 as (

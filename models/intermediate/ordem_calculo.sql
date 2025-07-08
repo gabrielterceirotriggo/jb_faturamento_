@@ -9,7 +9,7 @@ with etrg as (
         erdat,
         mandt
     from
-        {{ ref('stg_etrg') }}
+        {{ ref('stg_etrg_fat') }}
 ),
 
 calculo_previsto as (

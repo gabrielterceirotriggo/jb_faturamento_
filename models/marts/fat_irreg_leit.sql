@@ -11,7 +11,7 @@ with zcfat_irreg_cab as (
         adat,
         erdat
     from
-        {{ ref('stg_zcfat_irreg_cab') }}
+        {{ ref('stg_zcfat_irreg_cab_fat') }}
 
 ),
 

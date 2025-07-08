@@ -24,7 +24,7 @@ dberdl as (
         txjcd,
         xtotal_amnt
     from
-        {{ ref('stg_dberdl') }}
+        {{ ref('stg_dberdl_fat') }}
 ),
 
 itens_faturamento_impostos_base as (

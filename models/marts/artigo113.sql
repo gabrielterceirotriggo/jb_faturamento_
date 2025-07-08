@@ -36,7 +36,7 @@ with zcfat_irreg_inf as (
         data_lei_anterior,
         rpnum
     from
-        {{ ref('stg_zcfat_irreg_inf') }}
+        {{ ref('stg_zcfat_irreg_inf_fat') }}
 
 ),
 

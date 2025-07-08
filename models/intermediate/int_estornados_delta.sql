@@ -4,7 +4,7 @@ with erch as (
         belnr,
         bcreason
     from
-        {{ ref('stg_erch') }}
+        {{ ref('stg_erch_fat') }}
 ),
 
 q_estornados_pleno_fat as (

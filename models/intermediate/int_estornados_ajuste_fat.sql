@@ -10,7 +10,7 @@ with estornos_ajustes_delta as (
 ),
 
 faturamento_historico as (
-    {{ select_cols_fat() }} {{ ref('stg_faturamento') }}
+    {{ select_cols_fat() }} {{ ref('stg_faturamento_fat') }}
 ),
 
 q_estornados_ajuste_fat as (

@@ -13,7 +13,7 @@ dberchz2 as (
         belnr,
         ablbelnr
     from
-        {{ ref('stg_dberchz2') }}
+        {{ ref('stg_dberchz2_fat') }}
 
 ),
 

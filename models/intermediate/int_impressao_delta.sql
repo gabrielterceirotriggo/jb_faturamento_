@@ -31,7 +31,7 @@ with erdk as (
 ultima_execucao as (
     select ultima_execucao
     from
-        {{ ref('stg_int_ultima_exec') }}
+        {{ ref('stg_int_ultima_exec_fat') }}
 ),
 
 documentos_impressao_filtrados as (

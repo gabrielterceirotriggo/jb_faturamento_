@@ -22,7 +22,7 @@ dberdlb as (
         hvorg,
         txjcd
     from
-        {{ ref('stg_dberdlb') }}
+        {{ ref('stg_dberdlb_fat') }}
 ),
 
 dberchz1 as (
@@ -41,7 +41,7 @@ dberchz1 as (
         n_abrmenge,
         tvorg
     from
-        {{ ref('stg_dberchz1') }}
+        {{ ref('stg_dberchz1_fat') }}
 ),
 
 dberchz3 as (
@@ -53,7 +53,7 @@ dberchz3 as (
         preisbtr,
         nettobtr
     from
-        {{ ref('stg_dberchz3') }}
+        {{ ref('stg_dberchz3_fat') }}
 ),
 
 itens_extras_faturamento_base as (

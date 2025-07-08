@@ -20,7 +20,7 @@ dberchz2 as (
         n_zwstdiff,
         ablbelnr
     from
-        {{ ref('stg_dberchz2') }}
+        {{ ref('stg_dberchz2_fat') }}
 ),
 
 dberchz1 as (
@@ -33,7 +33,7 @@ dberchz1 as (
         v_abrmenge,
         n_abrmenge
     from
-        {{ ref('stg_dberchz1') }}
+        {{ ref('stg_dberchz1_fat') }}
 ),
 
 etdz as (
@@ -79,7 +79,7 @@ te835t as (
         belzart,
         text30
     from
-        {{ ref('stg_te835t') }}
+        {{ ref('stg_te835t_fat') }}
 ),
 
 dados_leitura_base as (
