@@ -25,7 +25,7 @@ with erdk as (
         zzdataapr,
         ztipo
     from
-        {{ ref ('stg_erdk') }}
+        {{ ref ('stg_erdk_fat') }}
 ),
 
 ultima_execucao as (

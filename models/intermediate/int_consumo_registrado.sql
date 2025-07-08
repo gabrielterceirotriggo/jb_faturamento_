@@ -45,7 +45,7 @@ etdz as (
         massread,
         zwfakt
     from
-        {{ ref ('stg_etdz') }}
+        {{ ref ('stg_etdz_fat') }}
 ),
 
 ezuz as (
@@ -57,7 +57,7 @@ ezuz as (
         logiknr2,
         abrfakt
     from
-        {{ ref ('stg_ezuz') }}
+        {{ ref ('stg_ezuz_fat') }}
 ),
 
 egerh as (
@@ -69,7 +69,7 @@ egerh as (
         kombinat,
         equnr
     from
-        {{ ref ('stg_egerh') }}
+        {{ ref ('stg_egerh_fat') }}
 ),
 
 te835t as (

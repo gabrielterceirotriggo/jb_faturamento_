@@ -23,7 +23,7 @@ dberdlb as (
         nettobtr,
         sttax
     from
-        {{ ref ('stg_dberdlb') }}
+        {{ ref ('stg_dberdlb_fat') }}
 ),
 
 dberchz1 as (

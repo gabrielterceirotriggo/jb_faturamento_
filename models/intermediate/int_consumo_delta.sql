@@ -37,7 +37,7 @@ faturamento_operacoes as (
         sub_operacao,
         bloco
     from
-        {{ ref ('stg_faturamento_operacoes') }}
+        {{ ref ('stg_faturamento_operacoes_fat') }}
 ),
 
 dados_consumo_calculados as (

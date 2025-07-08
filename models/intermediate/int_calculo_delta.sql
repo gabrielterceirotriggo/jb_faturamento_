@@ -59,7 +59,7 @@ ettifn as (
         ab,
         bis
     from
-        {{ ref ('stg_ettifn') }}
+        {{ ref ('stg_ettifn_fat') }}
 ),
 
 enriquecimento_dados_precalc as (
