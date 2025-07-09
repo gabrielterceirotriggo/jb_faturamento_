@@ -87,8 +87,8 @@ itens_receita_transformados as (
         CAST(null as NUMBER) as consumo,
         CAST(null as NUMBER) as preco,
         case
-            when stprz = ' ' then 0
-            else TRY_CAST(LTRIM(stprz, ' ') as NUMBER(10, 3)) / 1000
+            when COALESCE(stprz, ' ') = ' ' then 0
+            else TO_NUMBER(REPLACE(stprz, ',', '.'), 10, 3)
         end as aliquota,
         case
             when hvorg = ' ' then null
