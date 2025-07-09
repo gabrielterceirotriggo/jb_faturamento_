@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stg_dberchz1
+  - name: stg_dberchz1_fat
     columns:
       - name: mandt
         description: Mandante
@@ -213,7 +213,7 @@ models:
         description: Contrato básico para contrato individual
       - name: n_abrmenge
         description: Casas decimais de quantidade de cálculo
-  - name: stg_dberchz2
+  - name: stg_dberchz2_fat
     columns:
       - name: mandt
         description: Mandante
@@ -287,7 +287,7 @@ models:
         description: Tipo de leitura
       - name: istablartva
         description: Tipo de leitura da leitura anterior
-  - name: stg_dberchz3
+  - name: stg_dberchz3_fat
     columns:
       - name: mandt
         description: Mandante
@@ -365,7 +365,7 @@ models:
         description: Segmento para o reporting do segmento
       - name: n_nettobtr_l
         description: Casas decimais do montante líquido descritivo
-  - name: stg_dberchz5
+  - name: stg_dberchz5_fat
     columns:
       - name: mandt
         description: Mandante
@@ -577,7 +577,7 @@ models:
         description: Contrato básico para contrato individual
       - name: n_abrmenge
         description: Casas decimais de quantidade de cálculo
-  - name: stg_dberchz7
+  - name: stg_dberchz7_fat
     columns:
       - name: mandt
         description: Mandante
@@ -655,7 +655,7 @@ models:
         description: Segmento para o reporting do segmento
       - name: n_nettobtr_l
         description: Casas decimais do montante líquido descritivo
-  - name: stg_dberdl
+  - name: stg_dberdl_fat
     columns:
       - name: mandt
         description: Mandante
@@ -747,7 +747,7 @@ models:
         description: Considerar partida no montante final da conta
       - name: ztipo
         description: Tipo
-  - name: stg_dberdlb
+  - name: stg_dberdlb_fat
     columns:
       - name: mandt
         description: Mandante
@@ -783,7 +783,7 @@ models:
         description: Considerar partida no montante final da conta
       - name: ztipo
         description: Tipo
-  - name: stg_egerh
+  - name: stg_egerh_fat
     columns:
       - name: ab
         description: Data a partir da qual uma faixa de tempo é válida
@@ -843,7 +843,7 @@ models:
         description: Hora de instalação de equipamento
       - name: zeitzone
         description: Fuso horário da hora da instalação e/ou desinstalação
-  - name: stg_erch
+  - name: stg_erch_fat
     columns:
       - name: mandt
         description: Mandante
@@ -1039,7 +1039,7 @@ models:
         description: Nº do documento do cálculo da fatura da instalação principal
       - name: asbach_rel
         description: Modificação da base de cálculo relevante
-  - name: stg_erchc
+  - name: stg_erchc_fat
     columns:
       - name: opbel
         description: Nº documento de impressão de um documento de faturamento
@@ -1071,7 +1071,7 @@ models:
         description: Nº documento de impressão com qual o documento foi estornado
       - name: invoiced
         description: Código- documento lançado
-  - name: stg_erdk
+  - name: stg_erdk_fat
     columns:
       - name: mandt
         description: Mandante
@@ -1213,7 +1213,7 @@ models:
         description: Documento de faturamento contém aviso de nota de débito SEPA
       - name: invdocno
         description: Número do documento de faturamento
-  - name: stg_etdz
+  - name: stg_etdz_fat
     columns:
       - name: bis
         description: Data até à qual é válida uma faixa de tempo
@@ -1303,7 +1303,7 @@ models:
         description: Pressão de correção do gás
       - name: touperiod
         description: Tipo de tempo de consumo
-  - name: stg_etrg
+  - name: stg_etrg_fat
     columns:
       - name: mandt
         description: Mandante
@@ -1375,7 +1375,7 @@ models:
         description: Status da ordem do cálculo da fatura
       - name: wait_bi
         description: Controle da seqüência de cálculo da fatura
-  - name: stg_ettifn
+  - name: stg_ettifn_fat
     columns:
       - name: saison
         description: Sazonalidade
@@ -1425,7 +1425,7 @@ models:
         description: 4º campo-chave de um valor de operando
       - name: ersatzwert
         description: Valor alternativo para operandos
-  - name: stg_ever
+  - name: stg_ever_fat
     columns:
       - name: mandt
         description: Mandante
@@ -1619,7 +1619,7 @@ models:
         description: Uso de Energia
       - name: zzclandestino
         description: Campo de seleção geral- X ou espaço
-  - name: stg_ezuz
+  - name: stg_ezuz_fat
     columns:
       - name: zuart
         description: Tipo atribuição equipamento
@@ -1649,7 +1649,7 @@ models:
         description: Comando de receptor de sinais de ripple control
       - name: attribut
         description: Valor do atributo
-  - name: stg_te835t
+  - name: stg_te835t_fat
     columns:
       - name: mandt
         description: Mandante
@@ -1659,7 +1659,7 @@ models:
         description: Texto (30 caracteres)
       - name: spras
         description: Código de idioma
-  - name: stg_zcfat_irreg_cab
+  - name: stg_zcfat_irreg_cab_fat
     columns:
       - name: adat
         description: Data de leitura relevante para cálculo
@@ -1681,7 +1681,7 @@ models:
         description: Instalação
       - name: fat_aberta
         description: Fatura em aberto
-  - name: stg_zcfat_irreg_inf
+  - name: stg_zcfat_irreg_inf_fat
     columns:
       - name: vertrag
         description: Contrato
@@ -1759,7 +1759,7 @@ models:
         description: Nome do usuário
       - name: user_wf_solicitante
         description: Nome do usuário
-  - name: stg_zfatt057_ophist
+  - name: stg_zfatt057_ophist_fat
     columns:
       - name: mandt
         description: Mandante
