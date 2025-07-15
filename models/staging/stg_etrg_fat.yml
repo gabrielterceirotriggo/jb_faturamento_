@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: stg_etrg_fat
+    description: "Staging model for ETRG (billing trigger) table. Contains billing trigger information including installation, billing dates, and trigger status."
+    config:
+      tags: ["staging", "billing", "etrg", "trigger"]
+    columns:
+      - name: mandt
+        description: "Client/Mandant identifier"
+      - name: anlage
+        description: "Installation number"
+      - name: abrdats
+        description: "Billing date"
+      - name: abrvorg
+        description: "Billing procedure"
+      - name: trigstat
+        description: "Trigger status"
+      - name: ableinh
+        description: "Ableinh"
+      - name: erdat
+        description: "Creation date"
+      - name: ernam
+        description: "Created by"

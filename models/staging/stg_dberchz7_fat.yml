@@ -1,0 +1,84 @@
+version: 2
+
+models:
+  - name: stg_dberchz7_fat
+    description: "Staging model for DBERCHZ7 (billing document pricing details) table. Contains detailed pricing information for billing document lines including taxes, zones, and cost centers."
+    config:
+      tags: ["staging", "billing", "dberchz7", "pricing_details"]
+    columns:
+      - name: mandt
+        description: "Client/Mandant identifier"
+      - name: belnr
+        description: "Billing document number"
+      - name: belzeile
+        description: "Billing document line"
+      - name: mwskz
+        description: "Tax code"
+      - name: ermwskz
+        description: "Determined tax code"
+      - name: nettobtr
+        description: "Net amount"
+      - name: twaers
+        description: "Transaction currency"
+      - name: preistuf
+        description: "Price level"
+      - name: preistyp
+        description: "Price type"
+      - name: preis
+        description: "Price"
+      - name: preiszus
+        description: "Price addition"
+      - name: vonzone
+        description: "From zone"
+      - name: biszone
+        description: "To zone"
+      - name: zonennr
+        description: "Zone number"
+      - name: preisbtr
+        description: "Price amount"
+      - name: mngbasis
+        description: "Quantity basis"
+      - name: preigkl
+        description: "Price class"
+      - name: urpreis
+        description: "Original price"
+      - name: preiadd
+        description: "Price addition"
+      - name: preifakt
+        description: "Price factor"
+      - name: opmult
+        description: "Operation multiplier"
+      - name: txdat_kk
+        description: "Tax date KK"
+      - name: prctr
+        description: "Profit center"
+      - name: kostl
+        description: "Cost center"
+      - name: ps_psp_pnr
+        description: "PS PSP number"
+      - name: aufnr
+        description: "Order number"
+      - name: paobjnr
+        description: "PA object number"
+      - name: paobjnr_s
+        description: "PA object number S"
+      - name: gsber
+        description: "Business area"
+      - name: aperiodic
+        description: "Aperiodic"
+      - name: grossgroup
+        description: "Gross group"
+      - name: bruttozeile
+        description: "Gross line"
+      - name: bupla
+        description: "Business place"
+      - name: line_class
+        description: "Line class"
+      - name: preisart
+        description: "Price type"
+      - name: segment
+        description: "Segment"
+      - name: v_nettobtr_l
+        description: "Gross net amount local"
+      - name: n_nettobtr_l
+        description: "Net amount local"

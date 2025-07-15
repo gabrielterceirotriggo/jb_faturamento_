@@ -1,0 +1,94 @@
+version: 2
+
+models:
+  - name: stg_zcfat_irreg_inf_fat
+    description: "Staging model for ZCFAT_IRREG_INF (irregular billing information) table. Contains irregular billing data including consumption estimates, billing periods, and irregular reading information."
+    config:
+      tags: ["staging", "billing", "irregular"]
+    columns:
+      - name: mandt
+        description: "Client/Mandant identifier"
+      - name: belnr
+        description: "Billing document number"
+      - name: belzart
+        description: "Billing document type"
+      - name: vertrag
+        description: "Contract number"
+      - name: anlage
+        description: "Installation number"
+      - name: adat
+        description: "Date"
+      - name: status
+        description: "Status"
+      - name: invoiced
+        description: "Invoiced indicator"
+      - name: grupo_estim
+        description: "Estimation group"
+      - name: qtde_dias
+        description: "Number of days"
+      - name: qtde_dias_fat
+        description: "Number of days billed"
+      - name: qtde_dias_nfat
+        description: "Number of days not billed"
+      - name: qtde_faturas
+        description: "Number of invoices"
+      - name: cons_total
+        description: "Total consumption"
+      - name: cons_diario
+        description: "Daily consumption"
+      - name: cons_faturado
+        description: "Billed consumption"
+      - name: cons_atual
+        description: "Current consumption"
+      - name: cons_ajuste
+        description: "Adjustment consumption"
+      - name: leit_anterior
+        description: "Previous reading"
+      - name: leit_atual
+        description: "Current reading"
+      - name: cons_media
+        description: "Average consumption"
+      - name: cons_diferenca
+        description: "Consumption difference"
+      - name: cons_dia_complemento
+        description: "Daily complement consumption"
+      - name: cons_fat_complemento
+        description: "Billing complement consumption"
+      - name: cons_nao_faturado
+        description: "Unbilled consumption"
+      - name: data_lei_anterior
+        description: "Previous reading date"
+      - name: parcelas
+        description: "Installments"
+      - name: ajus_user
+        description: "User adjustment"
+      - name: rpnum
+        description: "RP number"
+      - name: atualiz_monet
+        description: "Monetary update"
+      - name: calc_juros
+        description: "Interest calculation"
+      - name: alter_manual
+        description: "Manual change"
+      - name: status_wf
+        description: "Workflow status"
+      - name: workitem
+        description: "Work item"
+      - name: opbel_j
+        description: "Print document J"
+      - name: opbel_cm
+        description: "Print document CM"
+      - name: opbel_cred
+        description: "Print document credit"
+      - name: user_wf_initiator
+        description: "Workflow initiator user"
+      - name: user_wf_solicitante
+        description: "Workflow requester user"
+      - name: valor_total
+        description: "Total value"
+      - name: cons_reg_total
+        description: "Total registered consumption"
+      - name: cons_min_fase
+        description: "Minimum phase consumption"
+      - name: dif_real_dev
+        description: "Real device difference"

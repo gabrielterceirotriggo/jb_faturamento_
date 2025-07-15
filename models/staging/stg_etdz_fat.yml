@@ -1,0 +1,96 @@
+version: 2
+
+models:
+  - name: stg_etdz_fat
+    description: "Staging model for ETDZ (device master data) table. Contains device information including device numbers, register numbers, measurement types, and technical specifications."
+    config:
+      tags: ["staging", "devices", "etdz"]
+    columns:
+      - name: mandt
+        description: "Client/Mandant identifier"
+      - name: equnr
+        description: "Equipment number"
+      - name: zwnummer
+        description: "Register number"
+      - name: bis
+        description: "To"
+      - name: ab
+        description: "From"
+      - name: logikzw
+        description: "Logical register"
+      - name: spartyp
+        description: "Division type"
+      - name: zwkenn
+        description: "Register indicator"
+      - name: kennziff
+        description: "Characteristic figure"
+      - name: zwart
+        description: "Register type"
+      - name: zwfakt
+        description: "Register factor"
+      - name: stanzvor
+        description: "Stamping before"
+      - name: stanznac
+        description: "Stamping after"
+      - name: zwtyp
+        description: "Register type"
+      - name: bliwirk
+        description: "Billing effective"
+      - name: massread
+        description: "Measurement reading"
+      - name: anzerg
+        description: "Number of registers"
+      - name: kzmessw
+        description: "Measurement indicator"
+      - name: ueberver
+        description: "Overflow"
+      - name: steuergrp
+        description: "Control group"
+      - name: nablesen
+        description: "Not readable"
+      - name: pruefkl
+        description: "Test class"
+      - name: temp_area
+        description: "Temperature area"
+      - name: pr_area_ai
+        description: "Pressure area AI"
+      - name: calor_area
+        description: "Calorific area"
+      - name: hoekorr
+        description: "Height correction"
+      - name: thgber
+        description: "THG calculation"
+      - name: kzahle
+        description: "Billing indicator"
+      - name: kzahlt
+        description: "Billing type"
+      - name: gas_prs_ar
+        description: "Gas pressure area"
+      - name: crgpress
+        description: "CRG pressure"
+      - name: erdat
+        description: "Creation date"
+      - name: ernam
+        description: "Created by"
+      - name: aedat
+        description: "Changed on"
+      - name: aenam
+        description: "Changed by"
+      - name: massbill
+        description: "Measurement billing"
+      - name: gewkey
+        description: "Weight key"
+      - name: zspanns
+        description: "Z voltage S"
+      - name: zstroms
+        description: "Z current S"
+      - name: zspannp
+        description: "Z voltage P"
+      - name: zstromp
+        description: "Z current P"
+      - name: intsizeid
+        description: "Internal size ID"
+      - name: touperiod
+        description: "TOU period"
+      - name: vee_code
+        description: "VEE code"

@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: stg_faturamento_fat
+    description: "Staging model for FATURAMENTO (billing) table from PROD schema. Contains comprehensive billing information including amounts, consumption, taxes, and operational data."
+    config:
+      tags: ["staging", "billing", "faturamento"]
+    columns:
+      - name: "*"
+        description: "All columns from the FATURAMENTO table in PROD schema"

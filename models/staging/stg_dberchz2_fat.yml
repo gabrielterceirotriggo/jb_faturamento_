@@ -1,0 +1,80 @@
+version: 2
+
+models:
+  - name: stg_dberchz2_fat
+    description: "Staging model for DBERCHZ2 (billing document meter readings) table. Contains meter reading information for billing documents including equipment, readings, and consumption data."
+    config:
+      tags: ["staging", "billing", "dberchz2", "meter_readings"]
+    columns:
+      - name: mandt
+        description: "Client/Mandant identifier"
+      - name: belnr
+        description: "Billing document number"
+      - name: belzeile
+        description: "Billing document line"
+      - name: equnr
+        description: "Equipment number"
+      - name: geraet
+        description: "Device"
+      - name: matnr
+        description: "Material number"
+      - name: zwnummer
+        description: "Register number"
+      - name: indexnr
+        description: "Index number"
+      - name: ablesgr
+        description: "Reading group"
+      - name: ablesgrv
+        description: "Reading group version"
+      - name: atim
+        description: "Reading time"
+      - name: atimva
+        description: "Reading time version"
+      - name: adatmax
+        description: "Maximum reading date"
+      - name: atimmax
+        description: "Maximum reading time"
+      - name: thgdatum
+        description: "THG date"
+      - name: zuorddat
+        description: "Assignment date"
+      - name: regrelsort
+        description: "Register release sort"
+      - name: ablbelnr
+        description: "Billing document number"
+      - name: logiknr
+        description: "Logic number"
+      - name: logikzw
+        description: "Logic register"
+      - name: istablart
+        description: "Actual reading type"
+      - name: istablartva
+        description: "Actual reading type version"
+      - name: extpkz
+        description: "External indicator"
+      - name: begprog
+        description: "Begin program"
+      - name: endeprog
+        description: "End program"
+      - name: ablhinw
+        description: "Billing hint"
+      - name: qdproc
+        description: "QD process"
+      - name: mrconnect
+        description: "MR connection"
+      - name: v_zwstand
+        description: "Gross register reading"
+      - name: n_zwstand
+        description: "Net register reading"
+      - name: v_zwstndab
+        description: "Gross register reading from"
+      - name: n_zwstndab
+        description: "Net register reading from"
+      - name: v_zwstvor
+        description: "Gross register reading previous"
+      - name: n_zwstvor
+        description: "Net register reading previous"
+      - name: v_zwstdiff
+        description: "Gross register reading difference"
+      - name: n_zwstdiff
+        description: "Net register reading difference"

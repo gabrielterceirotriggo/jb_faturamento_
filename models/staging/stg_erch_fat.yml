@@ -1,0 +1,202 @@
+version: 2
+
+models:
+  - name: stg_erch_fat
+    description: "Staging model for ERCH (billing document master data) table. Contains billing document header information including document numbers, business partners, contract accounts, billing periods, and document types."
+    config:
+      tags: ["staging", "billing", "erch"]
+    columns:
+      - name: mandt
+        description: "Client/Mandant identifier"
+      - name: belnr
+        description: "Billing document number"
+      - name: bukrs
+        description: "Company code"
+      - name: sparte
+        description: "Division"
+      - name: gpartner
+        description: "General partner"
+      - name: vkont
+        description: "Contract account"
+      - name: vertrag
+        description: "Contract number"
+      - name: begabrpe
+        description: "Billing period start"
+      - name: endabrpe
+        description: "Billing period end"
+      - name: abrdats
+        description: "Billing date"
+      - name: adatsoll
+        description: "Target date"
+      - name: ptermtdat
+        description: "Payment term date"
+      - name: belegdat
+        description: "Document date"
+      - name: abwvk
+        description: "Deviation contract account"
+      - name: belnralt
+        description: "Old billing document"
+      - name: stornodat
+        description: "Storno date"
+      - name: abrvorg
+        description: "Billing procedure"
+      - name: hvorg
+        description: "Main transaction"
+      - name: kofiz
+        description: "Contract factor"
+      - name: portion
+        description: "Portion"
+      - name: formular
+        description: "Form"
+      - name: simulation
+        description: "Simulation indicator"
+      - name: belegart
+        description: "Document type"
+      - name: bergrund
+        description: "Billing reason"
+      - name: begnach
+        description: "Billing after"
+      - name: tobreleasd
+        description: "Released for transfer"
+      - name: txjcd
+        description: "Tax jurisdiction code"
+      - name: konzver
+        description: "Consolidation version"
+      - name: eroetim
+        description: "Opening time"
+      - name: ercho_v
+        description: "Billing order"
+      - name: erchz_v
+        description: "Billing run"
+      - name: erchu_v
+        description: "Billing unit"
+      - name: erchr_v
+        description: "Billing run"
+      - name: erchc_v
+        description: "Billing control"
+      - name: erchv_v
+        description: "Billing version"
+      - name: ercht_v
+        description: "Billing time"
+      - name: erchp_v
+        description: "Billing period"
+      - name: erche_v
+        description: "Billing end"
+      - name: abrvorg2
+        description: "Billing procedure 2"
+      - name: ableinh
+        description: "Ableinh"
+      - name: endprio
+        description: "End priority"
+      - name: erdat
+        description: "Creation date"
+      - name: ernam
+        description: "Created by"
+      - name: aedat
+        description: "Changed on"
+      - name: aenam
+        description: "Changed by"
+      - name: begru
+        description: "Authorization group"
+      - name: loevm
+        description: "Deletion indicator"
+      - name: abrdatsu
+        description: "Billing date usage"
+      - name: abrvorgu
+        description: "Billing procedure usage"
+      - name: n_invsep
+        description: "Number of invoice separations"
+      - name: abpopbel
+        description: "Billing document"
+      - name: manbillrel
+        description: "Manual billing release"
+      - name: backbi
+        description: "Back billing"
+      - name: perendbi
+        description: "Period end billing"
+      - name: numperbb
+        description: "Number of periods back billing"
+      - name: begend
+        description: "Begin end"
+      - name: endofbb
+        description: "End of back billing"
+      - name: endofpeb
+        description: "End of period end billing"
+      - name: numperpeb
+        description: "Number of periods period end billing"
+      - name: sc_belnr_h
+        description: "SC billing document header"
+      - name: sc_belnr_n
+        description: "SC billing document number"
+      - name: zuorddaa
+        description: "Assignment DAA"
+      - name: billingrunno
+        description: "Billing run number"
+      - name: simrunid
+        description: "Simulation run ID"
+      - name: ktoklasse
+        description: "Customer class"
+      - name: origdoc
+        description: "Original document"
+      - name: nocanc
+        description: "No cancellation"
+      - name: abschlpan
+        description: "Settlement plan"
+      - name: mem_opbel
+        description: "Memory billing document"
+      - name: mem_budat
+        description: "Memory posting date"
+      - name: exbilldocno
+        description: "External billing document number"
+      - name: bcreason
+        description: "Billing correction reason"
+      - name: ninvoice
+        description: "Number of invoices"
+      - name: nbillrel
+        description: "Number of billing releases"
+      - name: correction_date
+        description: "Correction date"
+      - name: basdyper
+        description: "Base day period"
+      - name: estinbill
+        description: "Estimated in billing"
+      - name: estinbillu
+        description: "Estimated in billing usage"
+      - name: estinbill_sav
+        description: "Estimated in billing saved"
+      - name: estinbill_usav
+        description: "Estimated in billing usage saved"
+      - name: actperiod
+        description: "Actual period"
+      - name: actperorg
+        description: "Actual period original"
+      - name: ezawe
+        description: "EZAWE"
+      - name: daubuch
+        description: "DAU booking"
+      - name: fdgrp
+        description: "FD group"
+      - name: billing_period
+        description: "Billing period"
+      - name: osb_group
+        description: "OSB group"
+      - name: bp_bill
+        description: "BP billing"
+      - name: zzorigdoc
+        description: "Custom original document"
+      - name: zzdatapre
+        description: "Custom pre date"
+      - name: zztotal_amnt
+        description: "Custom total amount"
+      - name: zzbx_renda
+        description: "Custom BX revenue"
+      - name: maindocno
+        description: "Main document number"
+      - name: instgrtype
+        description: "Installation group type"
+      - name: instrole
+        description: "Installation role"
+      - name: mdusrequestid
+        description: "MDUS request ID"
+      - name: asbach_rel
+        description: "ASBACH release"

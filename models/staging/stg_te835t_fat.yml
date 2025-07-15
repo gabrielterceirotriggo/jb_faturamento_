@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: stg_te835t_fat
+    description: "Staging model for TE835T (billing document type texts) table. Contains billing document type descriptions and text information in multiple languages."
+    config:
+      tags: ["staging", "texts", "te835t"]
+    columns:
+      - name: mandt
+        description: "Client/Mandant identifier"
+      - name: spras
+        description: "Language key"
+      - name: belzart
+        description: "Billing document type"
+      - name: text30
+        description: "Text (30 characters)"

@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: stg_zfatt057_ophist_fat
+    description: "Staging model for ZFATT057_OPHIST (operand history) table. Contains operand history and flag information for billing document types."
+    config:
+      tags: ["staging", "billing", "operand", "history"]
+    columns:
+      - name: mandt
+        description: "Client/Mandant identifier"
+      - name: operand
+        description: "Operand"
+      - name: belzart
+        description: "Billing document type"
+      - name: flag
+        description: "Flag indicator"
+      - name: nettobtr_flag
+        description: "Net amount flag"
+      - name: ez_abrmenge_flag
+        description: "EZ billing quantity flag"

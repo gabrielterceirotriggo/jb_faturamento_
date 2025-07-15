@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: stg_dberchz3_fat
+    description: "Staging model for DBERCHZ3 (billing document pricing) table. Contains pricing information for billing document lines including zones and amounts."
+    config:
+      tags: ["staging", "billing", "dberchz3", "pricing"]
+    columns:
+      - name: mandt
+        description: "Client/Mandant identifier"
+      - name: belnr
+        description: "Billing document number"
+      - name: belzeile
+        description: "Billing document line"
+      - name: zonennr
+        description: "Zone number"
+      - name: preisbtr
+        description: "Price amount"
+      - name: n_nettobtr_l
+        description: "Net amount local"
+      - name: nettobtr
+        description: "Net amount"

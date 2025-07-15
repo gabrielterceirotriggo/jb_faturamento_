@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: stg_faturamento_operacoes_fat
+    description: "Staging model for FATURAMENTO_OPERACOES (billing operations) table. Contains billing operation configuration including operations, sub-operations, and blocks."
+    config:
+      tags: ["staging", "billing", "operacoes"]
+    columns:
+      - name: mandt
+        description: "Client/Mandant identifier"
+      - name: operacao
+        description: "Operation code"
+      - name: sub_operacao
+        description: "Sub-operation code"
+      - name: bloco
+        description: "Block identifier"

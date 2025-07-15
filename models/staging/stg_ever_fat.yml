@@ -1,0 +1,200 @@
+version: 2
+
+models:
+  - name: stg_ever_fat
+    description: "Staging model for EVER (contract master data) table. Contains contract information including contract numbers, business partners, billing periods, contract terms, and contract status."
+    config:
+      tags: ["staging", "contracts", "ever"]
+    columns:
+      - name: mandt
+        description: "Client/Mandant identifier"
+      - name: vertrag
+        description: "Contract number"
+      - name: bukrs
+        description: "Company code"
+      - name: sparte
+        description: "Division"
+      - name: eigenverbr
+        description: "Own consumption"
+      - name: kofiz
+        description: "Contract factor"
+      - name: portion
+        description: "Portion"
+      - name: abslanfo
+        description: "Billing plan"
+      - name: abszyk
+        description: "Billing cycle"
+      - name: absmnanp
+        description: "Manual billing"
+      - name: gemfakt
+        description: "Joint billing"
+      - name: manabr
+        description: "Manual billing"
+      - name: abrsperr
+        description: "Billing block"
+      - name: abrfreig
+        description: "Billing release"
+      - name: bstatus
+        description: "Billing status"
+      - name: kostl
+        description: "Cost center"
+      - name: vbez
+        description: "Contract description"
+      - name: vbeginn
+        description: "Contract start"
+      - name: einzdat_alt
+        description: "Old start date"
+      - name: vende
+        description: "Contract end"
+      - name: kuenddat
+        description: "Termination date"
+      - name: kfrist
+        description: "Notice period"
+      - name: kuenper
+        description: "Termination period"
+      - name: vbisdat
+        description: "Contract until date"
+      - name: verlaeng
+        description: "Extension"
+      - name: verper
+        description: "Contract period"
+      - name: vabschlevu
+        description: "Contract settlement"
+      - name: vabschlknd
+        description: "Contract settlement customer"
+      - name: vabschlkndti
+        description: "Contract settlement customer time"
+      - name: persnr
+        description: "Personnel number"
+      - name: vrefer
+        description: "Contract reference"
+      - name: erdat
+        description: "Creation date"
+      - name: ernam
+        description: "Created by"
+      - name: aedat
+        description: "Changed on"
+      - name: aenam
+        description: "Changed by"
+      - name: begru
+        description: "Authorization group"
+      - name: loevm
+        description: "Deletion indicator"
+      - name: txjcd
+        description: "Tax jurisdiction code"
+      - name: manoutsort
+        description: "Manual output sort"
+      - name: fakturiert
+        description: "Invoiced"
+      - name: aufnr
+        description: "Order number"
+      - name: ps_psp_pnr
+        description: "PS PSP number"
+      - name: prctr
+        description: "Profit center"
+      - name: copakont
+        description: "COPA account"
+      - name: ausgrup
+        description: "Output group"
+      - name: outcount
+        description: "Output count"
+      - name: pyplt
+        description: "Payment plan type"
+      - name: pypls
+        description: "Payment plan status"
+      - name: gsber
+        description: "Business area"
+      - name: segment
+        description: "Segment"
+      - name: serviceid
+        description: "Service ID"
+      - name: srvprvref
+        description: "Service provider reference"
+      - name: billmethod
+        description: "Billing method"
+      - name: stagruver
+        description: "Standard group contract"
+      - name: pypla
+        description: "Payment plan"
+      - name: billfinit
+        description: "Billing finite"
+      - name: bfa_deb_stat
+        description: "BFA debit status"
+      - name: bfa_cred_stat
+        description: "BFA credit status"
+      - name: salesemployee
+        description: "Sales employee"
+      - name: salespartner
+        description: "Sales partner"
+      - name: salesdocument
+        description: "Sales document"
+      - name: ps_startdat
+        description: "PS start date"
+      - name: servprov_pay
+        description: "Service provider payment"
+      - name: invoicing_party
+        description: "Invoicing party"
+      - name: cokey
+        description: "CO key"
+      - name: bupla
+        description: "Business place"
+      - name: contractclass
+        description: "Contract class"
+      - name: cancreason
+        description: "Cancellation reason"
+      - name: cancreason_new
+        description: "New cancellation reason"
+      - name: extrapolwaste
+        description: "Extrapolation waste"
+      - name: ppm_contract
+        description: "PPM contract"
+      - name: osb_group
+        description: "OSB group"
+      - name: oucont
+        description: "OU contract"
+      - name: rulegr
+        description: "Rule group"
+      - name: regiogroup
+        description: "Regional group"
+      - name: cmgrp
+        description: "CM group"
+      - name: strat
+        description: "Strategy"
+      - name: cpers
+        description: "CPERS"
+      - name: anlage
+        description: "Installation"
+      - name: vkonto
+        description: "Contract account"
+      - name: kzsondeinz
+        description: "Special input indicator"
+      - name: kzsondausz
+        description: "Special output indicator"
+      - name: auteigeinz
+        description: "Authorized input"
+      - name: einzdat
+        description: "Start date"
+      - name: auszdat
+        description: "End date"
+      - name: absstopdat
+        description: "Billing stop date"
+      - name: schlfakt
+        description: "Scheduled billing"
+      - name: mahnv
+        description: "Dunning level"
+      - name: mahnvumz
+        description: "Dunning level change"
+      - name: mansp
+        description: "Manual special billing"
+      - name: bezug
+        description: "Reference"
+      - name: transver
+        description: "Transfer version"
+      - name: sswtcreason
+        description: "SSWTC reason"
+      - name: xvera
+        description: "XVERA"
+      - name: zzlpt_univ
+        description: "Custom LPT universal"
+      - name: zzclandestino
+        description: "Custom destination country"

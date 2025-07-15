@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: stg_dberdl_fat
+    description: "Staging model for DBERDL (billing document line items) table. Contains billing document line item information including amounts, periods, and transaction details."
+    config:
+      tags: ["staging", "billing", "dberdl"]
+    columns:
+      - name: mandt
+        description: "Client/Mandant identifier"
+      - name: printdoc
+        description: "Print document number"
+      - name: printdocline
+        description: "Print document line number"
+      - name: belzart
+        description: "Billing document line type"
+      - name: ktosl
+        description: "Cost element"
+      - name: xtotal_amnt
+        description: "Total amount"
+      - name: nettobtr
+        description: "Net amount"
+      - name: sbasw
+        description: "Settlement basis"
+      - name: txjcd
+        description: "Tax jurisdiction code"
+      - name: hvorg
+        description: "Main transaction"
+      - name: tvorg
+        description: "Transaction"
+      - name: sktpz
+        description: "Payment term"
+      - name: linesort
+        description: "Line sort order"
+      - name: ab
+        description: "From date"
+      - name: bis
+        description: "To date"
+      - name: stprz
+        description: "Settlement percentage"

@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: stg_ezuz_fat
+    description: "Staging model for EZUZ (register usage) table. Contains register usage information including logical registers, usage types, and measurement factors."
+    config:
+      tags: ["staging", "registers", "ezuz"]
+    columns:
+      - name: mandt
+        description: "Client/Mandant identifier"
+      - name: logikzw
+        description: "Logical register"
+      - name: bis
+        description: "To"
+      - name: zuart
+        description: "Usage type"
+      - name: logiknr2
+        description: "Logical number 2"
+      - name: ab
+        description: "From"
+      - name: messdrck
+        description: "Measurement pressure"
+      - name: abrfakt
+        description: "Billing factor"
+      - name: progt
+        description: "Program type"
+      - name: attribut
+        description: "Attribute"
+      - name: erdat
+        description: "Creation date"
+      - name: ernam
+        description: "Created by"
+      - name: aedat
+        description: "Changed on"
+      - name: aenam
+        description: "Changed by"

@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: stg_dberchz1_fat
+    description: "Staging model for DBERCHZ1 (billing document line details) table. Contains detailed billing document line information including periods, quantities, and tariff types."
+    config:
+      tags: ["staging", "billing", "dberchz1"]
+    columns:
+      - name: mandt
+        description: "Client/Mandant identifier"
+      - name: belnr
+        description: "Billing document number"
+      - name: belzeile
+        description: "Billing document line"
+      - name: belzart
+        description: "Billing document line type"
+      - name: branche
+        description: "Branch"
+      - name: tvorg
+        description: "Transaction"
+      - name: linesort
+        description: "Line sort order"
+      - name: ab
+        description: "From date"
+      - name: bis
+        description: "To date"
+      - name: tariftyp
+        description: "Tariff type"
+      - name: temp_area
+        description: "Temporary area"
+      - name: v_abrmenge
+        description: "Gross consumption quantity"
+      - name: n_abrmenge
+        description: "Net consumption quantity"
+      - name: ein01
+        description: "Unit 01"

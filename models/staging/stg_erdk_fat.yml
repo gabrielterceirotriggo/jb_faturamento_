@@ -1,0 +1,148 @@
+version: 2
+
+models:
+  - name: stg_erdk_fat
+    description: "Staging model for ERDK (billing document header) table. Contains billing document header information including document numbers, dates, amounts, and billing status."
+    config:
+      tags: ["staging", "billing", "erdk"]
+    columns:
+      - name: mandt
+        description: "Client/Mandant identifier"
+      - name: opbel
+        description: "Billing document number"
+      - name: druckdat
+        description: "Print date"
+      - name: faedn
+        description: "Due date"
+      - name: faeds
+        description: "Due date (start)"
+      - name: sktpz
+        description: "Payment term"
+      - name: budat
+        description: "Posting date"
+      - name: bldat
+        description: "Document date"
+      - name: stokz
+        description: "Storno indicator"
+      - name: intopbel
+        description: "Internal billing document"
+      - name: erdz_v
+        description: "Billing date version"
+      - name: erdr_v
+        description: "Billing run version"
+      - name: erdo_v
+        description: "Billing order version"
+      - name: erdb_v
+        description: "Billing control version"
+      - name: erdu_v
+        description: "Billing unit version"
+      - name: erdts_v
+        description: "Billing time version"
+      - name: fica_v
+        description: "FICA version"
+      - name: total_amnt
+        description: "Total amount"
+      - name: total_waer
+        description: "Total currency"
+      - name: total_amnt_use
+        description: "Total amount usage"
+      - name: pymet
+        description: "Payment method"
+      - name: zsbtr
+        description: "Target amount"
+      - name: zlsch
+        description: "Payment method"
+      - name: nrzas
+        description: "Number of assignments"
+      - name: partner
+        description: "Business partner"
+      - name: vkont
+        description: "Contract account"
+      - name: portion
+        description: "Portion"
+      - name: abrvorg
+        description: "Billing procedure"
+      - name: formkey
+        description: "Form key"
+      - name: fikey
+        description: "FI key"
+      - name: tobreleasd
+        description: "Released for transfer"
+      - name: simulated
+        description: "Simulated indicator"
+      - name: invoiced
+        description: "Invoiced indicator"
+      - name: abwvk
+        description: "Deviation contract account"
+      - name: abwbl
+        description: "Deviation billing document"
+      - name: ergrd
+        description: "Billing reason"
+      - name: langu
+        description: "Language"
+      - name: invoicing_party
+        description: "Invoicing party"
+      - name: erdat
+        description: "Creation date"
+      - name: ernam
+        description: "Created by"
+      - name: aedat
+        description: "Changed on"
+      - name: aenam
+        description: "Changed by"
+      - name: begru
+        description: "Authorization group"
+      - name: loevm
+        description: "Deletion indicator"
+      - name: verart
+        description: "Version type"
+      - name: sto_budat
+        description: "Storno posting date"
+      - name: sto_opbel
+        description: "Storno billing document"
+      - name: icreason
+        description: "IC reason"
+      - name: mazae
+        description: "MAZAE"
+      - name: items_archived
+        description: "Items archived"
+      - name: exkid
+        description: "External key ID"
+      - name: exbel
+        description: "External document"
+      - name: mazae_abs
+        description: "MAZAE absolute"
+      - name: printlock
+        description: "Print lock"
+      - name: edidispatch
+        description: "EDI dispatch"
+      - name: edisenddate
+        description: "EDI send date"
+      - name: taxdate
+        description: "Tax date"
+      - name: creation_time
+        description: "Creation time"
+      - name: billing_period
+        description: "Billing period"
+      - name: osb_group
+        description: "OSB group"
+      - name: ztipo
+        description: "Custom type"
+      - name: zzdataapr
+        description: "Custom approval date"
+      - name: ztip_impres
+        description: "Custom print type"
+      - name: ableinh
+        description: "Ableinh"
+      - name: regpolit
+        description: "Regulation policy"
+      - name: string
+        description: "String field"
+      - name: revlock
+        description: "Reversal lock"
+      - name: sepa_prenot
+        description: "SEPA pre-notification"
+      - name: invdocno
+        description: "Invoice document number"
+      - name: selection_date
+        description: "Selection date"

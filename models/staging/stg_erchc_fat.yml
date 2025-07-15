@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: stg_erchc_fat
+    description: "Staging model for ERCHC (billing document item) table. Contains billing document line items linking billing documents to print documents and managing document relationships."
+    config:
+      tags: ["staging", "billing", "erchc"]
+    columns:
+      - name: mandt
+        description: "Client/Mandant identifier"
+      - name: belnr
+        description: "Billing document number"
+      - name: lfdnr
+        description: "Line item number"
+      - name: opbel
+        description: "Print document number"
+      - name: cpudt
+        description: "CPU date"
+      - name: budat
+        description: "Posting date"
+      - name: intopbel
+        description: "Internal print document number"
+      - name: intcpudt
+        description: "Internal CPU date"
+      - name: intbudat
+        description: "Internal posting date"
+      - name: tobreleasd
+        description: "Released for transfer"
+      - name: simulated
+        description: "Simulated indicator"
+      - name: invoiced
+        description: "Invoiced indicator"
+      - name: spcanc
+        description: "Special cancellation"
+      - name: statupd
+        description: "Status update"
+      - name: statupd_canc
+        description: "Status update cancellation"

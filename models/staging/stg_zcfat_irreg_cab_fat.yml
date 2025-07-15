@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: stg_zcfat_irreg_cab_fat
+    description: "Staging model for ZCFAT_IRREG_CAB (irregular billing header) table. Contains header information for irregular billing documents including application data and billing status."
+    config:
+      tags: ["staging", "billing", "irregular", "zcfat"]
+    columns:
+      - name: mandt
+        description: "Client/Mandant identifier"
+      - name: ablbelnr
+        description: "Billing document number"
+      - name: anlage
+        description: "Installation number"
+      - name: adat
+        description: "Application date"
+      - name: aplicacao
+        description: "Application type"
+      - name: parcelas
+        description: "Number of installments"
+      - name: fat_compl
+        description: "Complete billing indicator"
+      - name: ernam
+        description: "Created by"
+      - name: erdat
+        description: "Creation date"
+      - name: tipo_devol
+        description: "Return type"
+      - name: fat_aberta
+        description: "Open billing indicator"

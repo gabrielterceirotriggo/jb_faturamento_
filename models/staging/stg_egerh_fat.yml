@@ -1,0 +1,66 @@
+version: 2
+
+models:
+  - name: stg_egerh_fat
+    description: "Staging model for EGERH (equipment register header) table. Contains equipment register information including equipment numbers, register groups, installation dates, and technical specifications."
+    config:
+      tags: ["staging", "equipment", "egerh"]
+    columns:
+      - name: mandt
+        description: "Client/Mandant identifier"
+      - name: equnr
+        description: "Equipment number"
+      - name: bis
+        description: "To"
+      - name: ab
+        description: "From"
+      - name: kombinat
+        description: "Combination"
+      - name: logiknr
+        description: "Logical number"
+      - name: zwgruppe
+        description: "Register group"
+      - name: einbdat
+        description: "Installation date"
+      - name: ausbdat
+        description: "Removal date"
+      - name: gerwechs
+        description: "Device change"
+      - name: devloc
+        description: "Device location"
+      - name: devgrp
+        description: "Device group"
+      - name: wgruppe
+        description: "W group"
+      - name: ppm_meter
+        description: "PPM meter"
+      - name: primwnr1
+        description: "Primary register number 1"
+      - name: sekwnr1
+        description: "Secondary register number 1"
+      - name: primwnr2
+        description: "Primary register number 2"
+      - name: sekwnr2
+        description: "Secondary register number 2"
+      - name: lossdtgroup
+        description: "Loss data group"
+      - name: rating
+        description: "Rating"
+      - name: p_voltage
+        description: "Primary voltage"
+      - name: s_voltage
+        description: "Secondary voltage"
+      - name: ams
+        description: "AMS"
+      - name: amcg_cap_grp
+        description: "AMCG capacity group"
+      - name: msg_attr_id
+        description: "Message attribute ID"
+      - name: cap_act_grp
+        description: "Capacity activity group"
+      - name: einbzeit
+        description: "Installation time"
+      - name: ausbzeit
+        description: "Removal time"
+      - name: zeitzone
+        description: "Time zone"

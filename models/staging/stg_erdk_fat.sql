@@ -69,8 +69,6 @@ select
     sepa_prenot,
     invdocno,
     selection_date
---erdk_erdk_pk
 from
     {{ source('RAW','ERDK') }}
--- WHERE
--- 	ERDAT = '20250214'
+

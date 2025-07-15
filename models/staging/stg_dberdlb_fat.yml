@@ -1,0 +1,42 @@
+version: 2
+
+models:
+  - name: stg_dberdlb_fat
+    description: "Staging model for DBERDLB (billing document line items) table. Contains billing document line item information including amounts, taxes, and document references."
+    config:
+      tags: ["staging", "billing", "dberdlb"]
+    columns:
+      - name: mandt
+        description: "Client/Mandant identifier"
+      - name: printdoc
+        description: "Print document number"
+      - name: printdocline
+        description: "Print document line number"
+      - name: billdoc
+        description: "Billing document number"
+      - name: billdocline
+        description: "Billing document line number"
+      - name: hvorg
+        description: "Main transaction"
+      - name: bukrs
+        description: "Company code"
+      - name: xtotal_amnt
+        description: "Total amount"
+      - name: vertrag
+        description: "Contract number"
+      - name: abpopbel
+        description: "Billing document"
+      - name: sparte
+        description: "Division"
+      - name: txjcd
+        description: "Tax jurisdiction code"
+      - name: mwskz
+        description: "Tax code"
+      - name: nettobtr
+        description: "Net amount"
+      - name: sttax
+        description: "Tax amount"
+      - name: ztipo
+        description: "Custom type"
+      - name: zordem
+        description: "Custom order"

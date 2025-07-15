@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: stg_dberchz5_fat
+    description: "Staging model for DBERCHZ5 (billing document consumption details) table. Contains consumption information for billing document lines including periods and quantities."
+    config:
+      tags: ["staging", "billing", "dberchz5", "consumption"]
+    columns:
+      - name: mandt
+        description: "Client/Mandant identifier"
+      - name: belnr
+        description: "Billing document number"
+      - name: belzeile
+        description: "Billing document line"
+      - name: belzart
+        description: "Billing document line type"
+      - name: branche
+        description: "Branch"
+      - name: tvorg
+        description: "Transaction"
+      - name: linesort
+        description: "Line sort order"
+      - name: ab
+        description: "From date"
+      - name: bis
+        description: "To date"
+      - name: tariftyp
+        description: "Tariff type"
+      - name: temp_area
+        description: "Temporary area"
+      - name: v_abrmenge
+        description: "Gross consumption quantity"
+      - name: n_abrmenge
+        description: "Net consumption quantity"

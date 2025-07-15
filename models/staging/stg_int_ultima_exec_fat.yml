@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: stg_int_ultima_exec_fat
+    description: "Staging model for INT_ULTIMA_EXECUCAO (last execution) table. Contains the timestamp of the last execution of the billing process."
+    config:
+      tags: ["staging", "billing", "execution"]
+    columns:
+      - name: ultima_execucao
+        description: "Last execution timestamp"

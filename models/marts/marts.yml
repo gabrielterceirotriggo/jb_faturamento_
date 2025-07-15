@@ -1,0 +1,264 @@
+version: 2
+
+models:
+  - name: faturamento
+    description: "Main billing fact table containing comprehensive billing information including amounts, consumption, taxes, and operational data. This is the primary table for billing analysis and reporting."
+    config:
+      tags: ["marts", "billing", "fact"]
+    columns:
+      - name: mes_competencia
+        description: "Competency month (YYYYMM format)"
+        tests:
+          - not_null
+      - name: mes_referencia
+        description: "Reference month"
+      - name: documento_calculo
+        description: "Calculation document number"
+        tests:
+          - not_null
+      - name: documento_impressao
+        description: "Print document number"
+        tests:
+          - not_null
+      - name: fatura
+        description: "Invoice number"
+      - name: instalacao
+        description: "Installation identifier"
+      - name: conta_contrato
+        description: "Contract account"
+      - name: parceiro_negocio
+        description: "Business partner"
+      - name: contrato
+        description: "Contract number"
+      - name: unidade_leitura
+        description: "Reading unit"
+      - name: etapa
+        description: "Stage/phase"
+      - name: setor_industrial
+        description: "Industrial sector"
+      - name: grupo
+        description: "Group classification"
+      - name: categoria_tarifa
+        description: "Tariff category"
+        tests:
+          - not_null
+      - name: cliente_livre
+        description: "Free market customer indicator"
+      - name: subclasse
+        description: "Subclass"
+      - name: motivo_criacao_impressao
+        description: "Print creation reason"
+      - name: tipo_impressao
+        description: "Print type"
+      - name: tipo_calculo
+        description: "Calculation type"
+      - name: origem_documento
+        description: "Document origin"
+      - name: cnr
+        description: "CNR identifier"
+      - name: estornado
+        description: "Reversed indicator"
+      - name: estorno_pleno
+        description: "Full reversal indicator"
+      - name: estorno_ajuste
+        description: "Adjustment reversal indicator"
+      - name: reversao
+        description: "Reversion indicator"
+      - name: cancelamento
+        description: "Cancellation indicator"
+      - name: fatura_virtual
+        description: "Virtual invoice indicator"
+      - name: minimo
+        description: "Minimum amount indicator"
+      - name: documento_estorno_pleno
+        description: "Full reversal document"
+      - name: motivo_estorno_pleno
+        description: "Full reversal reason"
+      - name: documento_estorno_ajuste
+        description: "Adjustment reversal document"
+      - name: motivo_estorno_ajuste
+        description: "Adjustment reversal reason"
+      - name: valor_fatura
+        description: "Invoice amount"
+      - name: valor_contabil
+        description: "Accounting amount"
+      - name: consumo_faturado
+        description: "Billed consumption"
+      - name: consumo_medido
+        description: "Measured consumption"
+      - name: eusd
+        description: "EUSD amount"
+      - name: icms
+        description: "ICMS tax amount"
+      - name: icms_subvencao
+        description: "ICMS subsidy amount"
+      - name: pis
+        description: "PIS tax amount"
+      - name: cofins
+        description: "COFINS tax amount"
+      - name: cip
+        description: "CIP amount"
+      - name: retencao
+        description: "Retention amount"
+      - name: receita_bandeiras
+        description: "Flag revenue"
+      - name: receita_consumo_faturado
+        description: "Billed consumption revenue"
+      - name: tarifa
+        description: "Tariff rate"
+      - name: preco
+        description: "Price"
+      - name: correcao_monetaria
+        description: "Monetary correction"
+      - name: creditos
+        description: "Credits"
+      - name: estornos
+        description: "Reversals"
+      - name: juros
+        description: "Interest"
+      - name: multas
+        description: "Fines"
+      - name: parcelamentos
+        description: "Installments"
+      - name: outros_lancamentos
+        description: "Other entries"
+      - name: formulario_pagamento
+        description: "Payment form"
+      - name: domicilio_fiscal
+        description: "Tax domicile"
+      - name: documento_calculo_anterior
+        description: "Previous calculation document"
+      - name: estrutura_regional_politica
+        description: "Regional policy structure"
+      - name: eusdb
+        description: "EUSDB amount"
+      - name: data_estorno_pleno
+        description: "Full reversal date"
+      - name: data_estorno_ajuste
+        description: "Adjustment reversal date"
+      - name: chave_reconciliacao
+        description: "Reconciliation key"
+      - name: inicio_calculo
+        description: "Calculation start date"
+      - name: fim_calculo
+        description: "Calculation end date"
+      - name: quantidade_dias
+        description: "Number of days"
+      - name: data_competencia
+        description: "Competency date"
+      - name: data_atribuicao_calculo
+        description: "Calculation assignment date"
+      - name: data_apresentacao
+        description: "Presentation date"
+      - name: data_vencimento_original
+        description: "Original due date"
+      - name: data_previsao_leitura
+        description: "Reading forecast date"
+      - name: data_criacao_impressao
+        description: "Print creation date"
+      - name: usuario_criacao_impressao
+        description: "Print creation user"
+      - name: data_modificacao_impressao
+        description: "Print modification date"
+      - name: usuario_modificacao_impressao
+        description: "Print modification user"
+      - name: data_criacao_calculo
+        description: "Calculation creation date"
+      - name: usuario_criacao_calculo
+        description: "Calculation creation user"
+      - name: data_modificacao_calculo
+        description: "Calculation modification date"
+      - name: usuario_modificacao_calculo
+        description: "Calculation modification user"
+      - name: data_dados
+        description: "Data date"
+      - name: ordem_faturamento
+        description: "Billing order"
+      - name: consumo_registrado
+        description: "Registered consumption"
+
+  - name: itens_faturamento
+    description: "Billing line items table containing detailed billing components and charges."
+    config:
+      tags: ["marts", "billing", "items"]
+    columns:
+      - name: mes_competencia
+        description: "Competency month"
+        tests:
+          - not_null
+      - name: documento_calculo
+        description: "Calculation document"
+        tests:
+          - not_null
+      - name: documento_impressao
+        description: "Print document"
+        tests:
+          - not_null
+      - name: item
+        description: "Item number"
+        tests:
+          - not_null
+      - name: tipo_item
+        description: "Item type"
+      - name: descricao_item
+        description: "Item description"
+      - name: quantidade
+        description: "Quantity"
+      - name: valor_unitario
+        description: "Unit value"
+      - name: valor_total
+        description: "Total value"
+
+  - name: rel_faturamento_leitura
+    description: "Reconciliation table between billing and reading data."
+    config:
+      tags: ["marts", "billing", "reconciliation"]
+    columns:
+      - name: mes_competencia
+        description: "Competency month"
+        tests:
+          - not_null
+      - name: instalacao
+        description: "Installation"
+        tests:
+          - not_null
+      - name: consumo_faturado
+        description: "Billed consumption"
+      - name: consumo_lido
+        description: "Read consumption"
+      - name: diferenca
+        description: "Difference between billed and read consumption"
+
+  - name: artigo113
+    description: "Article 113 specific billing data for regulatory compliance."
+    config:
+      tags: ["marts", "billing", "regulatory"]
+    columns:
+      - name: mes_competencia
+        description: "Competency month"
+        tests:
+          - not_null
+      - name: documento_calculo
+        description: "Calculation document"
+        tests:
+          - not_null
+      - name: artigo113_indicator
+        description: "Article 113 compliance indicator"
+
+  - name: fat_irreg_leit
+    description: "Irregular reading billing data for special cases and exceptions."
+    config:
+      tags: ["marts", "billing", "irregular"]
+    columns:
+      - name: mes_competencia
+        description: "Competency month"
+        tests:
+          - not_null
+      - name: instalacao
+        description: "Installation"
+        tests:
+          - not_null
+      - name: tipo_irregularidade
+        description: "Irregularity type"
+      - name: motivo_irregularidade
+        description: "Irregularity reason"

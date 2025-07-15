@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: stg_ettifn_fat
+    description: "Staging model for ETTIFN (tariff function) table. Contains tariff function information including installation numbers, operands, seasons, and tariff calculations."
+    config:
+      tags: ["staging", "tariffs", "ettifn"]
+    columns:
+      - name: mandt
+        description: "Client/Mandant identifier"
+      - name: anlage
+        description: "Installation number"
+      - name: operand
+        description: "Operand"
+      - name: saison
+        description: "Season"
+      - name: ab
+        description: "From"
+      - name: ablfdnr
+        description: "From line number"
+      - name: bis
+        description: "To"
+      - name: belnr
+        description: "Billing document number"
+      - name: mbelnr
+        description: "Main billing document number"
+      - name: mauszug
+        description: "Main extract"
+      - name: altbis
+        description: "Old to"
+      - name: inaktiv
+        description: "Inactive"
+      - name: manaend
+        description: "Manual change"
+      - name: tarifart
+        description: "Tariff type"
+      - name: kondigr
+        description: "Condition group"
+      - name: wert1
+        description: "Value 1"
+      - name: wert2
+        description: "Value 2"
+      - name: string1
+        description: "String 1"
+      - name: string2
+        description: "String 2"
+      - name: string3
+        description: "String 3"
+      - name: string4
+        description: "String 4"
+      - name: ersatzwert
+        description: "Replacement value"
+      - name: betrag
+        description: "Amount"
+      - name: waers
+        description: "Currency"
