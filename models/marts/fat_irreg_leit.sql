@@ -36,7 +36,7 @@ tratamento_cabecalho as (
     from
         zcfat_irreg_cab
     where
-        mandt = {{ mc_mandante(var('source_param')) }}
+        mandt = {{ mc_mandante() }}
 
 ),
 

@@ -249,7 +249,7 @@ dados_consumo_calculados as (
         on
             itf.operacao = fo.operacao
             and itf.sub_operacao = fo.sub_operacao
-            and fo.mandt = {{mc_mandante(var('source_param'))}}
+            and fo.mandt = {{mc_mandante()}}
 ),
 
 consumo_agregado as (

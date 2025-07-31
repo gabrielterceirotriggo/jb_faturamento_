@@ -104,7 +104,7 @@ dados_leitura_base as (
     left outer join
         dberchz2 as d2
         on
-            d2.mandt = {{ mc_mandante(var('source_param')) }}
+            d2.mandt = {{ mc_mandante() }}
             and cd.documento_calculo = d2.belnr
             and COALESCE(d2.ablbelnr, ' ') <> ' '
     left outer join
@@ -144,7 +144,7 @@ enriquecimento_constante_medidor as (
             and dlb.bis <= etdz.bis
     where
         etdz.massread = 'KWH'
-        and dlb.mandt = {{ mc_mandante(var('source_param')) }}
+        and dlb.mandt = {{ mc_mandante() }}
 ),
 
 enriquecimento_fator_calculo as (
@@ -176,7 +176,7 @@ enriquecimento_fator_calculo as (
             and ecm.bis >= ezz.ab
             and ecm.bis <= ezz.bis
     where
-        ecm.mandt = {{ mc_mandante(var('source_param')) }}
+        ecm.mandt = {{ mc_mandante() }}
 ),
 
 identificacao_equipamento as (
@@ -210,7 +210,7 @@ identificacao_equipamento as (
             and efc.bis <= eg.bis
             and eg.kombinat = 'W'
     where
-        efc.mandt = {{ mc_mandante(var('source_param')) }}
+        efc.mandt = {{ mc_mandante() }}
 ),
 
 calculo_consumo_bruto as (
@@ -241,7 +241,7 @@ calculo_consumo_bruto as (
             and ie.belzart = t8.belzart
     where
         t8.spras = 'P'
-        and t8.mandt = {{ mc_mandante(var('source_param')) }}
+        and t8.mandt = {{ mc_mandante() }}
         and (t8.text30 not like '% RV' or t8.belzart = 'ZRCARV')
         and t8.text30 not like '%Gerado%'
         and t8.text30 not like '%Reativo Exced%'

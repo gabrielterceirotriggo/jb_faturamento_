@@ -1,3 +1,4 @@
-select ultima_execucao
+select ultima_carga
 from
-    {{ source('PROD','INT_ULTIMA_EXECUCAO') }}
+    {{ source('PROD','TAB_CONTROLE_CARGAS') }}
+where tabela = 'FATURAMENTO'

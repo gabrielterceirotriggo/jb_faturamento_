@@ -1,3 +1,12 @@
+{{
+  config(
+    post_hook = [
+      "{{ atualiza_ordem() }}",
+      "{{ vlr_cont_delta() }}",
+      "{{ atualiza_data_carga() }}"
+    ],
+    )
+}}
 with ordem_faturamento as (
     select
         mes_competencia,

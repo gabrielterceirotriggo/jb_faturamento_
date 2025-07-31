@@ -27,7 +27,7 @@ calculo_previsto as (
     from
         etrg
     where
-        mandt = {{ mc_mandante(var('source_param')) }}
+        mandt = {{ mc_mandante() }}
 ),
 
 final as (

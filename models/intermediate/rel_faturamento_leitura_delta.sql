@@ -28,9 +28,9 @@ documentos_com_leitura as (
         dberchz2
         on
             faturamento_delta.documento_calculo = dberchz2.belnr
-            and dberchz2.mandt = {{ mc_mandante(var('source_param')) }}
+            and dberchz2.mandt = {{ mc_mandante() }}
     where
-        dberchz2.mandt = {{ mc_mandante(var('source_param')) }}
+        dberchz2.mandt = {{ mc_mandante() }}
 
 ),
 

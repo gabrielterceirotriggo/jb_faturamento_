@@ -232,7 +232,7 @@ busca_motivos_estorno_ajuste as (
     left outer join erch as e
         on
             rr.documento_calculo = e.belnr
-            and e.mandt = {{ mc_mandante(var('source_param')) }}
+            and e.mandt = {{ mc_mandante() }}
 ),
 
 final as (

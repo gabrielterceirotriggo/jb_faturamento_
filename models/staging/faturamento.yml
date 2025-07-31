@@ -2,8 +2,8 @@ version: 2
 
 sources:
   - name: "RAW"
-    database: eqtlinfo_raw
-    schema: "{{ var('source_orig', 'CCS_MA') }}"
+    database: "{{ var('database_raw', 'eqtlinfo_raw') }}"
+    schema: "{{ var('source_orig', 'ccs_ma') }}"
     config:
       freshness:
         warn_after: { count: 12, period: hour }
@@ -56,8 +56,8 @@ sources:
       - name: TE835T
 
   - name: "PROD"
-    database: eqtlinfo_prd
-    schema: "{{ var('source_param', 'EQTL_MA') }}"
+    database: "{{ var('database_prd', 'eqtlinfo_prd') }}"
+    schema: "{{ var('source_param', 'eqtl_ma') }}"
     config:
       freshness:
         warn_after: { count: 12, period: hour }
@@ -66,4 +66,3 @@ sources:
       - name: TAB_CONTROLE_CARGAS
       - name: FATURAMENTO_OPERACOES
       - name: FATURAMENTO
-      - name: INT_ULTIMA_EXECUCAO

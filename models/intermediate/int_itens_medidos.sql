@@ -105,7 +105,7 @@ itens_medidos_base as (
     where
         zo.ez_abrmenge_flag = 'X'
         and COALESCE(dlb.xtotal_amnt, ' ') <> 'X'
-        and df.mandt = {{ mc_mandante(var('source_param')) }}
+        and df.mandt = {{ mc_mandante() }}
 ),
 
 itens_medidos_transformados as (

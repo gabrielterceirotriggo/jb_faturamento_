@@ -170,7 +170,7 @@ dados_faturamento_base as (
             and c.endabrpe = e.bis
             and c.belnr = e.belnr
     where
-        a.mandt = {{ mc_mandante(var('source_param')) }}
+        a.mandt = {{ mc_mandante() }}
         and a.erdat >= (select ultima_execucao from ultima_execucao)
         and a.erdat <= TO_CHAR(CURRENT_DATE(), 'YYYYMMDD')
         and a.invoiced = 'X'

@@ -149,7 +149,7 @@ itens_consumo_base_tipo1 as (
             and dz1.belzeile = dz3.belzeile
     where
         dlb.xtotal_amnt = 'X'
-        and df.mandt = {{ mc_mandante(var('source_param')) }}
+        and df.mandt = {{ mc_mandante() }}
 ),
 
 itens_consumo_base_tipo2 as (
@@ -212,7 +212,7 @@ itens_consumo_base_tipo2 as (
             and dz5.belzeile = dz7.belzeile
     where
         dlb.xtotal_amnt = 'X'
-        and df.mandt = {{ mc_mandante(var('source_param')) }}
+        and df.mandt = {{ mc_mandante() }}
 ),
 
 itens_consumo_transformados_tipo1 as (

@@ -41,21 +41,10 @@ vars:
   dia_fim: "{{ modules.datetime.date.today().strftime('%Y%m%d') }}"
 
   # Source system configuration
-  source_param: "EQTL_AP" # Current source system
-  source_orig: "CCS_AP" # Original source system
-
-  # Business configuration
-  consumption_tolerance: 1000 # Tolerance for consumption differences
-  max_processing_days: 90 # Maximum days to process in incremental runs
-
-# Warehouse configuration (commented out for safety)
-# on-run-start: "alter warehouse WH_CARGAS_CRITICAS set warehouse_size = 'medium'"
-# on-run-end: "alter warehouse WH_CARGAS_CRITICAS set warehouse_size = 'small'"
-
-# Test configurations
-tests:
-  +warn_if: ">1000"
-  +error_if: ">10000"
+  database_raw: "eqtlinfo_raw"
+  database_prd: "eqtlinfo_prd"
+  source_param: "eqtl_ma"
+  source_orig: "ccs_ma"
 
 # Documentation
 docs-paths: ["docs"]

@@ -2,7 +2,7 @@
    {% set comandos %}
         DELETE FROM {{ ref('int_ordem_faturamento') }} A
         WHERE A.DOCUMENTO_IMPRESSAO IN
-        (SELECT DOCUMENTO_IMPRESSAO FROM {{ ref('int_docs_dups_ord_fat') }} A);
+        (SELECT DOCUMENTO_IMPRESSAO FROM {{ this }} A);
 
         INSERT INTO {{ ref('int_ordem_faturamento') }}
         SELECT MES_COMPETENCIA,
@@ -11,7 +11,7 @@
                 DOCUMENTO_IMPRESSAO,
                 TIPO_CALCULO,
                 RNK
-        FROM {{ ref('int_docs_dups_ord_fat') }};
+        FROM {{ this }};
 
         MERGE INTO {{ ref('faturamento') }} C
         USING {{ ref('int_ordem_faturamento') }} B
@@ -26,4 +26,5 @@
         
    {% endset %}
    {% do run_query(comandos) %}
+   {{ log("Macro atualiza_ordem rodou com sucesso", info=True) }}
 {% endmacro %}

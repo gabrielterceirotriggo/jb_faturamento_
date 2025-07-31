@@ -117,7 +117,7 @@ enriquecimento_dados_precalc as (
     left outer join
         ettifn as e
         on
-            e.mandt = {{ mc_mandante(var('source_param')) }}
+            e.mandt = {{ mc_mandante() }}
             and pd.instalacao = e.anlage
             and e.operand = 'FL_SEM_NF'
             and e.ab <= TO_CHAR(pd.fim_calculo, 'YYYYMMDD')

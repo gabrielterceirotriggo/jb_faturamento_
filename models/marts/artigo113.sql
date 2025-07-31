@@ -88,7 +88,7 @@ tratamento_dados as (
     from
         zcfat_irreg_inf
     where
-        mandt = {{ mc_mandante(var('source_param')) }}
+        mandt = {{ mc_mandante() }}
 
 ),
 

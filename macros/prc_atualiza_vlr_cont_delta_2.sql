@@ -39,5 +39,5 @@
             AND x.ORDEM = 1
     {% endset %}
     {% do run_query(update_query) %}
-    
+    {{ log("Macro vlr_cont_delta rodou com sucesso", info=True) }}
 {% endmacro %}

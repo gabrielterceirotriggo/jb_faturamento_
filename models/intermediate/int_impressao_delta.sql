@@ -62,7 +62,7 @@ documentos_impressao_filtrados as (
     from
         erdk
     where
-        mandt = {{ mc_mandante(var('source_param')) }}
+        mandt = {{ mc_mandante() }}
         and erdat >= (select ultima_execucao from ultima_execucao)
         and erdat <= TO_CHAR(CURRENT_DATE(), 'YYYYMMDD')
         and invoiced = 'X'

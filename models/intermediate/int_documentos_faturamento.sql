@@ -60,7 +60,7 @@ calculos as (
         erch as c
         on b.mandt = c.mandt and b.belnr = c.belnr
     where
-        a.mandt = {{ mc_mandante(var('source_param')) }}
+        a.mandt = {{ mc_mandante() }}
         and a.invoiced = 'X'
         and COALESCE(a.ergrd, ' ') <> '04'
         and a.erdat >= (select ultima_execucao from ultima_execucao)
@@ -91,7 +91,7 @@ estornos_plenos as (
         erch as c
         on b.mandt = c.mandt and b.belnr = c.belnr
     where
-        a.mandt = {{ mc_mandante(var('source_param')) }}
+        a.mandt = {{ mc_mandante() }}
         and a.invoiced = 'X'
         and a.ergrd = '04'
         and a.erdat >= (select ultima_execucao from ultima_execucao)

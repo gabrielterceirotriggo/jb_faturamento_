@@ -24,6 +24,6 @@
             AND a.DOCUMENTO_IMPRESSAO = x.DOCUMENTO_IMPRESSAO
     {% endset %}
     {% do run_query(update_query) %}
-
+    {{ log("Macro update_reversao rodou com sucesso", info=True) }}
 {% endmacro %}
 
