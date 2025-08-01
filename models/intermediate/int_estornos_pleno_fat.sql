@@ -55,7 +55,7 @@ q_estornos_pleno_fat as (
         fh.cancelamento,
         epd.fatura_virtual,
         fh.minimo,
-        epd.documento_impressao as documento_estorno_pleno,
+        epd.contrapartida as documento_estorno_pleno,
         epd.data_criacao_impressao as data_estorno_pleno,
         epd.motivo_estorno_impressao as motivo_estorno_pleno,
         fh.documento_estorno_ajuste,
