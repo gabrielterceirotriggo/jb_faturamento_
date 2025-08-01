@@ -1,7 +1,7 @@
 {% macro atualiza_data_carga() %}
     {% set commands %}
         UPDATE {{ source('PROD', 'TAB_CONTROLE_CARGAS') }}
-        SET DATA_CARGA = CURRENT_TIMESTAMP()
+        SET ULTIMA_CARGA = CURRENT_TIMESTAMP()
         WHERE TABELA = 'FATURAMENTO';
     {% endset %}
 

@@ -65,10 +65,7 @@ tratamento_dados as (
         leit_anterior as leitura_anterior,
         parcelas,
         ajus_user as operando,
-        case
-            when adat = '00000000' then null
-            else to_date(adat, 'YYYYMMDD')
-        end as data_leitura,
+        try_to_date(adat, 'YYYYMMDD') as data_leitura,
         case
             when invoiced = ' ' then null
             else invoiced
@@ -77,10 +74,7 @@ tratamento_dados as (
             when grupo_estim = ' ' then null
             else grupo_estim
         end as tipo_estimativa,
-        case
-            when data_lei_anterior = '00000000' then null
-            else to_date(data_lei_anterior, 'YYYYMMDD')
-        end as data_leitura_anterior,
+        try_to_date(data_lei_anterior, 'YYYYMMDD') as data_leitura_anterior,
         case
             when rpnum = ' ' then null
             else rpnum

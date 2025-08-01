@@ -22,12 +22,14 @@ models:
       +materialized: view
       +tags: ["staging"]
       +description: "Raw data models with minimal transformations"
+      +schema: "staging"
 
     # Intermediate layer - complex business logic, tables for performance
     intermediate:
       +materialized: table
       +tags: ["intermediate"]
       +description: "Complex business logic and data preparation"
+      +schema: "intermediate"
 
     # Marts layer - final presentation layer, tables for end users
     marts:
