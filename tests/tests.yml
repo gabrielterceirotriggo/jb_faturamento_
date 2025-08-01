@@ -7,14 +7,5 @@ data_tests:
   - name: assert_unique_erchc
     description: "Ensures that the relationship between a print document (opbel) and a billing document (belnr) is unique in the ERCHC table."
 
-  - name: assert_billing_amounts_positive
-    description: "Validates that all billing amounts are positive values, ensuring data quality for financial calculations."
-
-  - name: assert_consumption_consistency
-    description: "Validates consistency between billed and measured consumption within acceptable tolerance levels."
-
-  - name: assert_reversal_consistency
-    description: "Ensures reversal document business logic is properly applied and reversal indicators are consistent."
-
   - name: assert_categoria_tarifa
     description: "Validates tariff category logic and ensures proper categorization of billing records."

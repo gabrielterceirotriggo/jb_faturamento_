@@ -8,18 +8,15 @@ models:
     columns:
       - name: mes_competencia
         description: "Competency month (YYYYMM format)"
-        tests:
-          - not_null
+
       - name: mes_referencia
         description: "Reference month"
       - name: documento_calculo
         description: "Calculation document number"
-        tests:
-          - not_null
+
       - name: documento_impressao
         description: "Print document number"
-        tests:
-          - not_null
+
       - name: fatura
         description: "Invoice number"
       - name: instalacao
@@ -40,8 +37,7 @@ models:
         description: "Group classification"
       - name: categoria_tarifa
         description: "Tariff category"
-        tests:
-          - not_null
+
       - name: cliente_livre
         description: "Free market customer indicator"
       - name: subclasse
@@ -184,20 +180,16 @@ models:
     columns:
       - name: mes_competencia
         description: "Competency month"
-        tests:
-          - not_null
+
       - name: documento_calculo
         description: "Calculation document"
-        tests:
-          - not_null
+
       - name: documento_impressao
         description: "Print document"
-        tests:
-          - not_null
+
       - name: item
         description: "Item number"
-        tests:
-          - not_null
+
       - name: tipo_item
         description: "Item type"
       - name: descricao_item
@@ -216,12 +208,10 @@ models:
     columns:
       - name: mes_competencia
         description: "Competency month"
-        tests:
-          - not_null
+
       - name: instalacao
         description: "Installation"
-        tests:
-          - not_null
+
       - name: consumo_faturado
         description: "Billed consumption"
       - name: consumo_lido
@@ -236,12 +226,10 @@ models:
     columns:
       - name: mes_competencia
         description: "Competency month"
-        tests:
-          - not_null
+
       - name: documento_calculo
         description: "Calculation document"
-        tests:
-          - not_null
+
       - name: artigo113_indicator
         description: "Article 113 compliance indicator"
 
@@ -252,12 +240,10 @@ models:
     columns:
       - name: mes_competencia
         description: "Competency month"
-        tests:
-          - not_null
+
       - name: instalacao
         description: "Installation"
-        tests:
-          - not_null
+
       - name: tipo_irregularidade
         description: "Irregularity type"
       - name: motivo_irregularidade

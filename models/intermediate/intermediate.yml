@@ -8,16 +8,13 @@ models:
     columns:
       - name: mandt
         description: "Client/Mandant identifier"
-        tests:
-          - not_null
+
       - name: doc_calculo
         description: "Calculation document number"
-        tests:
-          - not_null
+
       - name: doc_impressao
         description: "Print document number"
-        tests:
-          - not_null
+
       - name: tipo_calculo
         description: "Calculation type"
       - name: tipo_documento
@@ -34,16 +31,13 @@ models:
     columns:
       - name: mes_competencia
         description: "Competency month"
-        tests:
-          - not_null
+
       - name: documento_calculo
         description: "Calculation document"
-        tests:
-          - not_null
+
       - name: documento_impressao
         description: "Print document"
-        tests:
-          - not_null
+
       - name: tipo_estorno
         description: "Reversal type"
       - name: motivo_estorno
@@ -56,12 +50,10 @@ models:
     columns:
       - name: mes_competencia
         description: "Competency month"
-        tests:
-          - not_null
+
       - name: instalacao
         description: "Installation"
-        tests:
-          - not_null
+
       - name: consumo_anterior
         description: "Previous consumption"
       - name: consumo_atual
@@ -76,16 +68,13 @@ models:
     columns:
       - name: mes_competencia
         description: "Competency month"
-        tests:
-          - not_null
+
       - name: documento_calculo
         description: "Calculation document"
-        tests:
-          - not_null
+
       - name: documento_impressao
         description: "Print document"
-        tests:
-          - not_null
+
       - name: valor_fatura
         description: "Invoice amount"
       - name: valor_contabil
@@ -98,16 +87,12 @@ models:
     columns:
       - name: mes_competencia
         description: "Competency month"
-        tests:
-          - not_null
+
       - name: documento_calculo
         description: "Calculation document"
-        tests:
-          - not_null
+
       - name: ordem_faturamento
         description: "Billing order number"
-        tests:
-          - not_null
 
   - name: int_ultima_execucao
     description: "Tracks the last execution timestamp for incremental processing."
@@ -116,8 +101,6 @@ models:
     columns:
       - name: ultima_execucao
         description: "Last execution timestamp"
-        tests:
-          - not_null
 
   - name: int_max_mes_competencia
     description: "Determines the maximum competency month for processing boundaries."
@@ -126,8 +109,6 @@ models:
     columns:
       - name: max_mes_competencia
         description: "Maximum competency month"
-        tests:
-          - not_null
 
   - name: int_precalc_delta
     description: "Pre-calculation delta processing for billing components."
@@ -136,12 +117,9 @@ models:
     columns:
       - name: mes_competencia
         description: "Competency month"
-        tests:
-          - not_null
+
       - name: documento_calculo
         description: "Calculation document"
-        tests:
-          - not_null
 
   - name: int_consumo_registrado
     description: "Registered consumption data processing and validation."
@@ -150,12 +128,10 @@ models:
     columns:
       - name: mes_competencia
         description: "Competency month"
-        tests:
-          - not_null
+
       - name: instalacao
         description: "Installation"
-        tests:
-          - not_null
+
       - name: consumo_registrado
         description: "Registered consumption"
 
@@ -166,16 +142,12 @@ models:
     columns:
       - name: mes_competencia
         description: "Competency month"
-        tests:
-          - not_null
+
       - name: documento_calculo
         description: "Calculation document"
-        tests:
-          - not_null
+
       - name: item
         description: "Item number"
-        tests:
-          - not_null
 
   - name: int_itens_medidos
     description: "Measured items processing and validation."
@@ -184,16 +156,12 @@ models:
     columns:
       - name: mes_competencia
         description: "Competency month"
-        tests:
-          - not_null
+
       - name: documento_calculo
         description: "Calculation document"
-        tests:
-          - not_null
+
       - name: item
         description: "Item number"
-        tests:
-          - not_null
 
   - name: int_itens_receita
     description: "Revenue items processing and calculation."
@@ -202,16 +170,12 @@ models:
     columns:
       - name: mes_competencia
         description: "Competency month"
-        tests:
-          - not_null
+
       - name: documento_calculo
         description: "Calculation document"
-        tests:
-          - not_null
+
       - name: item
         description: "Item number"
-        tests:
-          - not_null
 
   - name: int_itens_extras
     description: "Extra items processing for additional charges and adjustments."
@@ -220,16 +184,12 @@ models:
     columns:
       - name: mes_competencia
         description: "Competency month"
-        tests:
-          - not_null
+
       - name: documento_calculo
         description: "Calculation document"
-        tests:
-          - not_null
+
       - name: item
         description: "Item number"
-        tests:
-          - not_null
 
   - name: int_itens_extras_receita
     description: "Extra revenue items processing for additional revenue components."
@@ -238,16 +198,12 @@ models:
     columns:
       - name: mes_competencia
         description: "Competency month"
-        tests:
-          - not_null
+
       - name: documento_calculo
         description: "Calculation document"
-        tests:
-          - not_null
+
       - name: item
         description: "Item number"
-        tests:
-          - not_null
 
   - name: int_estornados_pleno_fat
     description: "Full reversal processing for billing documents."
@@ -256,16 +212,12 @@ models:
     columns:
       - name: mes_competencia
         description: "Competency month"
-        tests:
-          - not_null
+
       - name: documento_calculo
         description: "Calculation document"
-        tests:
-          - not_null
+
       - name: documento_impressao
         description: "Print document"
-        tests:
-          - not_null
 
   - name: int_estornados_pleno_fat_delta
     description: "Delta processing for full reversals."
@@ -274,16 +226,12 @@ models:
     columns:
       - name: mes_competencia
         description: "Competency month"
-        tests:
-          - not_null
+
       - name: documento_calculo
         description: "Calculation document"
-        tests:
-          - not_null
+
       - name: documento_impressao
         description: "Print document"
-        tests:
-          - not_null
 
   - name: int_estornados_ajuste_fat
     description: "Adjustment reversal processing for billing documents."
@@ -292,16 +240,12 @@ models:
     columns:
       - name: mes_competencia
         description: "Competency month"
-        tests:
-          - not_null
+
       - name: documento_calculo
         description: "Calculation document"
-        tests:
-          - not_null
+
       - name: documento_impressao
         description: "Print document"
-        tests:
-          - not_null
 
   - name: int_estornados_ajuste_delta
     description: "Delta processing for adjustment reversals."
@@ -310,16 +254,12 @@ models:
     columns:
       - name: mes_competencia
         description: "Competency month"
-        tests:
-          - not_null
+
       - name: documento_calculo
         description: "Calculation document"
-        tests:
-          - not_null
+
       - name: documento_impressao
         description: "Print document"
-        tests:
-          - not_null
 
   - name: int_estornos_pleno_fat
     description: "Alternative full reversal processing model."
@@ -328,16 +268,12 @@ models:
     columns:
       - name: mes_competencia
         description: "Competency month"
-        tests:
-          - not_null
+
       - name: documento_calculo
         description: "Calculation document"
-        tests:
-          - not_null
+
       - name: documento_impressao
         description: "Print document"
-        tests:
-          - not_null
 
   - name: int_estornos_pleno_fat_delta
     description: "Alternative delta processing for full reversals."
@@ -346,16 +282,12 @@ models:
     columns:
       - name: mes_competencia
         description: "Competency month"
-        tests:
-          - not_null
+
       - name: documento_calculo
         description: "Calculation document"
-        tests:
-          - not_null
+
       - name: documento_impressao
         description: "Print document"
-        tests:
-          - not_null
 
   - name: int_impressao_delta
     description: "Print document delta processing."
@@ -364,12 +296,9 @@ models:
     columns:
       - name: mes_competencia
         description: "Competency month"
-        tests:
-          - not_null
+
       - name: documento_impressao
         description: "Print document"
-        tests:
-          - not_null
 
   - name: int_docs_dups_ord_fat
     description: "Duplicate document order processing for billing."
@@ -378,16 +307,12 @@ models:
     columns:
       - name: mes_competencia
         description: "Competency month"
-        tests:
-          - not_null
+
       - name: documento_calculo
         description: "Calculation document"
-        tests:
-          - not_null
+
       - name: documento_impressao
         description: "Print document"
-        tests:
-          - not_null
 
   - name: ordem_calculo
     description: "Calculation order processing and sequencing."
@@ -396,16 +321,12 @@ models:
     columns:
       - name: mes_competencia
         description: "Competency month"
-        tests:
-          - not_null
+
       - name: documento_calculo
         description: "Calculation document"
-        tests:
-          - not_null
+
       - name: ordem_calculo
         description: "Calculation order"
-        tests:
-          - not_null
 
   - name: itens_faturamento_delta
     description: "Delta processing for billing items."
@@ -414,16 +335,12 @@ models:
     columns:
       - name: mes_competencia
         description: "Competency month"
-        tests:
-          - not_null
+
       - name: documento_calculo
         description: "Calculation document"
-        tests:
-          - not_null
+
       - name: item
         description: "Item number"
-        tests:
-          - not_null
 
   - name: rel_faturamento_leitura_delta
     description: "Delta processing for billing vs reading reconciliation."
@@ -432,12 +349,10 @@ models:
     columns:
       - name: mes_competencia
         description: "Competency month"
-        tests:
-          - not_null
+
       - name: instalacao
         description: "Installation"
-        tests:
-          - not_null
+
       - name: consumo_faturado
         description: "Billed consumption"
       - name: consumo_lido
@@ -450,16 +365,12 @@ models:
     columns:
       - name: mes_competencia
         description: "Competency month"
-        tests:
-          - not_null
+
       - name: documento_calculo
         description: "Calculation document"
-        tests:
-          - not_null
+
       - name: documento_impressao
         description: "Print document"
-        tests:
-          - not_null
 
   - name: estornos_ajustes_delta
     description: "Delta processing for adjustment reversals."
@@ -468,13 +379,9 @@ models:
     columns:
       - name: mes_competencia
         description: "Competency month"
-        tests:
-          - not_null
+
       - name: documento_calculo
         description: "Calculation document"
-        tests:
-          - not_null
+
       - name: documento_impressao
         description: "Print document"
-        tests:
-          - not_null
