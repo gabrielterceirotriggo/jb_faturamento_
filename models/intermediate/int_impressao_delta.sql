@@ -104,18 +104,9 @@ dados_impressao_transformados as (
         case
             when COALESCE(usuario_modificacao, ' ') <> ' ' then usuario_modificacao
         end as usuario_modificacao,
-        case
-            when COALESCE(data_competencia, '00000000') <> '00000000'
-                then TO_DATE(data_competencia, 'YYYYMMDD')
-        end as data_competencia,
-        case
-            when COALESCE(data_vencimento, '00000000') <> '00000000'
-                then TO_DATE(data_vencimento, 'YYYYMMDD')
-        end as data_vencimento_original,
-        case
-            when COALESCE(data_apresentacao, '00000000') <> '00000000'
-                then TO_DATE(data_apresentacao, 'YYYYMMDD')
-        end as data_apresentacao,
+        try_to_date(data_competencia, 'YYYYMMDD') as data_competencia,
+        try_to_date(data_vencimento, 'YYYYMMDD') as data_vencimento_original,
+        try_to_date(data_apresentacao, 'YYYYMMDD') as data_apresentacao,
         case
             when COALESCE(intopbel, ' ') <> ' ' then intopbel
         end as contrapartida,

@@ -25,14 +25,8 @@ tratamento_cabecalho as (
         parcelas,
         fat_compl,
         ernam as criado_por,
-        case
-            when adat = '00000000' then null
-            else to_date(adat, 'YYYYMMDD')
-        end as data_leitura,
-        case
-            when erdat = '00000000' then null
-            else to_date(erdat, 'YYYYMMDD')
-        end as data_criacao
+        try_to_date(adat, 'YYYYMMDD') as data_leitura,
+        try_to_date(erdat, 'YYYYMMDD') as data_criacao
     from
         zcfat_irreg_cab
     where

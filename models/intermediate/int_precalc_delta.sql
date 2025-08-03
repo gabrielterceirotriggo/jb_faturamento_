@@ -206,76 +206,39 @@ faturamento_transformado as (
         case when zzorigdoc in ('IP', 'RS', 'FR', 'DS', 'CL') then 'X' end
             as cnr,
         case when COALESCE(sc_belnr_h, ' ') <> ' ' then 'X' end as estorno_ajuste,
-        case
-            when COALESCE(begabrpe, '00000000') <> '00000000' then TO_DATE(begabrpe, 'YYYYMMDD')
-        end as inicio_calculo,
-        case
-            when COALESCE(endabrpe, '00000000') <> '00000000' then TO_DATE(endabrpe, 'YYYYMMDD')
-        end as fim_calculo,
-        case
-            when
-                COALESCE(data_estorno_pleno, '00000000') <> '00000000'
-                then TO_DATE(data_estorno_pleno, 'YYYYMMDD')
-        end as data_estorno_pleno,
+        try_to_date(begabrpe, 'YYYYMMDD') as inicio_calculo,
+        try_to_date(endabrpe, 'YYYYMMDD') as fim_calculo,
+        try_to_date(data_estorno_pleno, 'YYYYMMDD') as data_estorno_pleno,
         case when COALESCE(sc_belnr_n, ' ') <> ' ' then sc_belnr_n else sc_belnr_h end
             as documento_estorno_ajuste,
-        case
-            when COALESCE(stornodat, '00000000') <> '00000000' then TO_DATE(stornodat, 'YYYYMMDD')
-        end as data_estorno_ajuste,
+        try_to_date(stornodat, 'YYYYMMDD') as data_estorno_ajuste,
         case when COALESCE(bcreason, ' ') <> ' ' then bcreason end as motivo_estorno_ajuste,
-        case
-            when
-                COALESCE(data_competencia, '00000000') <> '00000000'
-                then TO_DATE(data_competencia, 'YYYYMMDD')
-        end as data_competencia,
-        case
-            when COALESCE(zuorddaa, '00000000') <> '00000000' then TO_DATE(zuorddaa, 'YYYYMMDD')
-        end as data_atribuicao_calculo,
-        case
-            when
-                COALESCE(data_apresentacao, '00000000') <> '00000000'
-                then TO_DATE(data_apresentacao, 'YYYYMMDD')
-        end as data_apresentacao,
-        case
-            when
-                COALESCE(data_vencimento_original, '00000000') <> '00000000'
-                then TO_DATE(data_vencimento_original, 'YYYYMMDD')
-        end as data_vencimento_original,
-        case
-            when COALESCE(adatsoll, '00000000') <> '00000000' then TO_DATE(adatsoll, 'YYYYMMDD')
-        end as data_previsao_leitura,
-        case
-            when
-                COALESCE(data_criacao_impressao_raw, '00000000') <> '00000000'
-                then
-                    TO_TIMESTAMP_NTZ(
+        try_to_date(data_competencia, 'YYYYMMDD') as data_competencia,
+        try_to_date(zuorddaa, 'YYYYMMDD') as data_atribuicao_calculo,
+        try_to_date(data_apresentacao, 'YYYYMMDD') as data_apresentacao,
+        try_to_date(data_vencimento_original, 'YYYYMMDD') as data_vencimento_original,
+        try_to_date(adatsoll, 'YYYYMMDD') as data_previsao_leitura,
+        try_to_timestamp(
                         data_criacao_impressao_raw || hora_criacao,
                         'YYYYMMDDHH24MISS'
-                    )
-        end as data_criacao_impressao,
+                    ) as data_criacao_impressao,
         case when COALESCE(usuario_criacao, ' ') <> ' ' then usuario_criacao end
             as usuario_criacao_impressao,
-        case
-            when
-                COALESCE(data_modificacao_impressao_raw, '00000000') <> '00000000'
-                then TO_DATE(data_modificacao_impressao_raw, 'YYYYMMDD')
-        end as data_modificacao_impressao,
+        try_to_date(data_modificacao_impressao_raw, 'YYYYMMDD') as data_modificacao_impressao,
         case when COALESCE(usuario_modificacao, ' ') <> ' ' then usuario_modificacao end
             as usuario_modificacao_impressao,
         case
             when
-                COALESCE(erdat_erch, '00000000') <> '00000000' and COALESCE(eroetim, ' ') <> ' '
+                COALESCE(eroetim, ' ') <> ' '
                 then
-                    TO_TIMESTAMP_NTZ(
+                    try_to_timestamp(
                         erdat_erch || ' ' || eroetim, 'YYYYMMDD HH24MI'
                     )
-            when COALESCE(erdat_erch, '00000000') <> '00000000' then TO_DATE(erdat_erch, 'YYYYMMDD')
+            else try_to_date(erdat_erch, 'YYYYMMDD')
         end as data_criacao_calculo,
         case when COALESCE(ernam_erch, ' ') <> ' ' then ernam_erch end
             as usuario_criacao_calculo,
-        case
-            when COALESCE(aedat_erch, '00000000') <> '00000000' then TO_DATE(aedat_erch, 'YYYYMMDD')
-        end as data_modificacao_calculo,
+        try_to_date(aedat_erch, 'YYYYMMDD') as data_modificacao_calculo,
         case when COALESCE(aenam_erch, ' ') <> ' ' then aenam_erch end
             as usuario_modificacao_calculo,
         case when COALESCE(belnralt, ' ') <> ' ' then belnralt end

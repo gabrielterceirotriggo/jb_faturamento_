@@ -78,12 +78,8 @@ itens_extras_faturamento_base as (
         dlb.hvorg as operacao,
         dlb.txjcd as domicilio_fiscal,
         df.estorno,
-        case
-            when COALESCE(dz1.ab, '00000000') <> '00000000' then TO_DATE(dz1.ab, 'YYYYMMDD')
-        end as inicio_calculo,
-        case
-            when COALESCE(dz1.bis, '00000000') <> '00000000' then TO_DATE(dz1.bis, 'YYYYMMDD')
-        end as fim_calculo,
+        try_to_date(dz1.ab, 'YYYYMMDD') as inicio_calculo,
+        try_to_date(dz1.bis, 'YYYYMMDD') as fim_calculo,
         case
             when
                 df.tipo_calculo = 'CM' and (

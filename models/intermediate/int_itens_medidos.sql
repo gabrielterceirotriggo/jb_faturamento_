@@ -127,12 +127,8 @@ itens_medidos_transformados as (
         0 as aliquota,
         hvorg as operacao,
         txjcd as domicilio_fiscal,
-        case
-            when COALESCE(ab, '00000000') <> '00000000' then TO_DATE(ab, 'YYYYMMDD')
-        end as inicio_calculo,
-        case
-            when COALESCE(bis, '00000000') <> '00000000' then TO_DATE(bis, 'YYYYMMDD')
-        end as fim_calculo,
+        try_to_date(ab, 'YYYYMMDD') as inicio_calculo,
+        try_to_date(bis, 'YYYYMMDD') as fim_calculo,
         case
             when
                 tipo_calculo = 'CM'
