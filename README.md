@@ -9,10 +9,10 @@ This dbt project transforms billing and invoicing data from SAP ERP systems into
 ```bash
 
 #For CEMAR, CELPA, CEPISA, CEAL and CEA
-dbt run --vars "{'source_param': 'eqtl_ma', 'source_orig': 'ccs_ma'}"
+dbt run --vars "{'source_param': 'EQTL_MA', 'source_orig': 'CCS_MA'}"
 
 #For CEEE
-dbt run --vars "{'source_param': 'eqtl_rs_eqz', 'source_orig': 'ccs_rs', 'database_prd': 'eqtlinfo_hml'}"
+dbt run --vars "{'source_param': 'EQTL_RS_EQZ', 'source_orig': 'CCS_RS', 'database_prd': 'eqtlinfo_hml'}"
 
 ```
 

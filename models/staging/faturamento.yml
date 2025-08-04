@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: "RAW"
     database: "{{ var('database_raw', 'eqtlinfo_raw') }}"
-    schema: "{{ var('source_orig', 'ccs_ma') }}"
+    schema: "{{ var('source_orig', 'CCS_MA') }}"
     config:
       freshness:
         warn_after: { count: 12, period: hour }
@@ -57,7 +57,7 @@ sources:
 
   - name: "PROD"
     database: "{{ var('database_prd', 'eqtlinfo_prd') }}"
-    schema: "{{ var('source_param', 'eqtl_ma') }}"
+    schema: "{{ var('source_param', 'EQTL_MA') }}"
     config:
       freshness:
         warn_after: { count: 12, period: hour }

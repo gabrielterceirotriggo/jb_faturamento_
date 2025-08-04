@@ -43,10 +43,10 @@ vars:
   dia_fim: "{{ modules.datetime.date.today().strftime('%Y%m%d') }}"
 
   # Source system configuration
-  database_raw: "eqtlinfo_raw"
-  database_prd: "eqtlinfo_prd"
-  source_param: "eqtl_ma"
-  source_orig: "ccs_ma"
+  database_raw: "EQTLINFO_RAW"
+  database_prd: "EQTLINFO_PRD"
+  source_param: "EQTL_MA"
+  source_orig: "CCS_MA"
 
 # Documentation
 docs-paths: ["docs"]
