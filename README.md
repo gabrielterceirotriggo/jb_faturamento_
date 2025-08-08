@@ -12,7 +12,7 @@ This dbt project transforms billing and invoicing data from SAP ERP systems into
 dbt run --vars "{'source_param': 'EQTL_MA', 'source_orig': 'CCS_MA'}"
 
 #For CEEE
-dbt run --vars "{'source_param': 'EQTL_RS_EQZ', 'source_orig': 'CCS_RS', 'database_prd': 'eqtlinfo_hml'}"
+dbt run --vars "{'source_param': 'EQTL_RS_EQZ', 'source_orig': 'CCS_RS', 'database_prd': 'EQTLINFO_HML'}"
 
 ```
 
