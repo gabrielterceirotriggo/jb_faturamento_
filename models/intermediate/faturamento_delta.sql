@@ -274,7 +274,7 @@ faturamento_transformado as (
                     'A1_LVVD',
                     'A2_LVAZ',
                     'A2_LVVD',
-                    'AÇA_LVAZ',
+                    'A3A_LVAZ',
                     'A3A_LVVD',
                     'A3_LVAZ',
                     'A3_LVVD',
