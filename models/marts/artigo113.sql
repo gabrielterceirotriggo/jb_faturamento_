@@ -1,7 +1,7 @@
 {{
   config(
     materialized = 'incremental',
-    incrementa_strategy= 'insert_overwrite',
+    incremental_strategy= 'custom_insert_overwrite',
     )
 }}
 with zcfat_irreg_inf as (
