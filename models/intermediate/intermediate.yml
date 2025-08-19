@@ -94,14 +94,6 @@ models:
       - name: ordem_faturamento
         description: "Billing order number"
 
-  - name: int_ultima_execucao
-    description: "Tracks the last execution timestamp for incremental processing."
-    config:
-      tags: ["intermediate", "billing", "control"]
-    columns:
-      - name: ultima_execucao
-        description: "Last execution timestamp"
-
   - name: int_max_mes_competencia
     description: "Determines the maximum competency month for processing boundaries."
     config:
