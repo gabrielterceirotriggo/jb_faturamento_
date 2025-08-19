@@ -1,3 +1,9 @@
+{{
+  config(
+    materialized = 'incremental',
+    incremental_strategy= 'custom_insert_overwrite',
+    )
+}}
 with etrg as (
     select
         anlage,
