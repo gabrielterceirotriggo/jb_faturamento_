@@ -219,7 +219,7 @@ models:
       - name: diferenca
         description: "Difference between billed and read consumption"
 
-  - name: artigo113
+  - name: artigo_113
     description: "Article 113 specific billing data for regulatory compliance."
     config:
       tags: ["marts", "billing", "regulatory"]

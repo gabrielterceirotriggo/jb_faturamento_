@@ -1,3 +1,9 @@
+{{
+  config(
+    snowflake_warehouse = 'WH_QLIK_CG',
+    pre_hook = '{{roda_merge("DBERCHZ7")}}',
+    )
+}}
 select
     mandt,
     belnr,
