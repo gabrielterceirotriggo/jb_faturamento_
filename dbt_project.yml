@@ -17,25 +17,18 @@ clean-targets:
 # Model configurations
 models:
   jb_faturamento:
-    # Staging layer - minimal transformations, views for performance
-    staging:
-      +materialized: view
-      +tags: ["staging"]
-      +description: "Raw data models with minimal transformations"
-      +schema: "staging"
-
-    # Intermediate layer - complex business logic, tables for performance
     intermediate:
       +materialized: table
+      +query_tag: int_jb_faturamento
       +tags: ["intermediate"]
-      +description: "Complex business logic and data preparation"
-      +schema: "intermediate"
-
-    # Marts layer - final presentation layer, tables for end users
     marts:
       +materialized: table
+      +query_tag: mart_jb_faturamento
       +tags: ["marts"]
-      +description: "Final presentation layer for business users"
+    staging:
+      +materialized: view
+      +query_tag: stg_jb_faturamento
+      +tags: ["staging"]
 
 # Global variables
 vars:

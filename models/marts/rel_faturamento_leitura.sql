@@ -6,6 +6,7 @@
 }}
 select
     documento_calculo,
-    id_leitura
+    id_leitura,
+    current_timestamp() as data_dados
 from
     {{ ref('rel_faturamento_leitura_delta') }}
