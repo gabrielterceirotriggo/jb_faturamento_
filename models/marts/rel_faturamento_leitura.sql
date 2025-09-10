@@ -2,7 +2,7 @@
   config(
     materialized = 'incremental',
     incremental_strategy= 'merge_insert_only',
-    unique_id = ['documento_calculo', 'id_leitura'],
+    unique_key = ['documento_calculo', 'id_leitura'],
     )
 }}
 select
