@@ -1,7 +1,8 @@
 {{
   config(
     materialized = 'incremental',
-    incremental_strategy= 'custom_insert_overwrite',
+    incremental_strategy= 'merge_insert_only',
+    unique_id = ['documento_calculo', 'id_leitura'],
     )
 }}
 select
