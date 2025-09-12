@@ -40,7 +40,7 @@ vars:
   database_prd: "EQTLINFO_PRD"
   source_param: "EQTL_MA"
   source_orig: "CCS_MA"
+  procedures: false
 
 # Documentation
 docs-paths: ["docs"]
-

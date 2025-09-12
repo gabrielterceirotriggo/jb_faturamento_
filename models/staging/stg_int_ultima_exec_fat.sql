@@ -1,4 +1,6 @@
-select TO_CHAR(ultima_carga, 'YYYYMMDD') as ultima_execucao
+{# select TO_CHAR(ultima_carga, 'YYYYMMDD') as ultima_execucao
 from
     {{ source('PROD','TAB_CONTROLE_CARGAS') }}
-where tabela = 'FATURAMENTO'
+where tabela = 'FATURAMENTO' #}
+
+SELECT '20250801' AS ULTIMA_EXECUCAO
