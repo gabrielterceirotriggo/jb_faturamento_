@@ -1,11 +1,11 @@
-{% if var('source_param') == 'EQTL_MA' %}
+{# {% if var('source_param') == 'EQTL_MA' %}
 {{
   config(
     snowflake_warehouse = 'WH_QLIK_CG',
     pre_hook = '{{roda_merge("ERCHC")}}',
     )
 }}
-{% endif %}
+{% endif %} #}
 select
     mandt,
     belnr,
